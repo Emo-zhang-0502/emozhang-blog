@@ -246,6 +246,7 @@ async function apiRequest(endpoint, options = {}) {
         'apikey': SUPABASE_ANON_KEY,
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
         'Content-Type': 'application/json',
+        'Prefer': 'return=minimal',
         ...options.headers
     };
     
@@ -736,8 +737,15 @@ async function saveUsername() {
     }
     
     try {
-        const response = await apiRequest(`admins?id=eq.${adminId}`, {
+        // 使用用户名查询更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(sessionStorage.getItem('admin_username') || 'admin')}`, {
             method: 'PATCH',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
             body: JSON.stringify({
                 username: username,
                 updated_at: new Date().toISOString()
@@ -748,7 +756,7 @@ async function saveUsername() {
         showToast('用户名已修改（下次登录时生效）', 'success');
     } catch (error) {
         console.error('保存用户名失败:', error);
-        showToast('保存失败', 'error');
+        showToast('保存失败: ' + error.message, 'error');
     }
 }
 
@@ -763,8 +771,15 @@ async function saveBasicInfo() {
     }
     
     try {
-        const response = await apiRequest(`admins?id=eq.${adminId}`, {
+        // 使用用户名查询更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(sessionStorage.getItem('admin_username') || 'admin')}`, {
             method: 'PATCH',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
             body: JSON.stringify({
                 nickname,
                 tagline,
@@ -781,7 +796,7 @@ async function saveBasicInfo() {
         showToast('基本信息已保存', 'success');
     } catch (error) {
         console.error('保存失败:', error);
-        showToast('保存失败', 'error');
+        showToast('保存失败: ' + error.message, 'error');
     }
 }
 
@@ -831,8 +846,15 @@ async function savePassword() {
     }
     
     try {
-        const response = await apiRequest(`admins?id=eq.${adminId}`, {
+        // 使用用户名查询更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(sessionStorage.getItem('admin_username') || 'admin')}`, {
             method: 'PATCH',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
             body: JSON.stringify({
                 password_hash: password,
                 updated_at: new Date().toISOString()
@@ -845,7 +867,7 @@ async function savePassword() {
         showToast('密码已修改', 'success');
     } catch (error) {
         console.error('修改密码失败:', error);
-        showToast('修改失败', 'error');
+        showToast('修改失败: ' + error.message, 'error');
     }
 }
 
