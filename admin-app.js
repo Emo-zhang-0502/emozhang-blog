@@ -833,11 +833,11 @@ async function saveUsername() {
     }
     
     try {
-        // 使用ID来更新（更可靠）
-        const adminId = sessionStorage.getItem('admin_id');
-        console.log('更新管理员, ID:', adminId);
+        // 使用当前username查询
+        const currentUsername = sessionStorage.getItem('admin_username') || 'admin';
+        console.log('更新用户名, 从:', currentUsername, '改为:', username);
         
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(currentUsername)}`, {
             method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
@@ -856,7 +856,8 @@ async function saveUsername() {
         if (!response.ok) {
             const errorText = await response.text();
             console.error('保存失败详情:', errorText);
-            throw new Error('保存失败 (状态:' + response.status + ')');
+            showToast('保存失败 (错误码:' + response.status + ')', 'error');
+            return;
         }
         
         sessionStorage.setItem('admin_username', username);
@@ -878,15 +879,11 @@ async function saveBasicInfo() {
     }
     
     try {
-        const adminId = sessionStorage.getItem('admin_id');
-        if (!adminId) {
-            showToast('未登录或会话过期，请重新登录', 'error');
-            return;
-        }
+        // 先获取当前用户名
+        const username = sessionStorage.getItem('admin_username') || 'admin';
+        console.log('保存基本信息, 用户名:', username);
         
-        console.log('保存基本信息, ID:', adminId);
-        
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
             method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
@@ -901,10 +898,12 @@ async function saveBasicInfo() {
             })
         });
         
+        console.log('响应状态:', response.status, response.statusText);
+        
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('保存失败:', errorText);
-            showToast('保存失败，请检查RLS策略或刷新重试', 'error');
+            console.error('保存失败:', response.status, errorText);
+            showToast('保存失败 (错误码:' + response.status + ')，请刷新页面重试', 'error');
             return;
         }
         
@@ -986,15 +985,10 @@ async function savePassword() {
     }
     
     try {
-        const adminId = sessionStorage.getItem('admin_id');
-        if (!adminId) {
-            showToast('未登录或会话过期，请重新登录', 'error');
-            return;
-        }
+        const username = sessionStorage.getItem('admin_username') || 'admin';
+        console.log('修改密码, 用户名:', username);
         
-        console.log('修改密码, ID:', adminId);
-        
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
             method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
@@ -1008,10 +1002,12 @@ async function savePassword() {
             })
         });
         
+        console.log('响应状态:', response.status);
+        
         if (!response.ok) {
             const errorText = await response.text();
             console.error('修改密码失败:', errorText);
-            showToast('修改失败，请检查RLS策略', 'error');
+            showToast('修改失败 (错误码:' + response.status + ')', 'error');
             return;
         }
         
