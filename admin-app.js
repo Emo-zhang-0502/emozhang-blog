@@ -862,8 +862,7 @@ async function saveUsername() {
                 'Prefer': 'return=minimal'
             },
             body: JSON.stringify({
-                username: newUsername,
-                updated_at: new Date().toISOString()
+                username: newUsername
             })
         });
         
@@ -924,8 +923,7 @@ async function saveBasicInfo() {
             },
             body: JSON.stringify({
                 nickname: nickname,
-                tagline: tagline,
-                updated_at: new Date().toISOString()
+                tagline: tagline
             })
         });
         
@@ -1044,8 +1042,7 @@ async function savePassword() {
                 'Prefer': 'return=minimal'
             },
             body: JSON.stringify({
-                password_hash: password,
-                updated_at: new Date().toISOString()
+                password_hash: password
             })
         });
         
