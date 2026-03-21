@@ -849,28 +849,25 @@ async function saveUsername() {
             throw new Error('未找到管理员');
         }
         
-        const admin = admins[0];
+        const adminId = admins[0].id;
+        console.log('获取到id:', adminId);
         
-        // 使用POST with upsert来更新
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins`, {
-            method: 'POST',
+        // 使用PATCH更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
+            method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
                 'Content-Type': 'application/json',
-                'Prefer': 'resolution=merge-duplicates'
+                'Prefer': 'return=minimal'
             },
             body: JSON.stringify({
-                id: admin.id,
                 username: newUsername,
-                password_hash: admin.password_hash,
-                nickname: admin.nickname,
-                tagline: admin.tagline,
                 updated_at: new Date().toISOString()
             })
         });
         
-        console.log('响应状态:', response.status);
+        console.log('PATCH响应:', response.status);
         
         if (!response.ok) {
             const errorText = await response.text();
@@ -914,28 +911,25 @@ async function saveBasicInfo() {
         }
         
         const admin = admins[0];
-        console.log('获取到admin数据:', admin);
+        console.log('获取到admin数据, id:', admin.id);
         
-        // 使用POST with on_conflict来实现upsert更新
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins`, {
-            method: 'POST',
+        // 使用PATCH with id
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${admin.id}`, {
+            method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
                 'Content-Type': 'application/json',
-                'Prefer': 'resolution=merge-duplicates'
+                'Prefer': 'return=minimal'
             },
             body: JSON.stringify({
-                id: admin.id,
-                username: admin.username,
-                password_hash: admin.password_hash,
                 nickname: nickname,
                 tagline: tagline,
                 updated_at: new Date().toISOString()
             })
         });
         
-        console.log('响应状态:', response.status, response.statusText);
+        console.log('PATCH响应状态:', response.status, response.statusText);
         
         if (!response.ok) {
             const errorText = await response.text();
@@ -1024,8 +1018,8 @@ async function savePassword() {
     try {
         const username = sessionStorage.getItem('admin_username') || 'admin';
         
-        // 先查询获取完整的admin数据
-        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
+        // 先查询获取id
+        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}&select=id`, {
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
@@ -1037,26 +1031,25 @@ async function savePassword() {
             throw new Error('未找到管理员');
         }
         
-        const admin = admins[0];
+        const adminId = admins[0].id;
+        console.log('获取到id:', adminId);
         
-        // 使用POST with upsert来更新
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins`, {
-            method: 'POST',
+        // 使用PATCH更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
+            method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
                 'Content-Type': 'application/json',
-                'Prefer': 'resolution=merge-duplicates'
+                'Prefer': 'return=minimal'
             },
             body: JSON.stringify({
-                id: admin.id,
-                username: admin.username,
                 password_hash: password,
-                nickname: admin.nickname,
-                tagline: admin.tagline,
                 updated_at: new Date().toISOString()
             })
         });
+        
+        console.log('PATCH响应:', response.status);
         
         if (!response.ok) {
             const errorText = await response.text();
