@@ -833,12 +833,11 @@ async function saveUsername() {
     }
     
     try {
-        // 使用当前username查询获取id
         const currentUsername = sessionStorage.getItem('admin_username') || 'admin';
         console.log('更新用户名, 从:', currentUsername, '改为:', newUsername);
         
-        // 先查询获取id
-        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(currentUsername)}&select=id`, {
+        // 先查询获取完整的admin数据
+        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(currentUsername)}`, {
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
@@ -850,19 +849,23 @@ async function saveUsername() {
             throw new Error('未找到管理员');
         }
         
-        const adminId = admins[0].id;
+        const admin = admins[0];
         
-        // 用id来更新
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
-            method: 'PATCH',
+        // 使用POST with upsert来更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins`, {
+            method: 'POST',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
                 'Content-Type': 'application/json',
-                'Prefer': 'return=minimal'
+                'Prefer': 'resolution=merge-duplicates'
             },
             body: JSON.stringify({
+                id: admin.id,
                 username: newUsername,
+                password_hash: admin.password_hash,
+                nickname: admin.nickname,
+                tagline: admin.tagline,
                 updated_at: new Date().toISOString()
             })
         });
@@ -876,7 +879,7 @@ async function saveUsername() {
             return;
         }
         
-        sessionStorage.setItem('admin_username', username);
+        sessionStorage.setItem('admin_username', newUsername);
         showToast('用户名已修改（下次登录时生效）', 'success');
     } catch (error) {
         console.error('保存用户名失败:', error);
@@ -895,42 +898,39 @@ async function saveBasicInfo() {
     }
     
     try {
-        // 先获取admin的id
         const username = sessionStorage.getItem('admin_username') || 'admin';
-        console.log('保存基本信息, 用户名:', username);
         
-        // 先查询获取id
-        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}&select=id`, {
+        // 先查询获取完整的admin数据
+        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
             }
         });
         
-        if (!getResponse.ok) {
-            throw new Error('查询失败');
-        }
-        
         const admins = await getResponse.json();
         if (!admins || admins.length === 0) {
             throw new Error('未找到管理员');
         }
         
-        const adminId = admins[0].id;
-        console.log('获取到admin id:', adminId);
+        const admin = admins[0];
+        console.log('获取到admin数据:', admin);
         
-        // 用id来更新
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
-            method: 'PATCH',
+        // 使用POST with on_conflict来实现upsert更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins`, {
+            method: 'POST',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
                 'Content-Type': 'application/json',
-                'Prefer': 'return=minimal'
+                'Prefer': 'resolution=merge-duplicates'
             },
             body: JSON.stringify({
-                nickname,
-                tagline,
+                id: admin.id,
+                username: admin.username,
+                password_hash: admin.password_hash,
+                nickname: nickname,
+                tagline: tagline,
                 updated_at: new Date().toISOString()
             })
         });
@@ -940,7 +940,7 @@ async function saveBasicInfo() {
         if (!response.ok) {
             const errorText = await response.text();
             console.error('保存失败:', response.status, errorText);
-            showToast('保存失败 (错误码:' + response.status + ')，请联系管理员检查数据库', 'error');
+            showToast('保存失败 (错误码:' + response.status + ')', 'error');
             return;
         }
         
@@ -1024,8 +1024,8 @@ async function savePassword() {
     try {
         const username = sessionStorage.getItem('admin_username') || 'admin';
         
-        // 先查询获取id
-        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}&select=id`, {
+        // 先查询获取完整的admin数据
+        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
@@ -1037,19 +1037,23 @@ async function savePassword() {
             throw new Error('未找到管理员');
         }
         
-        const adminId = admins[0].id;
+        const admin = admins[0];
         
-        // 用id来更新
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
-            method: 'PATCH',
+        // 使用POST with upsert来更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins`, {
+            method: 'POST',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
                 'Content-Type': 'application/json',
-                'Prefer': 'return=minimal'
+                'Prefer': 'resolution=merge-duplicates'
             },
             body: JSON.stringify({
+                id: admin.id,
+                username: admin.username,
                 password_hash: password,
+                nickname: admin.nickname,
+                tagline: admin.tagline,
                 updated_at: new Date().toISOString()
             })
         });
