@@ -791,8 +791,11 @@ async function saveUsername() {
     }
     
     try {
-        // 使用用户名查询更新
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(sessionStorage.getItem('admin_username') || 'admin')}`, {
+        // 使用ID来更新（更可靠）
+        const adminId = sessionStorage.getItem('admin_id');
+        console.log('更新管理员, ID:', adminId);
+        
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
             method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
@@ -806,7 +809,15 @@ async function saveUsername() {
             })
         });
         
-        if (!response.ok) throw new Error('保存失败');
+        console.log('响应状态:', response.status);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('保存失败详情:', errorText);
+            throw new Error('保存失败 (状态:' + response.status + ')');
+        }
+        
+        sessionStorage.setItem('admin_username', username);
         showToast('用户名已修改（下次登录时生效）', 'success');
     } catch (error) {
         console.error('保存用户名失败:', error);
@@ -825,8 +836,10 @@ async function saveBasicInfo() {
     }
     
     try {
-        // 使用用户名查询更新
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(sessionStorage.getItem('admin_username') || 'admin')}`, {
+        const adminId = sessionStorage.getItem('admin_id');
+        console.log('保存基本信息, ID:', adminId);
+        
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
             method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
@@ -841,7 +854,11 @@ async function saveBasicInfo() {
             })
         });
         
-        if (!response.ok) throw new Error('保存失败');
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('保存失败:', errorText);
+            throw new Error('保存失败 (状态:' + response.status + ')');
+        }
         
         sessionStorage.setItem('admin_nickname', nickname);
         const avatarEl = document.getElementById('user-avatar');
@@ -921,8 +938,10 @@ async function savePassword() {
     }
     
     try {
-        // 使用用户名查询更新
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(sessionStorage.getItem('admin_username') || 'admin')}`, {
+        const adminId = sessionStorage.getItem('admin_id');
+        console.log('修改密码, ID:', adminId);
+        
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
             method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
@@ -936,7 +955,11 @@ async function savePassword() {
             })
         });
         
-        if (!response.ok) throw new Error('修改失败');
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('修改密码失败:', errorText);
+            throw new Error('修改失败 (状态:' + response.status + ')');
+        }
         
         document.getElementById('setting-password').value = '';
         showToast('密码已修改', 'success');
