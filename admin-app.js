@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initEditor();
     
     // 加载数据
+    await loadTags();
     await loadArticles();
     await loadPhotos();
     await loadVideos();
@@ -54,9 +55,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 function initNavigation() {
     const navItems = document.querySelectorAll('.nav-item[data-panel]');
     const panelTitles = {
+        'tags': '标签管理',
         'articles': '文章管理',
         'photos': '图片管理',
         'videos': '视频管理',
+        'batch': '批量管理',
         'settings': '个人设置'
     };
     
@@ -271,9 +274,42 @@ async function loadArticles() {
         const response = await apiRequest('posts?order=created_at.desc');
         const articles = await response.json();
         renderArticles(articles);
+        await refreshTagSelect();
     } catch (error) {
         console.error('加载文章失败:', error);
         showToast('加载文章失败', 'error');
+    }
+}
+
+// 更新标签选择器
+async function refreshTagSelect() {
+    const select = document.getElementById('article-tag');
+    if (!select) return;
+    
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/tags?order=name.asc`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        const tags = await response.json();
+        
+        if (tags.length > 0) {
+            select.innerHTML = tags.map(tag => 
+                `<option value="${escapeHtml(tag.name)}">${escapeHtml(tag.name)}</option>`
+            ).join('');
+        } else {
+            // 默认标签
+            select.innerHTML = `
+                <option value="随想">随想</option>
+                <option value="生活">生活</option>
+                <option value="技术">技术</option>
+                <option value="旅行">旅行</option>
+            `;
+        }
+    } catch (error) {
+        console.error('加载标签选项失败:', error);
     }
 }
 
@@ -671,8 +707,14 @@ async function deleteVideo(id) {
 // ========================================
 async function loadSettings() {
     try {
-        // 加载管理员信息
-        const response = await apiRequest(`admins?id=eq.${adminId}`);
+        // 加载管理员信息 - 使用用户名查询
+        const username = sessionStorage.getItem('admin_username') || 'admin';
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
         const admins = await response.json();
         
         if (admins.length > 0) {
@@ -680,17 +722,29 @@ async function loadSettings() {
             document.getElementById('setting-username').value = admin.username || 'admin';
             document.getElementById('setting-nickname').value = admin.nickname || '';
             document.getElementById('setting-tagline').value = admin.tagline || '';
+            // 同时更新sessionStorage中的ID
+            sessionStorage.setItem('admin_id', admin.id);
         }
         
         // 加载关于内容
-        const aboutResponse = await apiRequest('about_content?section=eq.intro');
+        const aboutResponse = await fetch(`${SUPABASE_URL}/rest/v1/about_content?section=eq.intro`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
         const aboutData = await aboutResponse.json();
         if (aboutData.length > 0) {
             document.getElementById('setting-about').value = aboutData[0].content || '';
         }
         
         // 加载社交链接
-        const socialResponse = await apiRequest('social_links?order=sort_order.asc');
+        const socialResponse = await fetch(`${SUPABASE_URL}/rest/v1/social_links?order=sort_order.asc`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
         const socialLinks = await socialResponse.json();
         renderSocialLinks(socialLinks);
         
@@ -806,28 +860,49 @@ async function saveAbout() {
     
     try {
         // 先检查是否存在
-        const checkResponse = await apiRequest('about_content?section=eq.intro');
+        const checkResponse = await fetch(`${SUPABASE_URL}/rest/v1/about_content?section=eq.intro`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
         const existingData = await checkResponse.json();
         
         if (existingData.length > 0) {
-            await apiRequest('about_content?section=eq.intro', {
+            // 更新
+            const updateResponse = await fetch(`${SUPABASE_URL}/rest/v1/about_content?section=eq.intro`, {
                 method: 'PATCH',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                },
                 body: JSON.stringify({
                     content: about,
                     updated_at: new Date().toISOString()
                 })
             });
+            if (!updateResponse.ok) throw new Error('更新失败');
         } else {
-            await apiRequest('about_content', {
+            // 新建
+            const insertResponse = await fetch(`${SUPABASE_URL}/rest/v1/about_content`, {
                 method: 'POST',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                },
                 body: JSON.stringify({ section: 'intro', content: about })
             });
+            if (!insertResponse.ok) throw new Error('创建失败');
         }
         
         showToast('关于页面已更新', 'success');
     } catch (error) {
         console.error('保存失败:', error);
-        showToast('保存失败', 'error');
+        showToast('保存失败: ' + error.message, 'error');
     }
 }
 
@@ -955,6 +1030,269 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// ========================================
+// 标签管理
+// ========================================
+async function loadTags() {
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/tags?order=name.asc`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        const tags = await response.json();
+        renderTags(tags);
+    } catch (error) {
+        console.error('加载标签失败:', error);
+    }
+}
+
+function renderTags(tags) {
+    const container = document.getElementById('tags-list');
+    if (!container) return;
+    
+    if (!tags || tags.length === 0) {
+        container.innerHTML = '<p style="color: var(--color-text-muted); padding: 20px;">暂无标签，点击上方按钮添加</p>';
+        return;
+    }
+    
+    container.innerHTML = `
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; padding: 16px;">
+            ${tags.map(tag => `
+                <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: ${tag.color}20; border-radius: 20px; border: 1px solid ${tag.color}40;">
+                    <span style="color: ${tag.color}; font-weight: 500;">${escapeHtml(tag.name)}</span>
+                    <span style="color: var(--color-text-muted); font-size: 12px;">${tag.slug}</span>
+                    <button onclick="editTag(${tag.id}, '${escapeHtml(tag.name)}', '${tag.color}')" style="background: none; border: none; cursor: pointer; color: var(--color-text-secondary); padding: 2px;">✎</button>
+                    <button onclick="deleteTag(${tag.id})" style="background: none; border: none; cursor: pointer; color: var(--color-error); padding: 2px;">✕</button>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function openTagModal() {
+    const tagName = prompt('输入标签名称:');
+    if (!tagName) return;
+    
+    const tagColor = prompt('输入标签颜色（十六进制，如 #10b981）:', '#6366f1');
+    if (!tagColor) return;
+    
+    createTag(tagName, tagColor);
+}
+
+function editTag(id, name, color) {
+    const newName = prompt('输入新标签名称:', name);
+    if (!newName) return;
+    
+    const newColor = prompt('输入新标签颜色:', color);
+    if (!newColor) return;
+    
+    updateTag(id, newName, newColor);
+}
+
+async function createTag(name, color) {
+    const slug = name.toLowerCase().replace(/\s+/g, '-');
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/tags`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({ name, slug, color })
+        });
+        
+        if (!response.ok) throw new Error('创建失败');
+        showToast('标签已创建', 'success');
+        loadTags();
+    } catch (error) {
+        showToast('创建失败: ' + error.message, 'error');
+    }
+}
+
+async function updateTag(id, name, color) {
+    const slug = name.toLowerCase().replace(/\s+/g, '-');
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${id}`, {
+            method: 'PATCH',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({ name, slug, color })
+        });
+        
+        if (!response.ok) throw new Error('更新失败');
+        showToast('标签已更新', 'success');
+        loadTags();
+    } catch (error) {
+        showToast('更新失败: ' + error.message, 'error');
+    }
+}
+
+async function deleteTag(id) {
+    if (!confirm('确定要删除这个标签吗？')) return;
+    
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${id}`, {
+            method: 'DELETE',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        
+        if (!response.ok) throw new Error('删除失败');
+        showToast('标签已删除', 'success');
+        loadTags();
+    } catch (error) {
+        showToast('删除失败: ' + error.message, 'error');
+    }
+}
+
+// ========================================
+// 批量管理
+// ========================================
+let selectedItems = new Set();
+let currentBatchType = 'posts';
+
+async function loadBatchItems() {
+    currentBatchType = document.getElementById('batch-type').value;
+    selectedItems.clear();
+    document.getElementById('batch-delete-btn').disabled = true;
+    
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/${currentBatchType}?order=created_at.desc&limit=50`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        const items = await response.json();
+        renderBatchItems(items);
+    } catch (error) {
+        console.error('加载失败:', error);
+        showToast('加载失败', 'error');
+    }
+}
+
+function renderBatchItems(items) {
+    const container = document.getElementById('batch-list');
+    if (!container) return;
+    
+    if (!items || items.length === 0) {
+        container.innerHTML = '<p style="color: var(--color-text-muted); padding: 20px;">暂无内容</p>';
+        return;
+    }
+    
+    container.innerHTML = `
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 1px solid var(--color-border);">
+                    <th style="padding: 12px; text-align: left; width: 40px;">
+                        <input type="checkbox" id="select-all" onchange="toggleSelectAll(this)">
+                    </th>
+                    <th style="padding: 12px; text-align: left;">标题</th>
+                    <th style="padding: 12px; text-align: left;">分类</th>
+                    <th style="padding: 12px; text-align: left;">状态</th>
+                    <th style="padding: 12px; text-align: left;">时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${items.map(item => {
+                    const id = item.id;
+                    const title = item.title || item.description || '无标题';
+                    const category = item.category || item.tag || '-';
+                    const status = item.status || (item.is_published ? '已发布' : '草稿');
+                    const date = new Date(item.created_at).toLocaleDateString('zh-CN');
+                    return `
+                        <tr style="border-bottom: 1px solid var(--color-border);">
+                            <td style="padding: 12px;">
+                                <input type="checkbox" class="batch-checkbox" value="${id}" onchange="toggleSelectItem(${id}, this)">
+                            </td>
+                            <td style="padding: 12px;">${escapeHtml(title.substring(0, 30))}${title.length > 30 ? '...' : ''}</td>
+                            <td style="padding: 12px; color: var(--color-text-secondary);">${escapeHtml(category)}</td>
+                            <td style="padding: 12px;">
+                                <span style="padding: 4px 8px; border-radius: 4px; font-size: 12px; background: ${status === '已发布' || status === 'published' ? 'var(--color-success)20' : 'var(--color-text-muted)20'}; color: ${status === '已发布' || status === 'published' ? 'var(--color-success)' : 'var(--color-text-muted)'};">${status}</span>
+                            </td>
+                            <td style="padding: 12px; color: var(--color-text-muted); font-size: 12px;">${date}</td>
+                        </tr>
+                    `;
+                }).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+function toggleSelectAll(checkbox) {
+    const checkboxes = document.querySelectorAll('.batch-checkbox');
+    checkboxes.forEach(cb => {
+        cb.checked = checkbox.checked;
+        const id = parseInt(cb.value);
+        if (checkbox.checked) {
+            selectedItems.add(id);
+        } else {
+            selectedItems.delete(id);
+        }
+    });
+    updateBatchDeleteBtn();
+}
+
+function toggleSelectItem(id, checkbox) {
+    if (checkbox.checked) {
+        selectedItems.add(id);
+    } else {
+        selectedItems.delete(id);
+    }
+    updateBatchDeleteBtn();
+}
+
+function updateBatchDeleteBtn() {
+    const btn = document.getElementById('batch-delete-btn');
+    btn.disabled = selectedItems.size === 0;
+    btn.textContent = `删除选中 (${selectedItems.size})`;
+}
+
+async function batchDelete() {
+    if (selectedItems.size === 0) {
+        showToast('请先选择要删除的项目', 'error');
+        return;
+    }
+    
+    const typeLabels = { posts: '文章', photos: '图片', videos: '视频' };
+    const typeLabel = typeLabels[currentBatchType];
+    
+    if (!confirm(`确定要删除选中的 ${selectedItems.size} 个${typeLabel}吗？此操作不可恢复！`)) {
+        return;
+    }
+    
+    try {
+        const ids = Array.from(selectedItems);
+        const idFilter = ids.map(id => `id=eq.${id}`).join(',');
+        
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/${currentBatchType}?${idFilter}`, {
+            method: 'DELETE',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        
+        if (!response.ok) throw new Error('删除失败');
+        
+        showToast(`已删除 ${selectedItems.size} 个${typeLabel}`, 'success');
+        selectedItems.clear();
+        loadBatchItems();
+    } catch (error) {
+        showToast('删除失败: ' + error.message, 'error');
+    }
 }
 
 // ========================================

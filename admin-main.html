@@ -616,6 +616,20 @@
                 </svg>
                 视频管理
             </div>
+            <div class="nav-item" data-panel="tags">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+                    <line x1="7" y1="7" x2="7.01" y2="7"/>
+                </svg>
+                标签管理
+            </div>
+            <div class="nav-item" data-panel="batch">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                批量管理
+            </div>
             <div class="nav-item" data-panel="settings">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="3"/>
@@ -647,6 +661,42 @@
         </header>
 
         <div class="content">
+            <!-- 标签管理面板 -->
+            <div class="panel" id="panel-tags">
+                <div class="panel-header">
+                    <h2 class="panel-title">文章标签</h2>
+                    <button class="btn btn-primary" onclick="openTagModal()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        添加标签
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="tags-container" id="tags-list"></div>
+                </div>
+            </div>
+
+            <!-- 批量管理面板 -->
+            <div class="panel" id="panel-batch">
+                <div class="panel-header">
+                    <h2 class="panel-title">批量管理</h2>
+                    <div class="batch-actions">
+                        <select class="form-select" id="batch-type">
+                            <option value="posts">文章</option>
+                            <option value="photos">图片</option>
+                            <option value="videos">视频</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="loadBatchItems()">加载</button>
+                        <button class="btn btn-danger" onclick="batchDelete()" id="batch-delete-btn" disabled>删除选中</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="batch-list" id="batch-list"></div>
+                    <div class="batch-pagination" id="batch-pagination"></div>
+                </div>
+            </div>
+
             <!-- 文章管理面板 -->
             <div class="panel active" id="panel-articles">
                 <div class="panel-header">
