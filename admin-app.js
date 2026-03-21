@@ -820,24 +820,40 @@ function renderSocialLinks(links) {
 
 // 修改登录用户名
 async function saveUsername() {
-    const username = document.getElementById('setting-username').value.trim();
+    const newUsername = document.getElementById('setting-username').value.trim();
     
-    if (!username) {
+    if (!newUsername) {
         showToast('请输入用户名', 'error');
         return;
     }
     
-    if (username.length < 3) {
+    if (newUsername.length < 3) {
         showToast('用户名至少3个字符', 'error');
         return;
     }
     
     try {
-        // 使用当前username查询
+        // 使用当前username查询获取id
         const currentUsername = sessionStorage.getItem('admin_username') || 'admin';
-        console.log('更新用户名, 从:', currentUsername, '改为:', username);
+        console.log('更新用户名, 从:', currentUsername, '改为:', newUsername);
         
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(currentUsername)}`, {
+        // 先查询获取id
+        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(currentUsername)}&select=id`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        
+        const admins = await getResponse.json();
+        if (!admins || admins.length === 0) {
+            throw new Error('未找到管理员');
+        }
+        
+        const adminId = admins[0].id;
+        
+        // 用id来更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
             method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
@@ -846,7 +862,7 @@ async function saveUsername() {
                 'Prefer': 'return=minimal'
             },
             body: JSON.stringify({
-                username: username,
+                username: newUsername,
                 updated_at: new Date().toISOString()
             })
         });
@@ -879,11 +895,32 @@ async function saveBasicInfo() {
     }
     
     try {
-        // 先获取当前用户名
+        // 先获取admin的id
         const username = sessionStorage.getItem('admin_username') || 'admin';
         console.log('保存基本信息, 用户名:', username);
         
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
+        // 先查询获取id
+        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}&select=id`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        
+        if (!getResponse.ok) {
+            throw new Error('查询失败');
+        }
+        
+        const admins = await getResponse.json();
+        if (!admins || admins.length === 0) {
+            throw new Error('未找到管理员');
+        }
+        
+        const adminId = admins[0].id;
+        console.log('获取到admin id:', adminId);
+        
+        // 用id来更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
             method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
@@ -903,7 +940,7 @@ async function saveBasicInfo() {
         if (!response.ok) {
             const errorText = await response.text();
             console.error('保存失败:', response.status, errorText);
-            showToast('保存失败 (错误码:' + response.status + ')，请刷新页面重试', 'error');
+            showToast('保存失败 (错误码:' + response.status + ')，请联系管理员检查数据库', 'error');
             return;
         }
         
@@ -986,9 +1023,24 @@ async function savePassword() {
     
     try {
         const username = sessionStorage.getItem('admin_username') || 'admin';
-        console.log('修改密码, 用户名:', username);
         
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
+        // 先查询获取id
+        const getResponse = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}&select=id`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        
+        const admins = await getResponse.json();
+        if (!admins || admins.length === 0) {
+            throw new Error('未找到管理员');
+        }
+        
+        const adminId = admins[0].id;
+        
+        // 用id来更新
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
             method: 'PATCH',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
@@ -1001,8 +1053,6 @@ async function savePassword() {
                 updated_at: new Date().toISOString()
             })
         });
-        
-        console.log('响应状态:', response.status);
         
         if (!response.ok) {
             const errorText = await response.text();
