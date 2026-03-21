@@ -707,23 +707,65 @@ async function deleteVideo(id) {
 // ========================================
 async function loadSettings() {
     try {
-        // 加载管理员信息 - 使用用户名查询
-        const username = sessionStorage.getItem('admin_username') || 'admin';
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
-            headers: {
-                'apikey': SUPABASE_ANON_KEY,
-                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-            }
-        });
-        const admins = await response.json();
+        // 获取当前登录的admin_id
+        let adminId = sessionStorage.getItem('admin_id');
         
-        if (admins.length > 0) {
-            const admin = admins[0];
+        // 如果没有admin_id，从username查询
+        let admin = null;
+        if (adminId) {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                }
+            });
+            const admins = await response.json();
+            if (admins && admins.length > 0) {
+                admin = admins[0];
+            }
+        }
+        
+        // 如果没找到，尝试用username查询
+        if (!admin) {
+            const username = sessionStorage.getItem('admin_username') || 'admin';
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                }
+            });
+            const admins = await response.json();
+            if (admins && admins.length > 0) {
+                admin = admins[0];
+            }
+        }
+        
+        // 如果还是没有数据，尝试获取第一条admin记录
+        if (!admin) {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?limit=1`, {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                }
+            });
+            const admins = await response.json();
+            if (admins && admins.length > 0) {
+                admin = admins[0];
+            }
+        }
+        
+        if (admin) {
+            // 更新sessionStorage
+            sessionStorage.setItem('admin_id', admin.id);
+            sessionStorage.setItem('admin_username', admin.username);
+            
+            // 填充表单
             document.getElementById('setting-username').value = admin.username || 'admin';
             document.getElementById('setting-nickname').value = admin.nickname || '';
             document.getElementById('setting-tagline').value = admin.tagline || '';
-            // 同时更新sessionStorage中的ID
-            sessionStorage.setItem('admin_id', admin.id);
+            console.log('加载管理员成功:', admin);
+        } else {
+            console.error('未找到管理员数据');
         }
         
         // 加载关于内容
@@ -825,7 +867,7 @@ async function saveUsername() {
     }
 }
 
-// 保存基本信息
+// 保存基本信息（昵称和签名）
 async function saveBasicInfo() {
     const nickname = document.getElementById('setting-nickname').value.trim();
     const tagline = document.getElementById('setting-tagline').value.trim();
@@ -837,6 +879,11 @@ async function saveBasicInfo() {
     
     try {
         const adminId = sessionStorage.getItem('admin_id');
+        if (!adminId) {
+            showToast('未登录或会话过期，请重新登录', 'error');
+            return;
+        }
+        
         console.log('保存基本信息, ID:', adminId);
         
         const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
@@ -857,7 +904,8 @@ async function saveBasicInfo() {
         if (!response.ok) {
             const errorText = await response.text();
             console.error('保存失败:', errorText);
-            throw new Error('保存失败 (状态:' + response.status + ')');
+            showToast('保存失败，请检查RLS策略或刷新重试', 'error');
+            return;
         }
         
         sessionStorage.setItem('admin_nickname', nickname);
@@ -939,6 +987,11 @@ async function savePassword() {
     
     try {
         const adminId = sessionStorage.getItem('admin_id');
+        if (!adminId) {
+            showToast('未登录或会话过期，请重新登录', 'error');
+            return;
+        }
+        
         console.log('修改密码, ID:', adminId);
         
         const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?id=eq.${adminId}`, {
@@ -958,7 +1011,8 @@ async function savePassword() {
         if (!response.ok) {
             const errorText = await response.text();
             console.error('修改密码失败:', errorText);
-            throw new Error('修改失败 (状态:' + response.status + ')');
+            showToast('修改失败，请检查RLS策略', 'error');
+            return;
         }
         
         document.getElementById('setting-password').value = '';
