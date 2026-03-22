@@ -686,36 +686,85 @@
         }
 
         .visual-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
         }
 
         .visual-item {
-            position: relative;
-            aspect-ratio: 4/3;
-            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
             cursor: pointer;
-            background: var(--gray-lighter);
         }
 
-        .visual-item:first-child {
-            grid-column: span 2;
-            grid-row: span 2;
-            aspect-ratio: auto;
+        .visual-item:nth-child(even) {
+            direction: rtl;
         }
 
-        .visual-item img {
+        .visual-item:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .visual-item-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visual-item-image img {
             width: 100%;
-            height: 100%;
+            height: 350px;
             object-fit: cover;
             filter: grayscale(100%);
             transition: all 0.6s ease;
         }
 
-        .visual-item:hover img {
+        .visual-item:hover .visual-item-image img {
             filter: grayscale(0%);
-            transform: scale(1.03);
+        }
+
+        .visual-item-image::after {
+            content: '';
+            position: absolute;
+            inset: 1rem;
+            border: 1px solid var(--gray-lighter);
+            pointer-events: none;
+        }
+
+        .visual-item-content {
+            padding: 2rem 0;
+        }
+
+        .visual-item-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            color: var(--gray-lighter);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .visual-item-title {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .visual-item-excerpt {
+            font-size: 0.9rem;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .visual-item-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-light);
         }
 
         .visual-overlay {
@@ -728,23 +777,6 @@
             flex-direction: column;
             justify-content: flex-end;
             padding: 1.5rem;
-        }
-
-.visual-item:hover .visual-overlay { opacity: 1; }
-
-        .visual-title {
-            font-size: 0.95rem;
-            font-weight: 400;
-            color: var(--white);
-            margin-bottom: 0.3rem;
-        }
-
-        .visual-meta {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.55rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--gray-lighter);
         }
 
         /* ========================================
@@ -806,32 +838,41 @@
             pointer-events: none;
         }
 
-        .music-sections {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+        .music-tabs {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--gray-lighter);
+            padding-bottom: 1rem;
         }
 
-        .music-section {
-            border-top: 1px solid var(--gray-lighter);
-            padding-top: 2rem;
-        }
-
-        .music-section-title {
+        .music-tab {
             font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
-            letter-spacing: 3px;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--gray);
-            margin-bottom: 0.5rem;
+            color: var(--gray-light);
+            cursor: pointer;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
         }
 
-        .music-section-subtitle {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            font-style: italic;
-            color: var(--gray-light);
-            margin-bottom: 1.5rem;
+        .music-tab:hover { color: var(--black); }
+        .music-tab.active {
+            color: var(--black);
+            border-color: var(--black);
+        }
+
+        .music-category {
+            display: none;
+            margin-bottom: 4rem;
+        }
+
+        .music-category.active { display: block; }
+
+        .music-list {
+            max-width: 700px;
         }
 
         /* 播放列表 */
@@ -1433,27 +1474,32 @@
                 </div>
             </div>
 
-            <div class="music-sections">
-                <!-- 最近在听 -->
-                <div class="music-section">
-                    <p class="music-section-title">最近在听</p>
-                    <p class="music-section-subtitle">Recent Plays</p>
+            <!-- 音乐子分类切换 -->
+            <div class="music-tabs">
+                <span class="music-tab active" data-category="recent">最近在听</span>
+                <span class="music-tab" data-category="playlist">推荐歌单</span>
+                <span class="music-tab" data-category="creations">我的创作</span>
+            </div>
+
+            <!-- 最近在听 -->
+            <div class="music-category active" id="music-recent">
+                <div class="music-list">
                     <div id="playlist-recent"></div>
                 </div>
+            </div>
 
-                <!-- 推荐歌单 -->
-                <div class="music-section">
-                    <p class="music-section-title">推荐歌单</p>
-                    <p class="music-section-subtitle">Playlist</p>
+            <!-- 推荐歌单 -->
+            <div class="music-category" id="music-playlist">
+                <div class="music-list">
                     <div id="playlist-favorites"></div>
                 </div>
             </div>
 
             <!-- 我的创作 -->
-            <div class="music-section" style="margin-top: 4rem;">
-                <p class="music-section-title">我的创作</p>
-                <p class="music-section-subtitle">Original Works</p>
-                <div id="playlist-creations"></div>
+            <div class="music-category" id="music-creations">
+                <div class="music-list">
+                    <div id="playlist-creations"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -1588,6 +1634,18 @@
                 document.querySelectorAll('.writing-category').forEach(c => c.classList.remove('active'));
                 tab.classList.add('active');
                 document.getElementById('writing-' + tab.dataset.category).classList.add('active');
+            });
+        });
+
+        // ========================================
+        // 音乐分类切换
+        // ========================================
+        document.querySelectorAll('.music-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.music-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.music-category').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('music-' + tab.dataset.category).classList.add('active');
             });
         });
 
@@ -1871,12 +1929,16 @@
                 container.innerHTML = '<p style="color: var(--gray-light); padding: 2rem;">暂无内容</p>';
                 return;
             }
-            container.innerHTML = photos.map(p => `
+            container.innerHTML = photos.map((p, i) => `
                 <div class="visual-item" onclick="viewPhoto('${p.image_url}')">
-                    <img src="${p.image_url}" alt="${p.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'">
-                    <div class="visual-overlay">
-                        <p class="visual-title">${p.title || ''}</p>
-                        <p class="visual-meta">${p.description || ''}</p>
+                    <div class="visual-item-image">
+                        <img src="${p.image_url}" alt="${p.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'">
+                    </div>
+                    <div class="visual-item-content">
+                        <p class="visual-item-number">0${i + 1}</p>
+                        <h3 class="visual-item-title">${p.title || '未命名作品'}</h3>
+                        <p class="visual-item-excerpt">${p.description || ''}</p>
+                        <p class="visual-item-meta">Photography · ${new Date(p.created_at || Date.now()).getFullYear()}</p>
                     </div>
                 </div>
             `).join('');
