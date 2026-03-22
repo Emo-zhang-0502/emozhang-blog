@@ -756,43 +756,54 @@
 
         .music-hero {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 4rem;
             margin-bottom: 4rem;
-            align-items: start;
+            align-items: center;
         }
 
-        .music-vinyl {
+        .music-hero-text {
+            max-width: 500px;
+        }
+
+        .music-intro {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.8;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .music-desc {
+            font-size: 0.95rem;
+            color: var(--gray);
+            line-height: 1.9;
+        }
+
+        .music-hero-image {
             position: relative;
         }
 
-        .music-vinyl img {
+        .music-hero-image img {
             width: 100%;
-            aspect-ratio: 1;
+            height: 350px;
             object-fit: cover;
             filter: grayscale(100%);
+            transition: filter 0.6s ease;
         }
 
-        .music-vinyl::after {
+        .music-hero-image:hover img {
+            filter: grayscale(0%);
+        }
+
+        .music-hero-image::after {
             content: '';
             position: absolute;
             inset: 1.5rem;
             border: 1px solid var(--gray-lighter);
-        }
-
-        .music-content h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 300;
-            font-style: italic;
-            margin-bottom: 1.5rem;
-        }
-
-        .music-content p {
-            font-size: 0.95rem;
-            color: var(--gray);
-            line-height: 1.9;
-            margin-bottom: 2rem;
+            pointer-events: none;
         }
 
         .music-sections {
@@ -1407,20 +1418,18 @@
                 </div>
             </div>
 
-            <div class="music-intro" style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 300; font-style: italic; color: var(--dark); margin-bottom: 3rem; text-align: center;">
-                "在旋律中寻找共鸣，让音符承载情感。"
-            </div>
-
+            <!-- 音乐Hero -->
             <div class="music-hero">
-                <div class="music-vinyl">
-                    <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=500" alt="Music">
-                </div>
-                <div class="music-content">
-                    <p>
+                <div class="music-hero-text">
+                    <p class="music-intro">"在旋律中寻找共鸣，让音符承载情感。"</p>
+                    <p class="music-desc">
                         音乐是我情感的出口。每首歌都承载着一段记忆，
                         每一段旋律都是一次心灵的旅行。无论是独自聆听还是与人分享，
                         音乐让生活变得更加丰富。
                     </p>
+                </div>
+                <div class="music-hero-image">
+                    <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600" alt="Music">
                 </div>
             </div>
 
@@ -1535,6 +1544,8 @@
     <audio id="audio-element"></audio>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        
         // ========================================
         // 配置
         // ========================================
@@ -2048,7 +2059,9 @@
         // ========================================
         // 初始化
         // ========================================
-        document.addEventListener('DOMContentLoaded', loadData);
+        loadData();
+        
+        }); // 结束 DOMContentLoaded
     </script>
 </body>
 </html>
