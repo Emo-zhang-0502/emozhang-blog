@@ -1133,9 +1133,18 @@ color: var(--gray);
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             
+            // 离线模式：使用本地验证
+            if (username === 'admin' && password === 'emozhang2024') {
+                currentAdmin = { id: 1, username: 'admin' };
+                localStorage.setItem('admin_token', 'demo');
+                showAdminPanel();
+                return;
+            }
+            
+            // 尝试 Supabase 在线验证
             try {
                 const result = await apiRequest(`admins?username=eq.${username}&password=eq.${password}&select=*`);
-                if (result.length > 0) {
+                if (result && result.length > 0) {
                     currentAdmin = result[0];
                     localStorage.setItem('admin_token', SUPABASE_ANON_KEY);
                     localStorage.setItem('admin_id', currentAdmin.id);
@@ -1144,14 +1153,7 @@ color: var(--gray);
                     document.getElementById('loginError').textContent = '账号或密码错误';
                 }
             } catch (err) {
-                // 离线模式：使用默认账号
-                if (username === 'admin' && password === 'emozhang2024') {
-                    currentAdmin = { id: 1, username: 'admin' };
-                    localStorage.setItem('admin_token', 'demo');
-                    showAdminPanel();
-                } else {
-                    document.getElementById('loginError').textContent = '登录失败，请检查网络';
-                }
+                document.getElementById('loginError').textContent = '网络错误，请使用离线账号登录';
             }
         });
 
