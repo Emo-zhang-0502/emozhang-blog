@@ -1034,19 +1034,19 @@
     <section class="magazine-cover" id="cover">
         <div class="cover-inner">
             <div class="cover-meta">
-                <span class="cover-issue">Vol. 01</span>
-                <span class="cover-date">2024 · 春</span>
+                <span class="cover-issue" data-config="cover_issue">Vol. 01</span>
+                <span class="cover-date" data-config="cover_date">2024 · 春</span>
             </div>
 
             <div class="cover-main">
-                <h1 class="cover-title-cn">一个青年人的自白</h1>
-                <p class="cover-title-en">Confessions of a Young Soul</p>
+                <h1 class="cover-title-cn" data-config="site_title">一个青年人的自白</h1>
+                <p class="cover-title-en" data-config="site_subtitle">Confessions of a Young Soul</p>
             </div>
 
             <div class="cover-divider"></div>
 
             <div class="cover-toc">
-                <p class="toc-label">目录 Contents</p>
+                <p class="toc-label" data-config="toc_label">目录 Contents</p>
                 <div class="toc-items">
                     <div class="toc-item" onclick="scrollToSection('writing')">
                         <p class="toc-number">01</p>
@@ -1072,14 +1072,14 @@
             </div>
 
             <div class="cover-description">
-                <p>
+                <p data-config="cover_description">
                     用文字记录成长，用影像捕捉瞬间，用音乐抚慰灵魂。<br>
                     在这里，我与自己对话，与世界对话。
                 </p>
             </div>
 
             <div class="cover-quote">
-                <blockquote>
+                <blockquote data-config="cover_quote">
                     "不迎合，不妥协，只为真诚表达。"
                 </blockquote>
                 <cite>— 一个青年人</cite>
@@ -1244,15 +1244,15 @@
 
             <div class="about-content">
                 <div class="about-portrait">
-                    <img src="https://i.imgur.com/agtT4SJ.jpeg" alt="Portrait" class="about-portrait-img">
-                    <p class="about-portrait-name">青</p>
-                    <p class="about-portrait-role">记录者 / 思考者 / 表达者</p>
+                    <img src="https://i.imgur.com/agtT4SJ.jpeg" alt="Portrait" class="about-portrait-img" data-config="ip_image">
+                    <p class="about-portrait-name" data-config="ip_name">青</p>
+                    <p class="about-portrait-role" data-config="ip_bio">记录者 / 思考者 / 表达者</p>
                 </div>
                 <div class="about-text">
-                    <p class="about-intro">
+                    <p class="about-intro" data-config="about_intro">
                         一个普通又不普通的青年人。
                     </p>
-                    <div class="about-bio">
+                    <div class="about-bio" data-config="about_content">
                         <p>
                             在这个喧嚣的世界里，我选择用文字、影像，音乐来表达自己。
                         </p>
@@ -1281,8 +1281,8 @@
 
     <!-- 页脚 -->
     <footer class="footer">
-        <p class="footer-logo">一个青年人的自白</p>
-        <p class="footer-text">© 2024 Youth Confession · 用创作表达自我</p>
+        <p class="footer-logo" data-config="footer_text">一个青年人的自白</p>
+        <p class="footer-text" data-config="footer_copyright">© 2024 Youth Confession · 用创作表达自我</p>
     </footer>
 
     <!-- 音频播放器 -->
@@ -1350,10 +1350,80 @@
         });
 
         // ========================================
+        // 加载网站配置
+        // ========================================
+        async function loadSiteConfig() {
+            try {
+                // 加载网站基本配置
+                const configRes = await fetch(`${SUPABASE_URL}/rest/v1/site_config`, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                const configs = await configRes.json();
+                
+                // 应用配置到页面
+                configs.forEach(c => {
+                    const el = document.querySelector(`[data-config="${c.key}"]`);
+                    if (el) {
+                        // 处理HTML内容
+                        if (c.key.includes('description') || c.key.includes('content') || c.key.includes('quote') || c.key.includes('bio')) {
+                            el.innerHTML = c.value;
+                        } else {
+                            el.textContent = c.value;
+                        }
+                    }
+                });
+                
+                // 更新 title
+                const titleConfig = configs.find(c => c.key === 'site_title');
+                if (titleConfig) document.title = titleConfig.value;
+                
+                // 加载板块配置
+                const sectionsRes = await fetch(`${SUPABASE_URL}/rest/v1/sections?order=display_order.asc`, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                const sections = await sectionsRes.json();
+                sections.forEach(s => {
+                    const sectionEl = document.getElementById(s.section_key);
+                    if (sectionEl) {
+                        const titleCn = sectionEl.querySelector('.section-title-cn');
+                        const titleEn = sectionEl.querySelector('.section-title-en');
+                        if (titleCn && s.title) titleCn.textContent = s.title;
+                        if (titleEn && s.subtitle) titleEn.textContent = s.subtitle;
+                    }
+                });
+                
+                // 加载IP形象
+                const ipRes = await fetch(`${SUPABASE_URL}/rest/v1/ip_config?limit=1`, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                const ipData = await ipRes.json();
+                if (ipData && ipData.length > 0) {
+                    const ip = ipData[0];
+                    if (ip.name) {
+                        const portraitName = document.querySelector('.about-portrait-name');
+                        if (portraitName) portraitName.textContent = ip.name;
+                    }
+                    if (ip.bio) {
+                        const portraitBio = document.querySelector('.about-portrait-role');
+                        if (portraitBio) portraitBio.textContent = ip.bio;
+                    }
+                    if (ip.image_url) {
+                        const portraitImg = document.querySelector('.about-portrait-img');
+                        if (portraitImg) portraitImg.src = ip.image_url;
+                    }
+                }
+                
+            } catch (error) {
+                console.error('加载配置失败:', error);
+            }
+        }
+
+        // ========================================
         // 加载数据
         // ========================================
         async function loadData() {
             await Promise.all([
+                loadSiteConfig(),
                 loadArticles(),
                 loadPhotos(),
                 loadMusic(),
