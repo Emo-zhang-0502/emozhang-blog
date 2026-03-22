@@ -138,9 +138,12 @@
         }
 
         .toc-item {
+            display: block;
             text-align: center;
             cursor: pointer;
             transition: opacity 0.3s;
+            text-decoration: none;
+            color: inherit;
         }
 
         .toc-item:hover { opacity: 0.6; }
@@ -183,6 +186,7 @@
             text-align: center;
             padding-top: 3rem;
             border-top: 1px solid var(--gray-lighter);
+            margin-bottom: 6rem;
         }
 
         .cover-quote blockquote {
@@ -204,10 +208,6 @@
         }
 
         .cover-scroll {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -219,6 +219,8 @@
             text-transform: uppercase;
             cursor: pointer;
             transition: color 0.3s;
+            text-decoration: none;
+            margin: 4rem auto 0;
         }
 
         .cover-scroll:hover { color: var(--black); }
@@ -493,7 +495,7 @@
             padding-bottom: 1rem;
         }
 
-        .writing-tab {
+        .writing-tab, .visual-tab, .music-tab {
             font-family: 'Space Mono', monospace;
             font-size: 0.65rem;
             letter-spacing: 2px;
@@ -503,20 +505,24 @@
             padding-bottom: 0.5rem;
             border-bottom: 2px solid transparent;
             transition: all 0.3s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
         }
 
-        .writing-tab:hover { color: var(--black); }
-        .writing-tab.active {
-            color: var(--black);
-            border-color: var(--black);
+        .writing-tab:hover, .visual-tab:hover, .music-tab:hover,
+        .writing-tab.active, .visual-tab.active, .music-tab.active { 
+            color: var(--black); 
+            border-color: var(--black); 
         }
 
         .writing-category {
-            display: none;
+            display: none !important;
             margin-bottom: 4rem;
         }
 
-        .writing-category.active { display: block; }
+        .writing-category.active { display: block !important; }
         .writing-category:last-child { margin-bottom: 0; }
 
         .article-list-magazine {
@@ -637,30 +643,12 @@
             padding-bottom: 1rem;
         }
 
-        .visual-tab {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--gray-light);
-            cursor: pointer;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .visual-tab:hover { color: var(--black); }
-        .visual-tab.active {
-            color: var(--black);
-            border-color: var(--black);
-        }
-
         .visual-category {
-            display: none;
+            display: none !important;
             margin-bottom: 4rem;
         }
 
-        .visual-category.active { display: block; }
+        .visual-category.active { display: block !important; }
         .visual-category:last-child { margin-bottom: 0; }
 
         .category-header {
@@ -846,30 +834,12 @@
             padding-bottom: 1rem;
         }
 
-        .music-tab {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--gray-light);
-            cursor: pointer;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .music-tab:hover { color: var(--black); }
-        .music-tab.active {
-            color: var(--black);
-            border-color: var(--black);
-        }
-
         .music-category {
-            display: none;
+            display: none !important;
             margin-bottom: 4rem;
         }
 
-        .music-category.active { display: block; }
+        .music-category.active { display: block !important; }
 
         .music-list {
             max-width: 700px;
@@ -1228,27 +1198,44 @@
            ======================================== */
         @media (max-width: 1024px) {
             .writing-hero { grid-template-columns: 1fr; }
-            .music-hero { grid-template-columns: 1fr; }
+            .visual-hero { grid-template-columns: 1fr; gap: 2rem; }
+            .music-hero { grid-template-columns: 1fr; gap: 2rem; }
             .music-sections { grid-template-columns: 1fr; gap: 2rem; }
             .about-content { grid-template-columns: 1fr; gap: 3rem; }
             .about-portrait { position: relative; top: 0; max-width: 280px; margin: 0 auto; }
             .visual-grid { grid-template-columns: repeat(2, 1fr); }
             .visual-item:first-child { grid-column: span 2; }
+            .visual-item { grid-template-columns: 1fr; gap: 1.5rem; }
+            .visual-item:nth-child(even) { direction: ltr; }
         }
 
         @media (max-width: 768px) {
             .navbar { padding: 1rem 1.5rem; }
             .nav-links { display: none; }
-            .magazine-cover { padding: 3rem 1.5rem; }
-            .toc-items { gap: 2rem; }
+            .magazine-cover { padding: 2rem 1.5rem; }
+            .toc-items { gap: 1.5rem; }
             .section-container { padding: 0 1.5rem; }
-            .section-number { font-size: 3rem; }
-            .section-header { grid-template-columns: 60px 1fr; }
+            .section-number { font-size: 2.5rem; }
+            .section-header { grid-template-columns: 50px 1fr; margin-bottom: 3rem; }
             .article-item { grid-template-columns: 1fr; gap: 0.5rem; }
-            .visual-grid { grid-template-columns: 1fr; }
-            .visual-item:first-child { grid-column: span 1; }
-            .audio-player { padding: 1rem; flex-wrap: wrap; }
+            .visual-hero { gap: 1.5rem; margin-bottom: 2rem; }
+            .visual-hero-image img { height: 200px; }
+            .music-hero { gap: 1.5rem; margin-bottom: 2rem; }
+            .music-hero-image img { height: 200px; }
+            .writing-hero { gap: 2rem; margin-bottom: 2rem; }
+            .writing-hero-image img { height: 200px; }
+            .visual-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .visual-item { grid-template-columns: 1fr; gap: 1rem; padding: 1rem 0; }
+            .visual-item-image img { height: 200px; }
+            .visual-item-image::after { inset: 0.5rem; }
+            .visual-item-content { padding: 1rem 0; }
+            .visual-item-number { font-size: 2rem; }
+            .writing-tabs, .visual-tabs, .music-tabs { gap: 1rem; flex-wrap: wrap; }
+            .writing-tab, .visual-tab, .music-tab { font-size: 0.6rem; }
+            .writing-category, .visual-category, .music-category { margin-bottom: 2rem; }
+            .audio-player { padding: 0.75rem; flex-wrap: wrap; gap: 0.5rem; }
             .player-progress { order: 3; flex: 1 0 100%; }
+            .about-content { gap: 2rem; }
         }
     </style>
 </head>
@@ -1271,26 +1258,26 @@
             <div class="cover-toc">
                 <p class="toc-label">目录 Contents</p>
                 <div class="toc-items">
-                    <div class="toc-item" onclick="scrollToSection('writing')">
+                    <a href="#writing" class="toc-item">
                         <p class="toc-number">01</p>
                         <p class="toc-title">文字</p>
                         <p class="toc-subtitle">Writing</p>
-                    </div>
-                    <div class="toc-item" onclick="scrollToSection('visual')">
+                    </a>
+                    <a href="#visual" class="toc-item">
                         <p class="toc-number">02</p>
                         <p class="toc-title">影像</p>
                         <p class="toc-subtitle">Visual</p>
-                    </div>
-                    <div class="toc-item" onclick="scrollToSection('music')">
+                    </a>
+                    <a href="#music" class="toc-item">
                         <p class="toc-number">03</p>
                         <p class="toc-title">音乐</p>
                         <p class="toc-subtitle">Music</p>
-                    </div>
-                    <div class="toc-item" onclick="scrollToSection('about')">
+                    </a>
+                    <a href="#about" class="toc-item">
                         <p class="toc-number">04</p>
                         <p class="toc-title">关于</p>
                         <p class="toc-subtitle">About</p>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -1309,10 +1296,10 @@
             </div>
         </div>
 
-        <div class="cover-scroll" onclick="scrollToSection('writing')">
+        <a href="#writing" class="cover-scroll">
             <span>向下阅读</span>
             <div class="scroll-line"></div>
-        </div>
+        </a>
     </section>
 
     <!-- 导航栏 -->
@@ -1353,35 +1340,23 @@
 
             <!-- 分类标签 -->
             <div class="writing-tabs">
-                <span class="writing-tab active" data-category="insights">洞察</span>
-                <span class="writing-tab" data-category="thoughts">随想</span>
-                <span class="writing-tab" data-category="books">书单</span>
+                <button type="button" class="writing-tab active" onclick="switchWritingTab('writing-insights', this)">洞察</button>
+                <button type="button" class="writing-tab" onclick="switchWritingTab('writing-thoughts', this)">随想</button>
+                <button type="button" class="writing-tab" onclick="switchWritingTab('writing-books', this)">书单</button>
             </div>
 
             <!-- 洞察 -->
             <div class="writing-category active" id="writing-insights">
-                <div class="category-header">
-                    <h3 class="category-title">洞察</h3>
-                    <span class="category-count">Insights</span>
-                </div>
                 <div class="article-list-magazine" id="article-list-insights"></div>
             </div>
 
             <!-- 随想 -->
             <div class="writing-category" id="writing-thoughts">
-                <div class="category-header">
-                    <h3 class="category-title">随想</h3>
-                    <span class="category-count">Thoughts</span>
-                </div>
                 <div class="article-list-magazine" id="article-list-thoughts"></div>
             </div>
 
             <!-- 书单 -->
             <div class="writing-category" id="writing-books">
-                <div class="category-header">
-                    <h3 class="category-title">书单</h3>
-                    <span class="category-count">Books</span>
-                </div>
                 <div class="article-list-magazine" id="article-list-books"></div>
             </div>
         </div>
@@ -1414,35 +1389,23 @@
 
             <!-- 分类标签 -->
             <div class="visual-tabs">
-                <span class="visual-tab active" data-category="photography">摄影作品</span>
-                <span class="visual-tab" data-category="video">视频作品</span>
-                <span class="visual-tab" data-category="film">短片作品</span>
+                <button type="button" class="visual-tab active" onclick="switchVisualTab('visual-photography', this)">摄影作品</button>
+                <button type="button" class="visual-tab" onclick="switchVisualTab('visual-video', this)">视频作品</button>
+                <button type="button" class="visual-tab" onclick="switchVisualTab('visual-film', this)">短片作品</button>
             </div>
 
             <!-- 摄影作品 -->
             <div class="visual-category active" id="visual-photography">
-                <div class="category-header">
-                    <h3 class="category-title">摄影作品</h3>
-                    <span class="category-count">Photography</span>
-                </div>
                 <div class="visual-grid" id="photo-grid-photography"></div>
             </div>
 
             <!-- 视频作品 -->
             <div class="visual-category" id="visual-video">
-                <div class="category-header">
-                    <h3 class="category-title">视频作品</h3>
-                    <span class="category-count">Video</span>
-                </div>
                 <div class="visual-grid" id="photo-grid-video"></div>
             </div>
 
             <!-- 短片作品 -->
             <div class="visual-category" id="visual-film">
-                <div class="category-header">
-                    <h3 class="category-title">短片作品</h3>
-                    <span class="category-count">Film</span>
-                </div>
                 <div class="visual-grid" id="photo-grid-film"></div>
             </div>
         </div>
@@ -1476,9 +1439,9 @@
 
             <!-- 音乐子分类切换 -->
             <div class="music-tabs">
-                <span class="music-tab active" data-category="recent">最近在听</span>
-                <span class="music-tab" data-category="playlist">推荐歌单</span>
-                <span class="music-tab" data-category="creations">我的创作</span>
+                <button type="button" class="music-tab active" onclick="switchMusicTab('music-recent', this)">最近在听</button>
+                <button type="button" class="music-tab" onclick="switchMusicTab('music-playlist', this)">推荐歌单</button>
+                <button type="button" class="music-tab" onclick="switchMusicTab('music-creations', this)">我的创作</button>
             </div>
 
             <!-- 最近在听 -->
@@ -1590,81 +1553,115 @@
     <audio id="audio-element"></audio>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        
         // ========================================
-        // 配置
-        // ========================================
-        const SUPABASE_URL = 'https://axrxgqotyjxwjaanjzvg.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4cnhncW90eWp4d2phYW5qenZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5ODEzMjcsImV4cCI6MjA4OTU1NzMyN30.1t6vJFvVa-iXHlc4YXNBBvWiN97Ydd8Zvmy75cCblPw';
-
-        let currentAudio = null;
-        let isPlaying = false;
-
-        // ========================================
-        // 滚动控制
+        // 全局函数
         // ========================================
         function scrollToSection(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
+        function switchWritingTab(targetId, btn) {
+            document.querySelectorAll('.writing-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.writing-category').forEach(c => c.classList.remove('active'));
+            document.getElementById(targetId).classList.add('active');
+        }
+
+        function switchVisualTab(targetId, btn) {
+            document.querySelectorAll('.visual-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.visual-category').forEach(c => c.classList.remove('active'));
+            document.getElementById(targetId).classList.add('active');
+        }
+
+        function switchMusicTab(targetId, btn) {
+            document.querySelectorAll('.music-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.music-category').forEach(c => c.classList.remove('active'));
+            document.getElementById(targetId).classList.add('active');
+        }
+
+        function closeArticleView() {
+            var detail = document.getElementById('article-detail');
+            if (detail) detail.remove();
+            document.querySelector('.writing-tabs').style.display = 'flex';
+            document.querySelectorAll('.writing-category').forEach(function(c) {
+                c.style.display = c.classList.contains('active') ? 'block' : 'none';
+            });
+            document.querySelector('.writing-hero').style.display = 'grid';
+        }
+
+        function viewPhoto(url) {
+            window.open(url, '_blank');
+        }
+
+        function viewArticle(id, article) {
+            var articleContent = article.content || article.excerpt || '';
+            if (articleContent.includes(article.title)) {
+                articleContent = articleContent.replace(article.title, '').trim();
+            }
+            var coverImg = article.cover_image ? '<img src="' + article.cover_image + '" class="article-detail-cover">' : '';
+            var detail = document.createElement('div');
+            detail.id = 'article-detail';
+            detail.innerHTML = '<div class="article-detail-container">' +
+                '<button class="article-back-btn" onclick="closeArticleView()">' +
+                '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>返回列表</button>' +
+                coverImg +
+                '<div class="article-detail-content">' +
+                '<p class="article-detail-meta">' + new Date(article.created_at).toLocaleDateString('zh-CN') + ' · ' + (article.tag || '随想') + '</p>' +
+                '<h1 class="article-detail-title">' + article.title + '</h1>' +
+                '<div class="article-detail-body">' + articleContent + '</div></div></div>';
+            document.querySelector('.writing-tabs').style.display = 'none';
+            document.querySelectorAll('.writing-category').forEach(function(c) { c.style.display = 'none'; });
+            document.querySelector('.writing-hero').style.display = 'none';
+            document.body.appendChild(detail);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ========================================
+        // 配置
+        // ========================================
+        var SUPABASE_URL = 'https://axrxgqotyjxwjaanjzvg.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4cnhncW90eWp4d2phYW5qenZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5ODEzMjcsImV4cCI6MjA4OTU1NzMyN30.1t6vJFvVa-iXHlc4YXNBBvWiN97Ydd8Zvmy75cCblPw';
+
+        var currentAudio = null;
+        var isPlaying = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+        // 导航栏滚动显示
+        var navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function() {
             navbar.classList.toggle('visible', window.scrollY > window.innerHeight * 0.3);
         });
 
-        // ========================================
-        // 影像分类切换
-        // ========================================
-        document.querySelectorAll('.visual-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.visual-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.visual-category').forEach(c => c.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById('visual-' + tab.dataset.category).classList.add('active');
+        // 目录点击
+        document.querySelectorAll('.toc-item, .cover-scroll').forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                var href = item.getAttribute('href');
+                if (href) {
+                    var target = href.substring(1);
+                    if (target) scrollToSection(target);
+                }
             });
         });
 
-        // ========================================
-        // 文字分类切换
-        // ========================================
-        document.querySelectorAll('.writing-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.writing-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.writing-category').forEach(c => c.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById('writing-' + tab.dataset.category).classList.add('active');
-            });
-        });
-
-        // ========================================
-        // 音乐分类切换
-        // ========================================
-        document.querySelectorAll('.music-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.music-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.music-category').forEach(c => c.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById('music-' + tab.dataset.category).classList.add('active');
-            });
-        });
-
-        // ========================================
         // 加载网站配置
-        // ========================================
         async function loadSiteConfig() {
             try {
-                // 加载网站基本配置
-                const configData = await fetch(`${SUPABASE_URL}/rest/v1/site_config`, {
-                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
-                }).then(r => r.json());
+                var configData = await fetch(SUPABASE_URL + '/rest/v1/site_config', {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+                }).then(function(r) { return r.json(); });
 
-                const config = {};
+                console.log('网站配置数据:', configData);
+
+                var config = {};
                 if (Array.isArray(configData)) {
-                    configData.forEach(item => config[item.key] = item.value);
+                    configData.forEach(function(item) { config[item.key] = item.value; });
                 }
 
-                // 更新封面配置
+                console.log('处理后的配置:', config);
+
                 if (config.site_title) {
                     document.querySelector('.cover-title-cn').textContent = config.site_title;
                     document.querySelector('.nav-logo').textContent = config.site_title.replace('一个青年人的自白', '青年人的自白');
@@ -1674,361 +1671,196 @@
                 if (config.cover_date) document.querySelector('.cover-date').textContent = config.cover_date;
                 if (config.toc_label) document.querySelector('.toc-label').textContent = config.toc_label;
                 if (config.cover_description) {
-                    const descEl = document.querySelector('.cover-description p');
+                    var descEl = document.querySelector('.cover-description p');
                     if (descEl) descEl.innerHTML = config.cover_description.replace(/\n/g, '<br>');
                 }
                 if (config.cover_quote) {
-                    const quoteEl = document.querySelector('.cover-quote blockquote');
-                    if (quoteEl) quoteEl.textContent = `"${config.cover_quote}"`;
+                    var quoteEl = document.querySelector('.cover-quote blockquote');
+                    if (quoteEl) quoteEl.textContent = '"' + config.cover_quote + '"';
                 }
-
-                // 封面背景图片
-                if (config.cover_background) {
-                    const cover = document.querySelector('.magazine-cover');
-                    if (cover) cover.style.backgroundImage = `url(${config.cover_background})`;
-                }
-
-                // 加载板块名称和图片配置
-                const sectionsData = await fetch(`${SUPABASE_URL}/rest/v1/sections?order=display_order.asc`, {
-                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
-                }).then(r => r.json());
-
-                if (Array.isArray(sectionsData)) {
-                    sectionsData.forEach(s => {
-                        if (s.section_key === 'writing') {
-                            if (s.title) document.querySelector('#writing .section-title-cn').textContent = s.title;
-                            if (s.subtitle) document.querySelector('#writing .section-title-en').textContent = s.subtitle;
-                            // 文字板块配图
-                            if (s.image_url) {
-                                const heroImg = document.querySelector('#writing .writing-hero-image img');
-                                if (heroImg) heroImg.src = s.image_url;
-                            }
-                            // 文字板块引导语
-                            if (config.writing_intro) {
-                                const introEl = document.querySelector('#writing .writing-intro');
-                                if (introEl) introEl.textContent = config.writing_intro;
-                            }
-                        } else if (s.section_key === 'visual') {
-                            if (s.title) document.querySelector('#visual .section-title-cn').textContent = s.title;
-                            if (s.subtitle) document.querySelector('#visual .section-title-en').textContent = s.subtitle;
-                            // 影像板块引导语
-                            if (config.visual_intro) {
-                                const introEl = document.querySelector('#visual .visual-intro');
-                                if (introEl) introEl.textContent = config.visual_intro;
-                            }
-                        } else if (s.section_key === 'music') {
-                            if (s.title) document.querySelector('#music .section-title-cn').textContent = s.title;
-                            if (s.subtitle) document.querySelector('#music .section-title-en').textContent = s.subtitle;
-                            // 音乐板块引导语
-                            if (config.music_intro) {
-                                const introEl = document.querySelector('#music .music-intro');
-                                if (introEl) introEl.textContent = config.music_intro;
-                            }
-                        } else if (s.section_key === 'about') {
-                            if (s.title) document.querySelector('#about .section-title-cn').textContent = s.title;
-                            if (s.subtitle) document.querySelector('#about .section-title-en').textContent = s.subtitle;
-                            // 关于板块配图
-                            if (s.image_url) {
-                                const aboutImg = document.querySelector('#about .about-image');
-                                if (aboutImg) aboutImg.src = s.image_url;
-                            }
-                        }
-                    });
-                }
-
-                // 加载IP形象配置
-                const ipData = await fetch(`${SUPABASE_URL}/rest/v1/ip_config?limit=1`, {
-                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
-                }).then(r => r.json());
-
-                if (Array.isArray(ipData) && ipData.length > 0) {
-                    const ip = ipData[0];
-                    const portraitName = document.querySelector('.about-portrait-name');
-                    const portraitRole = document.querySelector('.about-portrait-role');
-                    const portraitImg = document.querySelector('.about-portrait-img');
-                    if (ip.name && portraitName) portraitName.textContent = ip.name;
-                    if (ip.bio && portraitRole) portraitRole.textContent = ip.bio;
-                    if (ip.image_url && portraitImg) portraitImg.src = ip.image_url;
-                }
-
-                // 关于页面文字配置
+                
+                // 关于页面配置
                 if (config.about_intro_title) {
-                    const titleEl = document.querySelector('#about .about-intro-title');
-                    if (titleEl) titleEl.textContent = config.about_intro_title;
+                    var aboutTitle = document.querySelector('#about .about-intro-title');
+                    if (aboutTitle) aboutTitle.textContent = config.about_intro_title;
                 }
                 if (config.about_intro_text) {
-                    const textEl = document.querySelector('#about .about-intro-text');
-                    if (textEl) textEl.innerHTML = config.about_intro_text.replace(/\n/g, '<br>');
+                    var aboutText = document.querySelector('#about .about-intro-text');
+                    if (aboutText) aboutText.innerHTML = config.about_intro_text.replace(/\n/g, '<br>');
                 }
                 if (config.about_image) {
-                    const imgEl = document.querySelector('#about .about-image');
-                    if (imgEl) imgEl.src = config.about_image;
+                    var aboutImg = document.querySelector('#about .about-image');
+                    if (aboutImg) aboutImg.src = config.about_image;
                 }
-
+                
                 // 页脚配置
-                if (config.footer_text) document.querySelector('.footer-logo').textContent = config.footer_text;
-                if (config.footer_copyright) {
-                    const footerText = document.querySelector('.footer-text');
-                    if (footerText) footerText.textContent = config.footer_copyright + ' Youth Confession · 用创作表达自我';
+                if (config.footer_text) {
+                    var footerLogo = document.querySelector('.footer-logo');
+                    if (footerLogo) footerLogo.textContent = config.footer_text;
                 }
-
-                // 更新页面标题
+                if (config.footer_copyright) {
+                    var footerText = document.querySelector('.footer-text');
+                    if (footerText) footerText.textContent = config.footer_copyright;
+                }
+                
                 if (config.site_title) document.title = config.site_title;
-
             } catch (err) {
                 console.error('加载网站配置失败:', err);
             }
         }
 
-        // ========================================
-        // 加载数据
-        // ========================================
-        async function loadData() {
-            await Promise.all([
-                loadSiteConfig(),
-                loadArticles(),
-                loadPhotos(),
-                loadMusic(),
-                loadSocialLinks()
-            ]);
-        }
-
         // 加载文章
         async function loadArticles() {
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?status=eq.published&order=created_at.desc`, {
-                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                var response = await fetch(SUPABASE_URL + '/rest/v1/posts?status=eq.published&order=created_at.desc', {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
                 });
-                const articles = await response.json();
+                var articles = await response.json();
+                console.log('从Supabase获取的文章:', articles);
+                articles.forEach(function(a) { console.log('文章:', a.title, 'tag:', a.tag); });
                 renderArticlesByCategory(articles);
             } catch (error) {
                 console.error('加载文章失败:', error);
-                // 显示示例数据
                 renderArticlesByCategory([
                     { id: 1, title: '二十岁，我开始学会与自己和解', tag: '随想', created_at: '2024-03-15', excerpt: '曾经以为成长是不断追逐，后来才明白，真正的成熟是学会接纳不完美的自己……' },
                     { id: 2, title: '深度思考：当代青年的困境与出路', tag: '洞察', created_at: '2024-03-10', excerpt: '在这个充满不确定性的时代，我们该如何找到自己的定位……' },
-                    { id: 3, title: '《百年孤独》读后感', tag: '书单', created_at: '2024-03-08', excerpt: '魔幻现实主义的巅峰之作，一个家族的百年兴衰史……' },
-                    { id: 4, title: '凌晨三点的城市', tag: '随想', created_at: '2024-02-28', excerpt: '路灯还亮着，像失眠的眼睛。我站在窗前，听这座城市呼吸的声音。' },
-                    { id: 5, title: '《小王子》品读', tag: '书单', created_at: '2024-02-20', excerpt: '所有的大人都曾经是小孩，虽然，只有少数的人记得……' }
+                    { id: 3, title: '《百年孤独》读后感', tag: '书单', created_at: '2024-03-08', excerpt: '魔幻现实主义的巅峰之作，一个家族的百年兴衰史……' }
                 ]);
             }
         }
 
         function renderArticlesByCategory(articles) {
-            // 按标签分类
-            const insights = articles.filter(a => a.tag === '洞察');
-            const thoughts = articles.filter(a => a.tag === '随想');
-            const books = articles.filter(a => a.tag === '书单');
-            
-            // 渲染到对应容器
+            var insights = articles.filter(function(a) { return a.tag === '洞察'; });
+            var thoughts = articles.filter(function(a) { return a.tag === '随想'; });
+            var books = articles.filter(function(a) { return a.tag === '书单'; });
             renderArticleList('article-list-insights', insights);
             renderArticleList('article-list-thoughts', thoughts);
             renderArticleList('article-list-books', books);
         }
 
         function renderArticleList(containerId, articles) {
-            const container = document.getElementById(containerId);
+            var container = document.getElementById(containerId);
             if (!articles || articles.length === 0) {
                 container.innerHTML = '<p style="color: var(--gray-light); padding: 2rem 0;">暂无内容</p>';
                 return;
             }
-            container.innerHTML = articles.map(a => `
-                <article class="article-item" onclick="viewArticle('${a.id}', ${JSON.stringify(a).replace(/"/g, '&quot;')})">
-                    <span class="article-date">${new Date(a.created_at).toLocaleDateString('zh-CN')}</span>
-                    <div class="article-content">
-                        <p class="article-tag">${a.tag || a.tags || '随想'}</p>
-                        <h3 class="article-item-title">${a.title}</h3>
-                        <p class="article-excerpt">${a.excerpt || ''}</p>
-                        ${a.cover_image ? `<img src="${a.cover_image}" alt="${a.title}" style="max-width:100%;max-height:300px;object-fit:cover;margin-top:1rem;border:1px solid var(--gray-lighter);" onerror="this.style.display='none'">` : ''}
-                    </div>
-                </article>
-            `).join('');
+            var html = articles.map(function(a) {
+                var coverImg = a.cover_image ? '<img src="' + a.cover_image + '" alt="" style="max-width:100%;max-height:200px;object-fit:cover;margin-top:1rem;">' : '';
+                return '<article class="article-item" onclick="viewArticle(\'' + a.id + '\', ' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">' +
+                    '<span class="article-date">' + new Date(a.created_at).toLocaleDateString('zh-CN') + '</span>' +
+                    '<div class="article-content">' +
+                    '<p class="article-tag">' + (a.tag || '随想') + '</p>' +
+                    '<h3 class="article-item-title">' + a.title + '</h3>' +
+                    '<p class="article-excerpt">' + (a.excerpt || '') + '</p>' + coverImg +
+                    '</div></article>';
+            }).join('');
+            container.innerHTML = html;
         }
-
-        function viewArticle(id, article) {
-            // 处理文章内容
-            let articleContent = article.content || article.excerpt || '';
-            if (articleContent.includes(article.title)) {
-                articleContent = articleContent.replace(article.title, '').trim();
-            }
-            // 处理图片样式
-            articleContent = articleContent.replace(/<img/g, '<img style="max-width:100%;height:auto;display:block;margin:1.5rem 0;"');
-            
-            // 创建文章详情视图
-            const articleDetail = document.createElement('div');
-            articleDetail.id = 'article-detail';
-            articleDetail.innerHTML = `
-                <div class="article-detail-container">
-                    <button class="article-back-btn" onclick="closeArticleView()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M19 12H5M12 19l-7-7 7-7"/>
-                        </svg>
-                        返回列表
-                    </button>
-                    ${article.cover_image ? `<img src="${article.cover_image}" class="article-detail-cover">` : ''}
-                    <div class="article-detail-content">
-                        <p class="article-detail-meta">${new Date(article.created_at).toLocaleDateString('zh-CN')} · ${article.tag || article.tags || '随想'}</p>
-                        <h1 class="article-detail-title">${article.title}</h1>
-                        <div class="article-detail-body">${articleContent}</div>
-                    </div>
-                </div>
-            `;
-            
-            // 隐藏子板块区域，显示文章详情
-            document.querySelector('.writing-tabs').style.display = 'none';
-            document.querySelectorAll('.writing-category').forEach(c => c.style.display = 'none');
-            document.querySelector('.writing-hero').style.display = 'none';
-            document.body.appendChild(articleDetail);
-            
-            // 滚动到顶部
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function closeArticleView() {
-            const detail = document.getElementById('article-detail');
-            if (detail) detail.remove();
-            // 恢复子板块显示
-            document.querySelector('.writing-tabs').style.display = 'flex';
-            document.querySelectorAll('.writing-category').forEach(c => {
-                c.style.display = c.classList.contains('active') ? 'block' : 'none';
-            });
-            document.querySelector('.writing-hero').style.display = 'grid';
-        }
-        });
 
         // 加载影像
         async function loadPhotos() {
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/photos?order=created_at.desc`, {
-                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                var response = await fetch(SUPABASE_URL + '/rest/v1/photos?order=created_at.desc', {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
                 });
-                const photos = await response.json();
-                
-                // 按分类分组
-                const photography = photos.filter(p => p.category === '摄影' || !p.category);
-                const video = photos.filter(p => p.category === '视频');
-                const film = photos.filter(p => p.category === '短片');
-                
+                var photos = await response.json();
+                var photography = photos.filter(function(p) { return p.category === '摄影' || !p.category; });
+                var video = photos.filter(function(p) { return p.category === '视频'; });
+                var film = photos.filter(function(p) { return p.category === '短片'; });
                 renderPhotoGrid('photo-grid-photography', photography);
                 renderPhotoGrid('photo-grid-video', video);
                 renderPhotoGrid('photo-grid-film', film);
             } catch (error) {
                 console.error('加载图片失败:', error);
-                // 示例数据
                 renderPhotoGrid('photo-grid-photography', [
                     { image_url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800', title: '山与云', description: '2024 · 西藏' },
-                    { image_url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600', title: '晨雾', description: '2024 · 云南' },
-                    { image_url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600', title: '远山', description: '2024 · 新疆' }
+                    { image_url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600', title: '晨雾', description: '2024 · 云南' }
                 ]);
             }
         }
 
         function renderPhotoGrid(containerId, photos) {
-            const container = document.getElementById(containerId);
+            var container = document.getElementById(containerId);
             if (!photos || photos.length === 0) {
                 container.innerHTML = '<p style="color: var(--gray-light); padding: 2rem;">暂无内容</p>';
                 return;
             }
-            container.innerHTML = photos.map((p, i) => `
-                <div class="visual-item" onclick="viewPhoto('${p.image_url}')">
-                    <div class="visual-item-image">
-                        <img src="${p.image_url}" alt="${p.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'">
-                    </div>
-                    <div class="visual-item-content">
-                        <p class="visual-item-number">0${i + 1}</p>
-                        <h3 class="visual-item-title">${p.title || '未命名作品'}</h3>
-                        <p class="visual-item-excerpt">${p.description || ''}</p>
-                        <p class="visual-item-meta">Photography · ${new Date(p.created_at || Date.now()).getFullYear()}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function viewPhoto(url) {
-            window.open(url, '_blank');
+            var html = photos.map(function(p, i) {
+                return '<div class="visual-item" onclick="viewPhoto(\'' + p.image_url + '\')">' +
+                    '<div class="visual-item-image"><img src="' + p.image_url + '" alt="' + (p.title || '') + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E\'"></div>' +
+                    '<div class="visual-item-content">' +
+                    '<p class="visual-item-number">0' + (i + 1) + '</p>' +
+                    '<h3 class="visual-item-title">' + (p.title || '未命名作品') + '</h3>' +
+                    '<p class="visual-item-excerpt">' + (p.description || '') + '</p>' +
+                    '<p class="visual-item-meta">Photography</p></div></div>';
+            }).join('');
+            container.innerHTML = html;
         }
 
         // 加载音乐
         async function loadMusic() {
             try {
-                // 加载音乐曲目
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/music_tracks?order=created_at.desc`, {
-                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                var response = await fetch(SUPABASE_URL + '/rest/v1/music_tracks?order=created_at.desc', {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
                 });
-                const tracks = await response.json();
-                
-                const recent = tracks.filter(t => t.type === 'recent').slice(0, 5);
-                const favorites = tracks.filter(t => t.type === 'favorite').slice(0, 5);
-                const creations = tracks.filter(t => t.type === 'creation');
-                
+                var tracks = await response.json();
+                console.log('加载的音乐:', tracks);
+                var recent = tracks.filter(function(t) { return t.type === 'recent'; }).slice(0, 5);
+                var favorites = tracks.filter(function(t) { return t.type === 'favorite'; }).slice(0, 5);
+                var creations = tracks.filter(function(t) { return t.type === 'creation'; });
                 renderPlaylist('playlist-recent', recent);
                 renderPlaylist('playlist-favorites', favorites);
                 renderCreations('playlist-creations', creations);
             } catch (error) {
                 console.error('加载音乐失败:', error);
-                // 示例数据
                 renderPlaylist('playlist-recent', [
-                    { id: 1, title: 'City of Stars', artist: 'La La Land OST', duration: '2:27', audio_url: '' },
-                    { id: 2, title: 'Nuvole Bianche', artist: 'Ludovico Einaudi', duration: '5:51', audio_url: '' },
-                    { id: 3, title: 'The Night We Met', artist: 'Lord Huron', duration: '3:32', audio_url: '' }
+                    { id: 1, title: 'City of Stars', artist: 'La La Land OST', duration: '2:27' },
+                    { id: 2, title: 'Nuvole Bianche', artist: 'Ludovico Einaudi', duration: '5:51' }
                 ]);
                 renderCreations('playlist-creations', [
-                    { id: 1, title: '《凌晨》', description: '一首关于深夜思绪的AI生成音乐，融合电子与氛围音乐元素。', tag: 'AI', duration: '3:42', audio_url: '' },
-                    { id: 2, title: '《独行》', description: '在独自旅行中创作的音乐，记录那些在路上的思考与感受。', tag: '原创', duration: '4:15', audio_url: '' }
+                    { id: 1, title: '《凌晨》', description: '一首关于深夜思绪的AI生成音乐', tag: 'AI', duration: '3:42' }
                 ]);
             }
         }
 
         function renderPlaylist(containerId, tracks) {
-            const container = document.getElementById(containerId);
+            var container = document.getElementById(containerId);
             if (!tracks || tracks.length === 0) {
                 container.innerHTML = '<p style="color: var(--gray-light); padding: 1rem 0;">暂无内容</p>';
                 return;
             }
-            container.innerHTML = tracks.map((t, i) => `
-                <div class="playlist-item" onclick="playTrack(${JSON.stringify(t).replace(/"/g, '&quot;')})">
-                    <span class="playlist-number">0${i + 1}</span>
-                    <div class="playlist-info">
-                        <h4>${t.title}</h4>
-                        <p>${t.artist || ''}</p>
-                    </div>
-                    <span class="playlist-duration">${t.duration || '--:--'}</span>
-                </div>
-            `).join('');
+            var html = tracks.map(function(t, i) {
+                return '<div class="playlist-item" onclick="playTrack(' + JSON.stringify(t).replace(/"/g, '&quot;') + ')">' +
+                    '<span class="playlist-number">0' + (i + 1) + '</span>' +
+                    '<div class="playlist-info"><h4>' + t.title + '</h4><p>' + (t.artist || '') + '</p></div>' +
+                    '<span class="playlist-duration">' + (t.duration || '--:--') + '</span></div>';
+            }).join('');
+            container.innerHTML = html;
         }
 
         function renderCreations(containerId, creations) {
-            const container = document.getElementById(containerId);
+            var container = document.getElementById(containerId);
             if (!creations || creations.length === 0) {
                 container.innerHTML = '<p style="color: var(--gray-light); padding: 1.5rem 0;">暂无创作</p>';
                 return;
             }
-            container.innerHTML = creations.map(c => `
-                <div class="creation-item" onclick="playTrack(${JSON.stringify(c).replace(/"/g, '&quot;')})">
-                    <span class="creation-badge">${c.tag || '创作'}</span>
-                    <h4 class="creation-title">${c.title}</h4>
-                    <p class="creation-desc">${c.description || ''}</p>
-                    <div class="creation-meta">
-                        <span>${new Date(c.created_at || Date.now()).toLocaleDateString('zh-CN')}</span>
-                        <span>${c.duration || '--:--'}</span>
-                    </div>
-                </div>
-            `).join('');
+            var html = creations.map(function(c) {
+                return '<div class="creation-item" onclick="playTrack(' + JSON.stringify(c).replace(/"/g, '&quot;') + ')">' +
+                    '<span class="creation-badge">' + (c.tag || '创作') + '</span>' +
+                    '<h4 class="creation-title">' + c.title + '</h4>' +
+                    '<p class="creation-desc">' + (c.description || '') + '</p>' +
+                    '<div class="creation-meta"><span>' + new Date(c.created_at || Date.now()).toLocaleDateString('zh-CN') + '</span><span>' + (c.duration || '--:--') + '</span></div></div>';
+            }).join('');
+            container.innerHTML = html;
         }
 
-        // ========================================
         // 音频播放器
-        // ========================================
         function playTrack(track) {
-            const audio = document.getElementById('audio-element');
-            const player = document.getElementById('audio-player');
-            const titleEl = document.getElementById('player-title');
-            const artistEl = document.getElementById('player-artist');
-            
+            var audio = document.getElementById('audio-element');
+            var player = document.getElementById('audio-player');
             currentAudio = track;
-            titleEl.textContent = track.title;
-            artistEl.textContent = track.artist || track.description || '';
-            
+            document.getElementById('player-title').textContent = track.title;
+            document.getElementById('player-artist').textContent = track.artist || track.description || '';
             if (track.audio_url) {
                 audio.src = track.audio_url;
                 audio.play();
@@ -2038,91 +1870,53 @@
                 alert('音频链接暂未配置，请在后台添加音频文件');
                 return;
             }
-            
             player.classList.add('active');
         }
 
         function togglePlay() {
-            const audio = document.getElementById('audio-element');
-            if (isPlaying) {
-                audio.pause();
-            } else {
-                audio.play();
-            }
+            var audio = document.getElementById('audio-element');
+            if (isPlaying) { audio.pause(); } else { audio.play(); }
             isPlaying = !isPlaying;
             updatePlayIcon();
         }
 
         function updatePlayIcon() {
-            const icon = document.getElementById('play-icon');
-            icon.innerHTML = isPlaying 
-                ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
-                : '<path d="M8 5v14l11-7z"/>';
+            var icon = document.getElementById('play-icon');
+            icon.innerHTML = isPlaying ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>' : '<path d="M8 5v14l11-7z"/>';
         }
 
         function closePlayer() {
-            const audio = document.getElementById('audio-element');
+            var audio = document.getElementById('audio-element');
             audio.pause();
             audio.src = '';
             isPlaying = false;
             document.getElementById('audio-player').classList.remove('active');
         }
 
-        function seekAudio(event) {
-            const audio = document.getElementById('audio-element');
-            const bar = event.currentTarget;
-            const rect = bar.getBoundingClientRect();
-            const percent = (event.clientX - rect.left) / rect.width;
-            audio.currentTime = percent * audio.duration;
-        }
-
-        // 音频时间更新
-        document.getElementById('audio-element').addEventListener('timeupdate', () => {
-            const audio = document.getElementById('audio-element');
-            const percent = (audio.currentTime / audio.duration) * 100;
+        document.getElementById('audio-element').addEventListener('timeupdate', function() {
+            var audio = document.getElementById('audio-element');
+            var percent = (audio.currentTime / audio.duration) * 100;
             document.getElementById('progress-fill').style.width = percent + '%';
             document.getElementById('player-current').textContent = formatTime(audio.currentTime);
         });
 
-        document.getElementById('audio-element').addEventListener('loadedmetadata', () => {
+        document.getElementById('audio-element').addEventListener('loadedmetadata', function() {
             document.getElementById('player-duration').textContent = formatTime(document.getElementById('audio-element').duration);
         });
 
         function formatTime(seconds) {
             if (!seconds || isNaN(seconds)) return '0:00';
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
+            var mins = Math.floor(seconds / 60);
+            var secs = Math.floor(seconds % 60);
+            return mins + ':' + (secs < 10 ? '0' : '') + secs;
         }
 
-        // ========================================
-        // 社交链接
-        // ========================================
-        async function loadSocialLinks() {
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/social_links?order=sort_order.asc`, {
-                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
-                });
-                const links = await response.json();
-                renderSocialLinks(links);
-            } catch (error) {
-                console.error('加载社交链接失败:', error);
-            }
-        }
-
-        function renderSocialLinks(links) {
-            const container = document.getElementById('social-links');
-            if (!links || links.length === 0) return;
-            container.innerHTML = links.map(l => `
-                <a href="${l.url}" class="social-item" target="_blank">${l.display_name || l.platform}</a>
-            `).join('');
-        }
-
-        // ========================================
         // 初始化
-        // ========================================
-        loadData();
-        
+        loadSiteConfig();
+        loadArticles();
+        loadPhotos();
+        loadMusic();
+
         }); // 结束 DOMContentLoaded
     </script>
 </body>

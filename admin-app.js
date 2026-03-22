@@ -10,6 +10,7 @@ const adminNickname = sessionStorage.getItem('admin_nickname');
 const adminLoggedIn = sessionStorage.getItem('admin_logged_in');
 
 let quillEditor = null;
+let editQuill = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     if (!adminLoggedIn || !adminId) {
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadPhotos();
     await loadMusic();
     await loadSettings();
+    await loadActivity();
 });
 
 function initNavigation() {
@@ -39,7 +41,7 @@ function initNavigation() {
             const panelId = 'panel-' + item.dataset.panel;
             document.getElementById(panelId).classList.add('active');
             
-            const titles = { articles: '文章管理', photos: '影像管理', music: '音乐管理', settings: '网站配置', account: '账户设置' };
+            const titles = { articles: '文章管理', photos: '影像管理', music: '音乐管理', settings: '网站配置', activity: '活动记录', account: '账户设置' };
             document.getElementById('pageTitle').textContent = titles[item.dataset.panel] || '';
         });
     });
@@ -47,6 +49,21 @@ function initNavigation() {
 
 function initEditor() {
     quillEditor = new Quill('#editor', {
+        theme: 'snow',
+        placeholder: '在这里输入文章内容...',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ 'header': [1, 2, 3, false] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'image'],
+                ['clean']
+            ]
+        }
+    });
+    
+    // 初始化编辑模态框的Quill编辑器
+    editQuill = new Quill('#edit-editor', {
         theme: 'snow',
         placeholder: '在这里输入文章内容...',
         modules: {
@@ -213,6 +230,7 @@ document.getElementById('articleForm').addEventListener('submit', async (e) => {
             e.target.reset();
             quillEditor.root.innerHTML = '';
             loadArticles();
+            logActivity('create', 'article', title);
         } else {
             showMessage('error', '发布失败');
         }
@@ -241,7 +259,8 @@ async function loadArticles() {
                     <div class="item-meta">${new Date(a.created_at).toLocaleDateString('zh-CN')} · <span class="tag">${a.tag}</span></div>
                 </div>
                 <div class="item-actions">
-                    <button class="btn btn-danger" onclick="deleteArticle(${a.id})">删除</button>
+                    <button class="btn" onclick="editArticle('${a.id}')">编辑</button>
+                    <button class="btn btn-danger" onclick="deleteArticle('${a.id}')">删除</button>
                 </div>
             </div>
         `).join('');
@@ -264,6 +283,55 @@ async function deleteArticle(id) {
         showMessage('error', '删除失败');
     }
 }
+
+// 编辑文章
+async function editArticle(id) {
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`, {
+            headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+        });
+        const articles = await response.json();
+        if (articles.length > 0) {
+            const article = articles[0];
+            document.getElementById('edit-article-id').value = article.id;
+            document.getElementById('edit-article-title').value = article.title;
+            document.getElementById('edit-article-tag').value = article.tag;
+            document.getElementById('edit-article-cover').value = article.cover_image || '';
+            editQuill.root.innerHTML = article.content || '';
+            document.getElementById('editModal').classList.add('active');
+        }
+    } catch (err) {
+        showMessage('error', '加载文章失败');
+    }
+}
+
+// 保存编辑
+document.getElementById('editForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('edit-article-id').value;
+    const title = document.getElementById('edit-article-title').value;
+    const tag = document.getElementById('edit-article-tag').value;
+    const cover = document.getElementById('edit-article-cover').value;
+    const content = editQuill.root.innerHTML;
+    const excerpt = editQuill.getText().substring(0, 150).trim() + '...';
+    
+    try {
+        await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            },
+            body: JSON.stringify({ title, tag, cover_image: cover, content, excerpt })
+        });
+        showMessage('success', '修改成功！');
+        document.getElementById('editModal').classList.remove('active');
+        loadArticles();
+    } catch (err) {
+        showMessage('error', '修改失败');
+    }
+});
 
 // ============ 影像管理 ============
 document.getElementById('photoForm').addEventListener('submit', async (e) => {
@@ -290,6 +358,7 @@ document.getElementById('photoForm').addEventListener('submit', async (e) => {
         showMessage('success', '添加成功！');
         e.target.reset();
         loadPhotos();
+        logActivity('create', 'photo', data.title);
     } catch (err) {
         showMessage('error', '添加失败');
     }
@@ -315,7 +384,7 @@ async function loadPhotos() {
                     <div class="item-meta">${new Date(p.created_at).toLocaleDateString('zh-CN')} · <span class="tag">${p.category}</span></div>
                 </div>
                 <div class="item-actions">
-                    <button class="btn btn-danger" onclick="deletePhoto(${p.id})">删除</button>
+                    <button class="btn btn-danger" onclick="deletePhoto('${p.id}')">删除</button>
                 </div>
             </div>
         `).join('');
@@ -344,19 +413,20 @@ document.getElementById('musicForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const type = document.getElementById('music-type').value;
+    const durationVal = document.getElementById('music-duration').value;
     const data = {
         title: document.getElementById('music-title').value,
-        artist: document.getElementById('music-artist').value,
-        audio_url: document.getElementById('music-url').value,
-        duration: document.getElementById('music-duration').value,
-        description: document.getElementById('music-desc').value,
-        tag: document.getElementById('music-tag').value,
-        type: type,
-        created_at: new Date().toISOString()
+        type: type
     };
+    const url = document.getElementById('music-url').value;
+    if (url) data.audio_url = url;
+    if (durationVal) data.duration = parseInt(durationVal);
+    if (document.getElementById('music-artist').value) data.artist = document.getElementById('music-artist').value;
+    if (document.getElementById('music-desc').value) data.description = document.getElementById('music-desc').value;
+    if (document.getElementById('music-tag').value) data.tag = document.getElementById('music-tag').value;
     
     try {
-        await fetch(`${SUPABASE_URL}/rest/v1/music_tracks`, {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/music_tracks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -365,9 +435,15 @@ document.getElementById('musicForm').addEventListener('submit', async (e) => {
             },
             body: JSON.stringify(data)
         });
-        showMessage('success', '添加成功！');
-        e.target.reset();
-        loadMusic();
+        if (response.ok) {
+            showMessage('success', '添加成功！');
+            e.target.reset();
+            loadMusic();
+            logActivity('create', 'music', data.title);
+        } else {
+            const errText = await response.text();
+            showMessage('error', '添加失败: ' + errText);
+        }
     } catch (err) {
         showMessage('error', '添加失败');
     }
@@ -395,7 +471,7 @@ async function loadMusic() {
                     <div class="item-meta">${t.artist || '未知艺术家'} · <span class="tag">${typeMap[t.type] || t.type || '未分类'}</span></div>
                 </div>
                 <div class="item-actions">
-                    <button class="btn btn-danger" onclick="deleteMusic(${t.id})">删除</button>
+                    <button class="btn btn-danger" onclick="deleteMusic('${t.id}')">删除</button>
                 </div>
             </div>
         `).join('');
@@ -443,11 +519,21 @@ document.getElementById('settingsForm').addEventListener('submit', async (e) => 
         { key: 'site_title', value: document.getElementById('cfg-site_title').value },
         { key: 'site_subtitle', value: document.getElementById('cfg-site_subtitle').value },
         { key: 'cover_issue', value: document.getElementById('cfg-cover_issue').value },
-        { key: 'cover_date', value: document.getElementById('cfg-cover_date').value }
+        { key: 'cover_date', value: document.getElementById('cfg-cover_date').value },
+        { key: 'toc_label', value: document.getElementById('cfg-toc_label').value },
+        { key: 'cover_description', value: document.getElementById('cfg-cover_description').value },
+        { key: 'cover_quote', value: document.getElementById('cfg-cover_quote').value },
+        { key: 'writing_intro', value: document.getElementById('cfg-writing_intro').value },
+        { key: 'visual_intro', value: document.getElementById('cfg-visual_intro').value },
+        { key: 'music_intro', value: document.getElementById('cfg-music_intro').value },
+        { key: 'about_intro_title', value: document.getElementById('cfg-about_intro_title').value },
+        { key: 'about_intro_text', value: document.getElementById('cfg-about_intro_text').value },
+        { key: 'footer_text', value: document.getElementById('cfg-footer_text').value },
+        { key: 'footer_copyright', value: document.getElementById('cfg-footer_copyright').value }
     ];
     
     for (const field of fields) {
-        if (field.value) {
+        if (field.value !== undefined && field.value !== null && field.value !== '') {
             await saveConfig(field.key, field.value);
         }
     }
@@ -517,3 +603,62 @@ document.getElementById('accountForm').addEventListener('submit', async (e) => {
         showMessage('error', '修改失败');
     }
 });
+
+// ============ 活动记录 ============
+async function logActivity(action, type, title) {
+    try {
+        await fetch(`${SUPABASE_URL}/rest/v1/activity_log`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            },
+            body: JSON.stringify({
+                action: action,
+                content_type: type,
+                content_title: title,
+                admin_id: adminId,
+                created_at: new Date().toISOString()
+            })
+        });
+    } catch (err) {
+        console.error('记录活动失败', err);
+    }
+}
+
+async function loadActivity() {
+    const container = document.getElementById('activityList');
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/activity_log?order=created_at.desc&limit=50`, {
+            headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+        });
+        const logs = await response.json();
+        
+        if (!logs || logs.length === 0) {
+            container.innerHTML = '<div class="empty-state">暂无活动记录</div>';
+            return;
+        }
+        
+        const actionMap = { create: '添加', update: '修改', delete: '删除' };
+        const typeMap = { article: '文章', photo: '影像', music: '音乐' };
+        
+        container.innerHTML = logs.map(log => `
+            <div class="activity-item">
+                <div class="activity-icon ${log.action}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        ${log.action === 'create' ? '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>' : 
+                          log.action === 'update' ? '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>' : 
+                          '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'}
+                    </svg>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">${actionMap[log.action] || log.action}了${typeMap[log.content_type] || log.content_type}：${log.content_title || '未知'}</div>
+                    <div class="activity-time">${new Date(log.created_at).toLocaleString('zh-CN')}</div>
+                </div>
+            </div>
+        `).join('');
+    } catch (err) {
+        container.innerHTML = '<div class="empty-state">加载失败</div>';
+    }
+}
