@@ -54,9 +54,7 @@
             margin-bottom: 24px;
         }
         
-        .sidebar-logo span {
-            color: var(--color-accent);
-        }
+        .sidebar-logo span { color: var(--color-accent); }
         
         .nav-item {
             display: flex;
@@ -82,10 +80,7 @@
             font-weight: 500;
         }
         
-        .nav-item svg {
-            width: 20px;
-            height: 20px;
-        }
+        .nav-item svg { width: 20px; height: 20px; }
         
         .sidebar-footer {
             margin-top: auto;
@@ -108,10 +103,7 @@
             justify-content: space-between;
         }
         
-        .header-title {
-            font-size: 16px;
-            font-weight: 500;
-        }
+        .header-title { font-size: 16px; font-weight: 500; }
         
         .header-user {
             display: flex;
@@ -146,370 +138,21 @@
             border-color: var(--color-error);
         }
         
-        .content {
-            padding: 32px;
-        }
+        .content { padding: 32px; }
         
         /* 面板 */
-        .panel {
-            display: none;
-        }
-        
-        .panel.active {
-            display: block;
-        }
-        
-        .panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-        }
-        
-        .panel-title {
-            font-family: 'Noto Serif SC', serif;
-            font-size: 22px;
-            font-weight: 600;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-primary {
-            background: var(--color-accent);
-            color: #fff;
-            border: none;
-        }
-        
-        .btn-primary:hover {
-            background: #c96a2f;
-        }
-        
-        .btn-secondary {
-            background: var(--color-card);
-            color: var(--color-text);
-            border: 1px solid var(--color-border);
-        }
-        
-        .btn-secondary:hover {
-            border-color: var(--color-accent);
-            color: var(--color-accent);
-        }
-        
-        .btn-danger {
-            background: #FFF5F5;
-            color: var(--color-error);
-            border: 1px solid #FED7D7;
-        }
-        
-        .btn-danger:hover {
-            background: var(--color-error);
-            color: #fff;
-        }
-        
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 13px;
-        }
-        
-        /* 卡片列表 */
-        .card-list {
-            display: grid;
-            gap: 20px;
-        }
+        .panel { display: none; }
+        .panel.active { display: block; }
         
         .card {
             background: var(--color-card);
             border-radius: var(--radius);
-            padding: 24px;
             box-shadow: var(--shadow);
-        }
-        
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        
-        /* 文章卡片 */
-        .article-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 20px 0;
-            border-bottom: 1px solid var(--color-border);
-        }
-        
-        .article-item:last-child {
-            border-bottom: none;
-        }
-        
-        .article-info {
-            flex: 1;
-        }
-        
-        .article-title {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-        
-        .article-meta {
-            font-size: 13px;
-            color: var(--color-text-muted);
-            display: flex;
-            gap: 16px;
-        }
-        
-        .article-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        /* 图片网格 */
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 16px;
-        }
-        
-        .photo-item {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: var(--radius);
-            overflow: hidden;
-            cursor: pointer;
-        }
-        
-        .photo-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-        
-        .photo-item:hover img {
-            transform: scale(1.05);
-        }
-        
-        .photo-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-            display: flex;
-            align-items: flex-end;
-            padding: 16px;
-        }
-        
-        .photo-item:hover .photo-overlay {
-            opacity: 1;
-        }
-        
-        .photo-title {
-            color: #fff;
-            font-size: 14px;
-        }
-        
-        /* 视频网格 */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-        }
-        
-        .video-item {
-            background: var(--color-card);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-        
-        .video-cover {
-            position: relative;
-            aspect-ratio: 16/9;
-            background: #000;
-        }
-        
-        .video-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .video-play {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.3);
-        }
-        
-        .video-play-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255,255,255,0.9);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .video-info {
-            padding: 16px;
-        }
-        
-        .video-title {
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-        
-        .video-meta {
-            font-size: 13px;
-            color: var(--color-text-muted);
-        }
-        
-        /* 模态框 */
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: var(--color-card);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 700px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .modal-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--color-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .modal-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-        
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            cursor: pointer;
-            color: var(--color-text-secondary);
-        }
-        
-        .modal-close:hover {
-            background: var(--color-bg);
-        }
-        
-        .modal-body {
-            padding: 24px;
-        }
-        
-        .modal-footer {
-            padding: 16px 24px;
-            border-top: 1px solid var(--color-border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-        
-        /* 表单 */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            font-size: 14px;
-            color: var(--color-text-secondary);
-            margin-bottom: 8px;
-        }
-        
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            padding: 12px 14px;
-            font-size: 14px;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            background: var(--color-bg);
-            font-family: inherit;
-        }
-        
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            outline: none;
-            border-color: var(--color-accent);
-        }
-        
-        .form-textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        
-        /* 富文本编辑器 */
-        .editor-container {
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .ql-toolbar {
-            border: none !important;
-            border-bottom: 1px solid var(--color-border) !important;
-            background: var(--color-bg);
-        }
-        
-        .ql-container {
-            border: none !important;
-            font-size: 15px;
-        }
-        
-        .ql-editor {
-            min-height: 300px;
-            padding: 16px;
-        }
-        
-        /* 设置页面 */
-        .settings-section {
-            background: var(--color-card);
-            border-radius: var(--radius);
             padding: 24px;
             margin-bottom: 24px;
-            box-shadow: var(--shadow);
         }
         
-        .settings-title {
+        .card-title {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 20px;
@@ -517,428 +160,370 @@
             border-bottom: 1px solid var(--color-border);
         }
         
-        .settings-row {
+        /* 表单 */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .form-group { margin-bottom: 16px; }
+        
+        .form-label {
+            display: block;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 6px;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 14px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            background: var(--color-bg);
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--color-accent);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover { background: #c9682e; }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+        
+        .btn-outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
+        
+        .btn-danger {
+            background: transparent;
+            color: var(--color-error);
+            border: 1px solid var(--color-error);
+        }
+        
+        .btn-danger:hover { background: var(--color-error); color: white; }
+        
+        /* Quill 编辑器 */
+        #editor { height: 300px; margin-bottom: 16px; }
+        .ql-toolbar { border-radius: 6px 6px 0 0; }
+        .ql-container { border-radius: 0 0 6px 6px; font-family: 'Noto Serif SC', serif; font-size: 15px; }
+        
+        /* 列表 */
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--color-border);
-        }
-        
-        .settings-row:last-child {
-            border-bottom: none;
-        }
-        
-        /* Toast 提示 */
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            padding: 14px 20px;
-            background: var(--color-text);
-            color: #fff;
+            padding: 16px;
+            background: var(--color-bg);
             border-radius: 8px;
-            font-size: 14px;
-            z-index: 2000;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
+        .item:hover { background: #EEECEA; }
+        
+        .item-info { flex: 1; }
+        
+        .item-title { font-weight: 500; margin-bottom: 4px; }
+        
+        .item-meta { font-size: 12px; color: var(--color-text-muted); }
+        
+        .item-actions { display: flex; gap: 8px; }
+        
+        .item-actions .btn {
+            padding: 6px 12px;
+            font-size: 12px;
         }
         
-        .toast.success {
-            background: var(--color-success);
-        }
-        
-        .toast.error {
-            background: var(--color-error);
+        /* 标签 */
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 12px;
+            background: var(--color-accent-light);
+            color: var(--color-accent);
+            border-radius: 4px;
+            margin-right: 8px;
         }
         
         /* 空状态 */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 48px;
             color: var(--color-text-muted);
         }
         
-        .empty-icon {
-            font-size: 48px;
+        /* 消息提示 */
+        .message {
+            padding: 12px 16px;
+            border-radius: 6px;
             margin-bottom: 16px;
+            font-size: 14px;
         }
         
-        /* 响应式 */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-                z-index: 100;
-            }
-            
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            
-            .main {
-                margin-left: 0;
-            }
+        .message.success { background: #C6F6D5; color: #276749; }
+        .message.error { background: #FED7D7; color: #C53030; }
+        
+        /* 模态框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
         }
+        
+        .modal-overlay.active { display: flex; }
+        
+        .modal {
+            background: var(--color-card);
+            padding: 32px;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .modal-actions .btn { flex: 1; }
     </style>
 </head>
 <body>
     <!-- 侧边栏 -->
     <aside class="sidebar">
-        <div class="sidebar-logo"><span>"</span> 一个青年人的自白</div>
+        <div class="sidebar-logo">一个青年人的<span>自白</span></div>
         
         <nav>
             <div class="nav-item active" data-panel="articles">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
                 文章管理
             </div>
             <div class="nav-item" data-panel="photos">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <path d="M21 15l-5-5L5 21"/>
-                </svg>
-                图片管理
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                影像管理
             </div>
-            <div class="nav-item" data-panel="videos">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="4" width="20" height="16" rx="2"/>
-                    <path d="M10 9l5 3-5 3V9z"/>
-                </svg>
-                视频管理
-            </div>
-            <div class="nav-item" data-panel="tags">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
-                    <line x1="7" y1="7" x2="7.01" y2="7"/>
-                </svg>
-                标签管理
-            </div>
-            <div class="nav-item" data-panel="batch">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                </svg>
-                批量管理
+            <div class="nav-item" data-panel="music">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                音乐管理
             </div>
             <div class="nav-item" data-panel="settings">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
-                </svg>
-                个人设置
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                网站配置
+            </div>
+            <div class="nav-item" data-panel="account">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                账户设置
             </div>
         </nav>
         
         <div class="sidebar-footer">
-            <a href="index.html" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                </svg>
-                查看网站
-            </a>
+            <button class="logout-btn" onclick="logout()">退出登录</button>
         </div>
     </aside>
-
+    
     <!-- 主内容 -->
     <main class="main">
         <header class="header">
-            <h1 class="header-title" id="current-panel-title">文章管理</h1>
+            <h1 class="header-title" id="pageTitle">文章管理</h1>
             <div class="header-user">
-                <div class="header-avatar" id="user-avatar">青</div>
-                <button class="logout-btn" onclick="logout()">退出登录</button>
+                <div class="header-avatar" id="user-avatar">管</div>
+                <button class="logout-btn" onclick="logout()">退出</button>
             </div>
         </header>
-
+        
         <div class="content">
-            <!-- 标签管理面板 -->
-            <div class="panel" id="panel-tags">
-                <div class="panel-header">
-                    <h2 class="panel-title">文章标签</h2>
-                    <button class="btn btn-primary" onclick="openTagModal()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                        </svg>
-                        添加标签
-                    </button>
-                </div>
+            <!-- 文章管理 -->
+            <section id="panel-articles" class="panel active">
                 <div class="card">
-                    <div class="tags-container" id="tags-list"></div>
-                </div>
-            </div>
-
-            <!-- 批量管理面板 -->
-            <div class="panel" id="panel-batch">
-                <div class="panel-header">
-                    <h2 class="panel-title">批量管理</h2>
-                    <div class="batch-actions">
-                        <select class="form-select" id="batch-type">
-                            <option value="posts">文章</option>
-                            <option value="photos">图片</option>
-                            <option value="videos">视频</option>
-                        </select>
-                        <button class="btn btn-secondary" onclick="loadBatchItems()">加载</button>
-                        <button class="btn btn-danger" onclick="batchDelete()" id="batch-delete-btn" disabled>删除选中</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="batch-list" id="batch-list"></div>
-                    <div class="batch-pagination" id="batch-pagination"></div>
-                </div>
-            </div>
-
-            <!-- 文章管理面板 -->
-            <div class="panel active" id="panel-articles">
-                <div class="panel-header">
-                    <h2 class="panel-title">文章列表</h2>
-                    <button class="btn btn-primary" onclick="openArticleModal()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                        </svg>
-                        新建文章
-                    </button>
-                </div>
-                <div class="card">
-                    <div id="articles-list"></div>
-                </div>
-            </div>
-
-            <!-- 图片管理面板 -->
-            <div class="panel" id="panel-photos">
-                <div class="panel-header">
-                    <h2 class="panel-title">图片库</h2>
-                    <button class="btn btn-primary" onclick="openPhotoModal()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                        </svg>
-                        上传图片
-                    </button>
-                </div>
-                <div class="card">
-                    <div class="photo-grid" id="photos-grid"></div>
-                </div>
-            </div>
-
-            <!-- 视频管理面板 -->
-            <div class="panel" id="panel-videos">
-                <div class="panel-header">
-                    <h2 class="panel-title">视频库</h2>
-                    <button class="btn btn-primary" onclick="openVideoModal()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                        </svg>
-                        添加视频
-                    </button>
-                </div>
-                <div class="card">
-                    <div class="video-grid" id="videos-grid"></div>
-                </div>
-            </div>
-
-            <!-- 个人设置面板 -->
-            <div class="panel" id="panel-settings">
-                <div class="panel-header">
-                    <h2 class="panel-title">个人设置</h2>
+                    <h2 class="card-title">发布新文章</h2>
+                    <form id="articleForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">文章标题</label>
+                                <input type="text" id="article-title" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">标签</label>
+                                <select id="article-tag" class="form-select">
+                                    <option value="随想">随想</option>
+                                    <option value="影评">影评</option>
+                                    <option value="诗歌">诗歌</option>
+<option value="日记">日记</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">封面图片URL</label>
+                            <input type="url" id="article-cover" class="form-input" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">文章内容</label>
+                            <div id="editor"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">发布文章</button>
+                    </form>
                 </div>
                 
-                <div class="settings-section">
-                    <h3 class="settings-title">账户信息</h3>
-                    <div class="form-group">
-                        <label class="form-label">登录用户名</label>
-                        <input type="text" class="form-input" id="setting-username" placeholder="输入用户名">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">昵称（网站显示）</label>
-                        <input type="text" class="form-input" id="setting-nickname" placeholder="输入昵称">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">签名</label>
-                        <input type="text" class="form-input" id="setting-tagline" placeholder="例如：记录者 / 思考者 / 表达者">
-                    </div>
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        <button class="btn btn-secondary" onclick="saveUsername()">保存用户名</button>
-                        <button class="btn btn-primary" onclick="saveBasicInfo()">保存基本信息</button>
-                    </div>
+                <div class="card">
+                    <h2 class="card-title">文章列表</h2>
+                    <div id="articlesList" class="item-list"></div>
+                </div>
+            </section>
+            
+            <!-- 影像管理 -->
+            <section id="panel-photos" class="panel">
+                <div class="card">
+                    <h2 class="card-title">添加影像作品</h2>
+                    <form id="photoForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">作品标题</label>
+                                <input type="text" id="photo-title" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">分类</label>
+                                <select id="photo-category" class="form-select">
+                                    <option value="摄影">摄影</option>
+                                    <option value="视频">视频</option>
+                                    <option value="短片">短片</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">图片URL</label>
+                            <input type="url" id="photo-url" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">描述</label>
+                            <input type="text" id="photo-desc" class="form-input">
+                        </div>
+                        <button type="submit" class="btn btn-primary">添加作品</button>
+                    </form>
                 </div>
                 
-                <div class="settings-section">
-                    <h3 class="settings-title">关于页面</h3>
-                    <div class="form-group">
-                        <label class="form-label">自我介绍</label>
-                        <textarea class="form-textarea" id="setting-about" rows="4" placeholder="输入自我介绍"></textarea>
-                    </div>
-                    <button class="btn btn-primary" onclick="saveAbout()">保存</button>
+                <div class="card">
+                    <h2 class="card-title">影像列表</h2>
+                    <div id="photosList" class="item-list"></div>
+                </div>
+            </section>
+            
+            <!-- 音乐管理 -->
+            <section id="panel-music" class="panel">
+                <div class="card">
+                    <h2 class="card-title">添加音乐</h2>
+                    <form id="musicForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">歌曲名称</label>
+                                <input type="text" id="music-title" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">歌手/艺术家</label>
+                                <input type="text" id="music-artist" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">音频URL</label>
+                            <input type="url" id="music-url" class="form-input" placeholder="https://...">
+                        </div>
+                        <button type="submit" class="btn btn-primary">添加音乐</button>
+                    </form>
                 </div>
                 
-                <div class="settings-section">
-                    <h3 class="settings-title">社交链接</h3>
-                    <div id="social-links-list"></div>
-                    <button class="btn btn-secondary btn-sm" onclick="addSocialLink()" style="margin-top: 16px">添加链接</button>
+                <div class="card">
+                    <h2 class="card-title">音乐列表</h2>
+                    <div id="musicList" class="item-list"></div>
                 </div>
-                
-                <div class="settings-section">
-                    <h3 class="settings-title">修改密码</h3>
-                    <div class="form-group">
-                        <label class="form-label">新密码</label>
-                        <input type="password" class="form-input" id="setting-password" placeholder="输入新密码">
-                    </div>
-                    <button class="btn btn-primary" onclick="savePassword()">修改密码</button>
+            </section>
+            
+            <!-- 网站配置 -->
+            <section id="panel-settings" class="panel">
+                <div class="card">
+                    <h2 class="card-title">网站配置</h2>
+                    <form id="settingsForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">网站标题</label>
+                                <input type="text" id="cfg-site_title" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">副标题</label>
+                                <input type="text" id="cfg-site_subtitle" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">封面期号</label>
+                                <input type="text" id="cfg-cover_issue" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">封面日期</label>
+                                <input type="text" id="cfg-cover_date" class="form-input">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">保存配置</button>
+                    </form>
                 </div>
-            </div>
+            </section>
+            
+            <!-- 账户设置 -->
+            <section id="panel-account" class="panel">
+                <div class="card">
+                    <h2 class="card-title">修改密码</h2>
+                    <form id="accountForm">
+                        <div class="form-group">
+                            <label class="form-label">新密码</label>
+                            <input type="password" id="new-password" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">确认新密码</label>
+                            <input type="password" id="confirm-password" class="form-input">
+                        </div>
+                        <button type="submit" class="btn btn-primary">修改密码</button>
+                    </form>
+                </div>
+            </section>
         </div>
     </main>
-
-    <!-- 文章编辑模态框 -->
-    <div class="modal" id="article-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="article-modal-title">新建文章</h3>
-                <div class="modal-close" onclick="closeModal('article-modal')">✕</div>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="article-id">
-                <div class="form-group">
-                    <label class="form-label">标题</label>
-                    <input type="text" class="form-input" id="article-title" placeholder="输入文章标题">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">标签</label>
-                    <select class="form-select" id="article-tag">
-                        <option value="随想">随想</option>
-                        <option value="城市">城市</option>
-                        <option value="阅读">阅读</option>
-                        <option value="亲情">亲情</option>
-                        <option value="生活">生活</option>
-                        <option value="其他">其他</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">封面图片URL</label>
-                    <input type="text" class="form-input" id="article-cover" placeholder="输入图片URL（可选）">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">摘要</label>
-                    <textarea class="form-textarea" id="article-excerpt" rows="2" placeholder="输入文章摘要"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">内容</label>
-                    <div class="editor-container">
-                        <div id="article-editor"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">状态</label>
-                    <select class="form-select" id="article-status">
-                        <option value="published">发布</option>
-                        <option value="draft">草稿</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('article-modal')">取消</button>
-                <button class="btn btn-primary" onclick="saveArticle()">保存</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 图片上传模态框 -->
-    <div class="modal" id="photo-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">上传图片</h3>
-                <div class="modal-close" onclick="closeModal('photo-modal')">✕</div>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="photo-id">
-                <div class="form-group">
-                    <label class="form-label">图片标题</label>
-                    <input type="text" class="form-input" id="photo-title" placeholder="输入图片标题">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">图片描述</label>
-                    <textarea class="form-textarea" id="photo-description" rows="2" placeholder="输入图片描述"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">图片URL</label>
-                    <input type="text" class="form-input" id="photo-url" placeholder="输入图片URL或上传图片">
-                    <input type="file" id="photo-file" accept="image/*" style="margin-top: 8px; display: none">
-                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('photo-file').click()" style="margin-top: 8px">选择本地图片</button>
-                    <span id="photo-file-name" style="margin-left: 8px; color: var(--color-text-muted)"></span>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">分类</label>
-                    <select class="form-select" id="photo-category">
-                        <option value="摄影">摄影</option>
-                        <option value="生活">生活</option>
-                        <option value="风景">风景</option>
-                        <option value="人像">人像</option>
-                        <option value="其他">其他</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('photo-modal')">取消</button>
-                <button class="btn btn-primary" onclick="savePhoto()">保存</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 视频添加模态框 -->
-    <div class="modal" id="video-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">添加视频</h3>
-                <div class="modal-close" onclick="closeModal('video-modal')">✕</div>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="video-id">
-                <div class="form-group">
-                    <label class="form-label">视频标题</label>
-                    <input type="text" class="form-input" id="video-title" placeholder="输入视频标题">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">视频描述</label>
-                    <textarea class="form-textarea" id="video-description" rows="2" placeholder="输入视频描述"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">视频URL</label>
-                    <input type="text" class="form-input" id="video-url" placeholder="输入B站等视频链接">
-                    <small style="color: var(--color-text-muted)">支持B站链接，格式如：https://www.bilibili.com/video/BV1xx4y1d7UV</small>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">封面图片URL（可选）</label>
-                    <input type="text" class="form-input" id="video-cover" placeholder="输入封面图片URL">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">分类</label>
-                    <select class="form-select" id="video-category">
-                        <option value="纪录">纪录</option>
-                        <option value="Vlog">Vlog</option>
-                        <option value="音乐">音乐</option>
-                        <option value="其他">其他</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('video-modal')">取消</button>
-                <button class="btn btn-primary" onclick="saveVideo()">保存</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast 提示 -->
-    <div class="toast" id="toast"></div>
-
+    
     <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
     <script src="admin-app.js"></script>
 </body>
