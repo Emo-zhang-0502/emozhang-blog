@@ -381,12 +381,11 @@
                                 <input type="text" id="article-title" class="form-input" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">标签</label>
+                                <label class="form-label">分类</label>
                                 <select id="article-tag" class="form-select">
                                     <option value="随想">随想</option>
-                                    <option value="影评">影评</option>
-                                    <option value="诗歌">诗歌</option>
-<option value="日记">日记</option>
+                                    <option value="洞察">洞察</option>
+                                    <option value="书单">书单</option>
                                 </select>
                             </div>
                         </div>
@@ -459,6 +458,28 @@
                                 <label class="form-label">歌手/艺术家</label>
                                 <input type="text" id="music-artist" class="form-input">
                             </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">分类</label>
+                                <select id="music-type" class="form-select">
+                                    <option value="recent">最近在听</option>
+                                    <option value="favorite">推荐歌单</option>
+                                    <option value="creation">我的创作</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">时长（如 3:42）</label>
+                                <input type="text" id="music-duration" class="form-input" placeholder="3:42">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">描述（仅用于"我的创作"）</label>
+                            <input type="text" id="music-desc" class="form-input" placeholder="简要描述...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">标签（仅用于"我的创作"，如 AI/原创）</label>
+                            <input type="text" id="music-tag" class="form-input" placeholder="AI">
                         </div>
                         <div class="form-group">
                             <label class="form-label">音频URL</label>

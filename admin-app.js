@@ -242,10 +242,15 @@ async function deletePhoto(id) {
 document.getElementById('musicForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    const type = document.getElementById('music-type').value;
     const data = {
         title: document.getElementById('music-title').value,
         artist: document.getElementById('music-artist').value,
         audio_url: document.getElementById('music-url').value,
+        duration: document.getElementById('music-duration').value,
+        description: document.getElementById('music-desc').value,
+        tag: document.getElementById('music-tag').value,
+        type: type,
         created_at: new Date().toISOString()
     };
     
@@ -280,11 +285,13 @@ async function loadMusic() {
             return;
         }
         
+        const typeMap = { recent: '最近在听', favorite: '推荐歌单', creation: '我的创作' };
+        
         container.innerHTML = tracks.map(t => `
             <div class="item">
                 <div class="item-info">
                     <div class="item-title">${t.title}</div>
-                    <div class="item-meta">${t.artist || '未知艺术家'} · ${new Date(t.created_at).toLocaleDateString('zh-CN')}</div>
+                    <div class="item-meta">${t.artist || '未知艺术家'} · <span class="tag">${typeMap[t.type] || t.type || '未分类'}</span></div>
                 </div>
                 <div class="item-actions">
                     <button class="btn btn-danger" onclick="deleteMusic(${t.id})">删除</button>
