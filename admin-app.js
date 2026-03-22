@@ -66,6 +66,105 @@ function logout() {
     window.location.href = 'admin.html';
 }
 
+// ============ 文件上传功能 ============
+async function uploadFile(file, type = 'images') {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+    const filePath = `${type}/${fileName}`;
+    
+    try {
+        const response = await fetch(`${SUPABASE_URL}/storage/v1/object/${filePath}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': file.type,
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            },
+            body: file
+        });
+        
+        if (response.ok) {
+            return `${SUPABASE_URL}/storage/v1/object/public/${filePath}`;
+        } else {
+            throw new Error('上传失败');
+        }
+    } catch (err) {
+        console.error('上传错误:', err);
+        throw err;
+    }
+}
+
+// 监听图片上传
+document.getElementById('photo-file').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const fileNameEl = document.getElementById('photo-file-name');
+    const submitBtn = document.getElementById('photo-submit-btn');
+    const urlInput = document.getElementById('photo-url');
+    
+    fileNameEl.textContent = '上传中...';
+    submitBtn.disabled = true;
+    submitBtn.classList.add('btn-loading');
+    
+    try {
+        const url = await uploadFile(file, 'images');
+        urlInput.value = url;
+        fileNameEl.textContent = '上传成功: ' + file.name;
+    } catch (err) {
+        fileNameEl.textContent = '上传失败，请重试';
+        alert('图片上传失败，请检查Storage配置或手动输入URL');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('btn-loading');
+    }
+});
+
+// 监听文章封面上传
+document.getElementById('article-cover-file').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const fileNameEl = document.getElementById('article-cover-file-name');
+    const urlInput = document.getElementById('article-cover');
+    
+    fileNameEl.textContent = '上传中...';
+    
+    try {
+        const url = await uploadFile(file, 'images');
+        urlInput.value = url;
+        fileNameEl.textContent = '上传成功: ' + file.name;
+    } catch (err) {
+        fileNameEl.textContent = '上传失败，请重试';
+    }
+});
+
+// 监听音频上传
+document.getElementById('music-file').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const fileNameEl = document.getElementById('music-file-name');
+    const submitBtn = document.getElementById('music-submit-btn');
+    const urlInput = document.getElementById('music-url');
+    
+    fileNameEl.textContent = '上传中...';
+    submitBtn.disabled = true;
+    submitBtn.classList.add('btn-loading');
+    
+    try {
+        const url = await uploadFile(file, 'audio');
+        urlInput.value = url;
+        fileNameEl.textContent = '上传成功: ' + file.name;
+    } catch (err) {
+        fileNameEl.textContent = '上传失败，请重试';
+        alert('音频上传失败，请检查Storage配置或手动输入URL');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('btn-loading');
+    }
+});
+
 function showMessage(type, text) {
     const msg = document.createElement('div');
     msg.className = `message ${type}`;

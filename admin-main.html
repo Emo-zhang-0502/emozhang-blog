@@ -224,6 +224,46 @@
         
         .btn-danger:hover { background: var(--color-error); color: white; }
         
+        /* 上传按钮 */
+        .upload-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--color-bg);
+            border: 1px dashed var(--color-border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            transition: all 0.2s;
+        }
+        
+        .file-label:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+        
+        .file-name {
+            font-size: 13px;
+            color: var(--color-success);
+        }
+        
+        .btn-loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
         /* Quill 编辑器 */
         #editor { height: 300px; margin-bottom: 16px; }
         .ql-toolbar { border-radius: 6px 6px 0 0; }
@@ -390,7 +430,18 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">封面图片URL</label>
+                            <label class="form-label">封面图片</label>
+                            <div class="upload-box">
+                                <input type="file" id="article-cover-file" accept="image/*" class="file-input">
+                                <label for="article-cover-file" class="file-label">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    选择封面图片
+                                </label>
+                                <span id="article-cover-file-name" class="file-name"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">或输入封面URL</label>
                             <input type="url" id="article-cover" class="form-input" placeholder="https://...">
                         </div>
                         <div class="form-group">
@@ -427,14 +478,25 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">图片URL</label>
-                            <input type="url" id="photo-url" class="form-input" required>
+                            <label class="form-label">上传图片</label>
+                            <div class="upload-box">
+                                <input type="file" id="photo-file" accept="image/*" class="file-input">
+                                <label for="photo-file" class="file-label">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    选择图片文件
+                                </label>
+                                <span id="photo-file-name" class="file-name"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">或输入图片URL</label>
+                            <input type="url" id="photo-url" class="form-input" placeholder="https://...">
                         </div>
                         <div class="form-group">
                             <label class="form-label">描述</label>
                             <input type="text" id="photo-desc" class="form-input">
                         </div>
-                        <button type="submit" class="btn btn-primary">添加作品</button>
+                        <button type="submit" class="btn btn-primary" id="photo-submit-btn">添加作品</button>
                     </form>
                 </div>
                 
@@ -482,10 +544,21 @@
                             <input type="text" id="music-tag" class="form-input" placeholder="AI">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">音频URL</label>
+                            <label class="form-label">上传音频文件</label>
+                            <div class="upload-box">
+                                <input type="file" id="music-file" accept="audio/*" class="file-input">
+                                <label for="music-file" class="file-label">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    选择音频文件
+                                </label>
+                                <span id="music-file-name" class="file-name"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">或输入音频URL</label>
                             <input type="url" id="music-url" class="form-input" placeholder="https://...">
                         </div>
-                        <button type="submit" class="btn btn-primary">添加音乐</button>
+                        <button type="submit" class="btn btn-primary" id="music-submit-btn">添加音乐</button>
                     </form>
                 </div>
                 
