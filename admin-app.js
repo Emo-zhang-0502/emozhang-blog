@@ -69,11 +69,12 @@ function logout() {
 // ============ 文件上传功能 ============
 async function uploadFile(file, type = 'images') {
     const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-    const filePath = `${type}/${fileName}`;
+    const fileName = `${type}_${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+    const bucketName = 'media';
+    const filePath = `${fileName}`;
     
     try {
-        const response = await fetch(`${SUPABASE_URL}/storage/v1/object/${filePath}`, {
+        const response = await fetch(`${SUPABASE_URL}/storage/v1/object/${bucketName}/${filePath}`, {
             method: 'POST',
             headers: {
                 'Content-Type': file.type,
@@ -84,9 +85,10 @@ async function uploadFile(file, type = 'images') {
         });
         
         if (response.ok) {
-            return `${SUPABASE_URL}/storage/v1/object/public/${filePath}`;
+            return `${SUPABASE_URL}/storage/v1/object/public/${bucketName}/${filePath}`;
         } else {
-            throw new Error('上传失败');
+            const errorText = await response.text();
+            throw new Error('上传失败: ' + errorText);
         }
     } catch (err) {
         console.error('上传错误:', err);
