@@ -575,6 +575,31 @@
             color: var(--gray);
             line-height: 1.8;
         }
+        
+        .article-list-cover {
+            width: 100%;
+            max-height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        .article-list-cover-placeholder {
+            height: 120px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-light);
+        }
+        .article-list-cover-placeholder svg {
+            width: 48px;
+            height: 48px;
+        }
+        .article-item {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
 
         /* ========================================
            影像板块 - 带分类筛选
@@ -1745,14 +1770,14 @@
                 return;
             }
             var html = articles.map(function(a) {
-                var coverImg = a.cover_image ? '<img src="' + a.cover_image + '" alt="" style="max-width:100%;max-height:200px;object-fit:cover;margin-top:1rem;">' : '';
-                return '<article class="article-item" onclick="viewArticle(\'' + a.id + '\', ' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">' +
+                var coverImg = a.cover_image ? '<img src="' + a.cover_image + '" alt="" class="article-list-cover">' : '<div class="article-list-cover article-list-cover-placeholder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5z"/></svg></div>';
+                return '<a href="article.html?id=' + a.id + '" class="article-item">' +
                     '<span class="article-date">' + new Date(a.created_at).toLocaleDateString('zh-CN') + '</span>' +
                     '<div class="article-content">' +
                     '<p class="article-tag">' + (a.tag || '随想') + '</p>' +
                     '<h3 class="article-item-title">' + a.title + '</h3>' +
                     '<p class="article-excerpt">' + (a.excerpt || '') + '</p>' + coverImg +
-                    '</div></article>';
+                    '</div></a>';
             }).join('');
             container.innerHTML = html;
         }
@@ -1830,10 +1855,10 @@
                 return;
             }
             var html = tracks.map(function(t, i) {
-                return '<div class="playlist-item" onclick="playTrack(' + JSON.stringify(t).replace(/"/g, '&quot;') + ')">' +
+                return '<a href="music.html?id=' + t.id + '" class="playlist-item">' +
                     '<span class="playlist-number">0' + (i + 1) + '</span>' +
                     '<div class="playlist-info"><h4>' + t.title + '</h4><p>' + (t.artist || '') + '</p></div>' +
-                    '<span class="playlist-duration">' + (t.duration || '--:--') + '</span></div>';
+                    '<span class="playlist-duration">' + (t.duration || '--:--') + '</span></a>';
             }).join('');
             container.innerHTML = html;
         }
@@ -1845,11 +1870,11 @@
                 return;
             }
             var html = creations.map(function(c) {
-                return '<div class="creation-item" onclick="playTrack(' + JSON.stringify(c).replace(/"/g, '&quot;') + ')">' +
+                return '<a href="music.html?id=' + c.id + '" class="creation-item">' +
                     '<span class="creation-badge">' + (c.tag || '创作') + '</span>' +
                     '<h4 class="creation-title">' + c.title + '</h4>' +
                     '<p class="creation-desc">' + (c.description || '') + '</p>' +
-                    '<div class="creation-meta"><span>' + new Date(c.created_at || Date.now()).toLocaleDateString('zh-CN') + '</span><span>' + (c.duration || '--:--') + '</span></div></div>';
+                    '<div class="creation-meta"><span>' + new Date(c.created_at || Date.now()).toLocaleDateString('zh-CN') + '</span><span>' + (c.duration || '--:--') + '</span></div></a>';
             }).join('');
             container.innerHTML = html;
         }

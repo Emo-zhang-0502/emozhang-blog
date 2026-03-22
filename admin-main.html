@@ -738,6 +738,15 @@
                             <label class="form-label">或输入音频URL</label>
                             <input type="url" id="music-url" class="form-input" placeholder="https://...">
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">歌词（LRC格式，选填）</label>
+                            <textarea id="music-lyrics" class="form-input" rows="6" placeholder="[00:00] 第一句歌词&#10;[00:05] 第二句歌词&#10;支持LRC格式歌词文件粘贴"></textarea>
+                            <small style="color: var(--color-text-muted); font-size: 12px;">支持LRC格式，如：[00:00] 歌词内容</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">封面图片URL（选填）</label>
+                            <input type="url" id="music-cover" class="form-input" placeholder="https://...">
+                        </div>
                         <button type="submit" class="btn btn-primary" id="music-submit-btn">添加音乐</button>
                     </form>
                 </div>
@@ -747,6 +756,62 @@
                     <div id="musicList" class="item-list"></div>
                 </div>
             </section>
+            
+            <!-- 编辑音乐模态框 -->
+            <div id="editMusicModal" class="modal-overlay">
+                <div class="modal">
+                    <h3 class="modal-title">编辑音乐</h3>
+                    <form id="editMusicForm">
+                        <input type="hidden" id="edit-music-id">
+                        <div class="form-group">
+                            <label class="form-label">歌曲标题</label>
+                            <input type="text" id="edit-music-title" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">艺术家</label>
+                            <input type="text" id="edit-music-artist" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">类型</label>
+                            <select id="edit-music-type" class="form-select">
+                                <option value="recent">最近在听</option>
+                                <option value="favorite">推荐歌单</option>
+                                <option value="creation">我的创作</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">时长（秒）</label>
+                                <input type="number" id="edit-music-duration" class="form-input" placeholder="180">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">标签（如 AI）</label>
+                                <input type="text" id="edit-music-tag" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">音频URL</label>
+                            <input type="url" id="edit-music-url" class="form-input" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">描述</label>
+                            <input type="text" id="edit-music-desc" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">歌词（LRC格式）</label>
+                            <textarea id="edit-music-lyrics" class="form-input" rows="4" placeholder="[00:00] 第一句歌词"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">封面图片URL</label>
+                            <input type="url" id="edit-music-cover" class="form-input" placeholder="https://...">
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn" onclick="document.getElementById('editMusicModal').classList.remove('active')">取消</button>
+                            <button type="submit" class="btn btn-primary">保存修改</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             
             <!-- 网站配置 -->
             <section id="panel-settings" class="panel">

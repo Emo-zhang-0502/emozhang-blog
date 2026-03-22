@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章详情 - 个人网站</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+    <style>
+        :root {
+            --bg-primary: #faf9f7;
+            --bg-secondary: #ffffff;
+            --text-primary: #2c2c2c;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+            --accent: #1a1a1a;
+            --border: #e8e8e8;
+            --shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 2rem;
+            transition: color 0.2s;
+        }
+        .back-btn:hover { color: var(--text-primary); }
+        .back-btn svg { width: 18px; height: 18px; }
+        .article-cover {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .article-tag {
+            background: var(--bg-secondary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .article-title {
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+        .article-body {
+            background: var(--bg-secondary);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+        .article-body p { margin-bottom: 1.5em; }
+        .article-body h1, .article-body h2, .article-body h3 { margin: 1.5em 0 0.8em; }
+        .article-body h1 { font-size: 1.8em; }
+        .article-body h2 { font-size: 1.5em; }
+        .article-body h3 { font-size: 1.2em; }
+        .article-body img { max-width: 100%; border-radius: 8px; margin: 1em 0; }
+        .article-body a { color: var(--accent); text-decoration: underline; }
+        .article-body blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 1.5em;
+            margin: 1.5em 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .article-body ul, .article-body ol { padding-left: 1.5em; margin: 1em 0; }
+        .article-body li { margin: 0.5em 0; }
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+        .error {
+            text-align: center;
+            padding: 4rem;
+            color: #c53030;
+        }
+        @media (max-width: 768px) {
+            .article-title { font-size: 1.5rem; }
+            .article-body { padding: 1.5rem; }
+            .article-cover { border-radius: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="content">
+        <div class="loading">加载中...</div>
+    </div>
+
+    <script>
+        var SUPABASE_URL = 'https://axrxgqotyjxwjaanjzvg.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4cnhncW90eWp4d2phYW5qenZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5ODEzMjcsImV4cCI6MjA4OTU1NzMyN30.1t6vJFvVa-iXHlc4YXNBBvWiN97Ydd8Zvmy75cCblPw';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var params = new URLSearchParams(window.location.search);
+            var articleId = params.get('id');
+            
+            if (!articleId) {
+                document.getElementById('content').innerHTML = '<div class="error">缺少文章ID</div>';
+                return;
+            }
+            
+            loadArticle(articleId);
+        });
+
+        async function loadArticle(id) {
+            try {
+                var response = await fetch(SUPABASE_URL + '/rest/v1/posts?id=eq.' + id, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+                    }
+                });
+                var articles = await response.json();
+                
+                if (articles.length === 0) {
+                    document.getElementById('content').innerHTML = '<div class="error">文章不存在</div>';
+                    return;
+                }
+                
+                var article = articles[0];
+                renderArticle(article);
+            } catch (error) {
+                console.error('加载文章失败:', error);
+                document.getElementById('content').innerHTML = '<div class="error">加载失败</div>';
+            }
+        }
+
+        function renderArticle(article) {
+            var coverHtml = article.cover_image 
+                ? '<img src="' + article.cover_image + '" alt="" class="article-cover">' 
+                : '';
+            
+            var html = '<a href="index.html" class="back-btn">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>' +
+                '返回首页' +
+                '</a>' +
+                coverHtml +
+                '<div class="article-meta">' +
+                '<span>' + new Date(article.created_at).toLocaleDateString('zh-CN') + '</span>' +
+                '<span class="article-tag">' + (article.tag || '随想') + '</span>' +
+                '</div>' +
+                '<h1 class="article-title">' + article.title + '</h1>' +
+                '<div class="article-body">' + (article.content || article.excerpt || '') + '</div>';
+            
+            document.getElementById('content').innerHTML = html;
+            document.title = article.title + ' - 个人网站';
+        }
+    </script>
+</body>
+</html>

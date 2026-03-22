@@ -424,6 +424,8 @@ document.getElementById('musicForm').addEventListener('submit', async (e) => {
     if (document.getElementById('music-artist').value) data.artist = document.getElementById('music-artist').value;
     if (document.getElementById('music-desc').value) data.description = document.getElementById('music-desc').value;
     if (document.getElementById('music-tag').value) data.tag = document.getElementById('music-tag').value;
+    if (document.getElementById('music-lyrics').value) data.lyrics = document.getElementById('music-lyrics').value;
+    if (document.getElementById('music-cover').value) data.cover_image = document.getElementById('music-cover').value;
     
     try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/music_tracks`, {
@@ -471,6 +473,7 @@ async function loadMusic() {
                     <div class="item-meta">${t.artist || '未知艺术家'} · <span class="tag">${typeMap[t.type] || t.type || '未分类'}</span></div>
                 </div>
                 <div class="item-actions">
+                    <button class="btn" onclick="editMusic('${t.id}')">编辑</button>
                     <button class="btn btn-danger" onclick="deleteMusic('${t.id}')">删除</button>
                 </div>
             </div>
@@ -494,6 +497,65 @@ async function deleteMusic(id) {
         showMessage('error', '删除失败');
     }
 }
+
+// 编辑音乐
+async function editMusic(id) {
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/music_tracks?id=eq.${id}`, {
+            headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+        });
+        const tracks = await response.json();
+        if (tracks.length > 0) {
+            const track = tracks[0];
+            document.getElementById('edit-music-id').value = track.id;
+            document.getElementById('edit-music-title').value = track.title || '';
+            document.getElementById('edit-music-artist').value = track.artist || '';
+            document.getElementById('edit-music-type').value = track.type || 'recent';
+            document.getElementById('edit-music-duration').value = track.duration || '';
+            document.getElementById('edit-music-url').value = track.audio_url || '';
+            document.getElementById('edit-music-desc').value = track.description || '';
+            document.getElementById('edit-music-tag').value = track.tag || '';
+            document.getElementById('edit-music-lyrics').value = track.lyrics || '';
+            document.getElementById('edit-music-cover').value = track.cover_image || '';
+            document.getElementById('editMusicModal').classList.add('active');
+        }
+    } catch (err) {
+        showMessage('error', '加载音乐失败');
+    }
+}
+
+document.getElementById('editMusicForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('edit-music-id').value;
+    const data = {
+        title: document.getElementById('edit-music-title').value,
+        type: document.getElementById('edit-music-type').value,
+        artist: document.getElementById('edit-music-artist').value || null,
+        duration: document.getElementById('edit-music-duration').value ? parseInt(document.getElementById('edit-music-duration').value) : null,
+        audio_url: document.getElementById('edit-music-url').value || null,
+        description: document.getElementById('edit-music-desc').value || null,
+        tag: document.getElementById('edit-music-tag').value || null,
+        lyrics: document.getElementById('edit-music-lyrics').value || null,
+        cover_image: document.getElementById('edit-music-cover').value || null
+    };
+    
+    try {
+        await fetch(`${SUPABASE_URL}/rest/v1/music_tracks?id=eq.${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            },
+            body: JSON.stringify(data)
+        });
+        showMessage('success', '修改成功！');
+        document.getElementById('editMusicModal').classList.remove('active');
+        loadMusic();
+    } catch (err) {
+        showMessage('error', '修改失败');
+    }
+});
 
 // ============ 网站配置 ============
 async function loadSettings() {
