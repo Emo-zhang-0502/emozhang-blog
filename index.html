@@ -4,181 +4,1239 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一个青年人的自白</title>
-    <meta name="description" content="一个青年人的自白 - 用文字记录成长，以青年视角观察世界">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --dark: #1a1a1a;
+            --gray-dark: #333333;
+            --gray: #666666;
+            --gray-light: #999999;
+            --gray-lighter: #cccccc;
+            --off-white: #f5f5f3;
+            --white: #ffffff;
+            --cream: #faf8f5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--off-white); }
+        ::-webkit-scrollbar-thumb { background: var(--gray-light); }
+
+        /* 杂志封面 */
+        .magazine-cover {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+        }
+        .cover-inner { max-width: 900px; margin: 0 auto; }
+        .cover-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-lighter);
+        }
+        .cover-issue {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray-light);
+        }
+        .cover-date {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--gray);
+        }
+        .cover-main { text-align: center; margin-bottom: 4rem; }
+        .cover-title-cn {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        .cover-title-en {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--gray);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+        .cover-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--black);
+            margin: 3rem auto;
+        }
+        .cover-toc { text-align: center; margin-bottom: 4rem; }
+        .toc-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gray-light);
+            margin-bottom: 2rem;
+        }
+        .toc-items {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+        .toc-item { text-align: center; cursor: pointer; transition: opacity 0.3s; }
+        .toc-item:hover { opacity: 0.6; }
+        .toc-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--gray-lighter);
+            margin-bottom: 0.5rem;
+        }
+        .toc-title { font-size: 1rem; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
+        .toc-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.8rem;
+            font-style: italic;
+            color: var(--gray);
+        }
+        .cover-description { max-width: 600px; margin: 0 auto 4rem; text-align: center; }
+        .cover-description p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            line-height: 2;
+            font-weight: 300;
+        }
+        .cover-quote { text-align: center; padding-top: 3rem; border-top: 1px solid var(--gray-lighter); }
+        .cover-quote blockquote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.8;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        .cover-quote cite {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray-light);
+        }
+        .cover-scroll {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-light);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .cover-scroll:hover { color: var(--black); }
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: currentColor;
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 1; transform: scaleY(1); }
+            50% { opacity: 0.5; transform: scaleY(0.7); }
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.5s ease;
+        }
+        .navbar.visible { opacity: 1; transform: translateY(0); }
+        .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; font-weight: 400; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--black); }
+        .nav-number { font-family: 'Cormorant Garamond', serif; font-size: 0.8rem; color: var(--gray-light); }
+
+        /* 通用页面样式 */
+        .page-section { min-height: 100vh; padding: 8rem 0; position: relative; }
+        .section-container { max-width: 1100px; margin: 0 auto; padding: 0 4rem; }
+        .section-header {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 2rem;
+            margin-bottom: 5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--black);
+        }
+        .section-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 300;
+            color: var(--gray-lighter);
+            line-height: 1;
+        }
+        .section-title-group { align-self: end; }
+        .section-title-cn { font-size: 1.6rem; font-weight: 400; letter-spacing: 0.3em; margin-bottom: 0.3rem; }
+        .section-title-en {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--gray);
+            letter-spacing: 0.1em;
+        }
+
+        /* 文字板块 */
+        #writing { background: var(--white); }
+        .writing-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 4rem; align-items: center; }
+        .writing-hero-text { max-width: 500px; }
+        .writing-intro {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.8;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+        .writing-desc { font-size: 0.95rem; color: var(--gray); line-height: 1.9; }
+        .writing-hero-image { position: relative; }
+        .writing-hero-image img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.6s ease;
+        }
+        .writing-hero-image:hover img { filter: grayscale(0%); }
+        .writing-hero-image::after {
+            content: '';
+            position: absolute;
+            inset: 1.5rem;
+            border: 1px solid var(--gray-lighter);
+            pointer-events: none;
+        }
+        .article-list-magazine { display: grid; gap: 0; }
+        .article-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 3rem;
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--gray-lighter);
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+        .article-item:hover { padding-left: 1.5rem; }
+        .article-item:hover .article-item-title { font-style: italic; }
+        .article-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gray-light);
+            letter-spacing: 1px;
+            padding-top: 0.3rem;
+        }
+        .article-content { max-width: 600px; }
+        .article-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        .article-item-title {
+            font-size: 1.2rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 0.8rem;
+            transition: font-style 0.3s;
+        }
+        .article-excerpt { font-size: 0.9rem; color: var(--gray); line-height: 1.8; }
+
+        /* 影像板块 */
+        #visual { background: var(--cream); }
+        .visual-tabs {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--gray-lighter);
+            padding-bottom: 1rem;
+        }
+        .visual-tab {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-light);
+            cursor: pointer;
+padding-bottom: 0.5rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .visual-tab:hover { color: var(--black); }
+        .visual-tab.active { color: var(--black); border-color: var(--black); }
+        .visual-category { display: none; margin-bottom: 4rem; }
+        .visual-category.active { display: block; }
+        .visual-category:last-child { margin-bottom: 0; }
+        .category-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-lighter);
+        }
+        .category-title { font-size: 1.1rem; font-weight: 400; letter-spacing: 0.2em; }
+        .category-count {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--gray);
+        }
+        .visual-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .visual-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--gray-lighter);
+        }
+        .visual-item:first-child { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+        .visual-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: all 0.6s ease;
+        }
+        .visual-item:hover img { filter: grayscale(0%); transform: scale(1.03); }
+        .visual-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+        }
+        .visual-item:hover .visual-overlay { opacity: 1; }
+        .visual-title { font-size: 0.95rem; font-weight: 400; color: var(--white); margin-bottom: 0.3rem; }
+        .visual-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray-lighter);
+        }
+
+        /* 音乐板块 */
+        #music { background: var(--white); }
+        .music-hero { display: grid; grid-template-columns: 300px 1fr; gap: 4rem; margin-bottom: 4rem; align-items: start; }
+        .music-vinyl { position: relative; }
+        .music-vinyl img { width: 100%; aspect-ratio: 1; object-fit: cover; filter: grayscale(100%); }
+        .music-vinyl::after { content: ''; position: absolute; inset: 1.5rem; border: 1px solid var(--gray-lighter); }
+        .music-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+        .music-content p { font-size: 0.95rem; color: var(--gray); line-height: 1.9; margin-bottom: 2rem; }
+        .music-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        .music-section { border-top: 1px solid var(--gray-lighter); padding-top: 2rem; }
+        .music-section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        .music-section-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--gray-light);
+            margin-bottom: 1.5rem;
+        }
+        .playlist-item {
+            display: grid;
+            grid-template-columns: 40px 1fr auto;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-lighter);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-items: center;
+        }
+        .playlist-item:hover { padding-left: 0.5rem; background: var(--off-white); }
+        .playlist-item.playing { background: var(--off-white); }
+        .playlist-number { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--gray-light); }
+        .playlist-item.playing .playlist-number { color: var(--black); }
+        .playlist-info h4 { font-size: 0.95rem; font-weight: 400; margin-bottom: 0.2rem; }
+        .playlist-info p { font-size: 0.8rem; color: var(--gray-light); margin-bottom: 0; }
+        .playlist-duration { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--gray-light); }
+        .creation-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--gray-lighter);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .creation-item:hover { padding-left: 1rem; }
+        .creation-item:hover .creation-title { font-style: italic; }
+        .creation-badge {
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--white);
+            background: var(--black);
+            padding: 0.2rem 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .creation-title { font-size: 1rem; font-weight: 400; margin-bottom: 0.3rem; transition: font-style 0.3s; }
+        .creation-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+        .creation-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.8rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gray-light);
+            letter-spacing: 1px;
+        }
+
+        /* 音频播放器 */
+        .audio-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--dark);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: none;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 1000;
+        }
+        .audio-player.active { display: flex; }
+        .player-info { flex: 1; }
+        .player-title { font-size: 0.9rem; font-weight: 400; margin-bottom: 0.2rem; }
+        .player-artist { font-size: 0.75rem; color: var(--gray-light); }
+        .player-controls { display: flex; align-items: center; gap: 1rem; }
+        .player-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gray-dark);
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        .player-btn:hover { background: var(--gray); }
+        .player-progress { flex: 2; display: flex; align-items: center; gap: 0.8rem; }
+        .player-time { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--gray-light); }
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--gray-dark);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+        .progress-fill { height: 100%; background: var(--white); border-radius: 2px; width: 0%; transition: width 0.1s; }
+        .player-close { background: none; border: none; color: var(--gray-light); cursor: pointer; padding: 0.5rem; }
+        .player-close:hover { color: var(--white); }
+
+        /* 关于板块 */
+        #about { background: var(--dark); color: var(--white); }
+        #about .section-number { color: var(--gray-dark); }
+        #about .section-title-en { color: var(--gray); }
+        #about .section-header { border-color: var(--gray-dark); }
+        .about-content { display: grid; grid-template-columns: 350px 1fr; gap: 5rem; align-items: start; }
+        .about-portrait { position: sticky; top: 8rem; text-align: center; }
+        .about-portrait-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; filter: grayscale(100%) contrast(1.1); margin-bottom: 1.5rem; }
+        .about-portrait-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+        .about-portrait-role {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+        .about-text { padding: 2rem 0; }
+        .about-intro {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-weight: 300;
+            line-height: 1.7;
+            margin-bottom: 3rem;
+        }
+        .about-bio { font-size: 0.95rem; line-height: 2; color: var(--gray-lighter); margin-bottom: 3rem; }
+        .about-bio p { margin-bottom: 1.5rem; }
+        .about-links { border-top: 1px solid var(--gray-dark); padding-top: 2rem; }
+        .about-links-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+        .social-grid { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .social-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid var(--gray-dark);
+            font-size: 0.85rem;
+            color: var(--gray-lighter);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .social-item:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+
+        /* 页脚 */
+        .footer { padding: 4rem; background: var(--black); color: var(--white); text-align: center; }
+        .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 300; letter-spacing: 0.3em; margin-bottom: 1rem; }
+        .footer-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .writing-hero, .music-hero, .about-content { grid-template-columns: 1fr; }
+            .music-sections { grid-template-columns: 1fr; gap: 2rem; }
+            .about-portrait { position: relative; top: 0; max-width: 280px; margin: 0 auto; }
+            .visual-grid { grid-template-columns: repeat(2, 1fr); }
+            .visual-item:first-child { grid-column: span 2; }
+        }
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 1.5rem; }
+            .nav-links { display: none; }
+            .magazine-cover { padding: 3rem 1.5rem; }
+            .toc-items { gap: 2rem; }
+            .section-container { padding: 0 1.5rem; }
+            .section-number { font-size: 3rem; }
+            .section-header { grid-template-columns: 60px 1fr; }
+            .article-item { grid-template-columns: 1fr; gap: 0.5rem; }
+            .visual-grid { grid-template-columns: 1fr; }
+            .visual-item:first-child { grid-column: span 1; }
+            .audio-player { padding: 1rem; flex-wrap: wrap; }
+            .player-progress { order: 3; flex: 1 0 100%; }
+        }
+    </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <header class="header">
-        <div class="container header-inner">
-            <a href="#" class="logo" data-page="home">
-                <span class="logo-mark">"</span>
-                <span class="logo-text">一个青年人的自白</span>
-            </a>
-            <nav class="nav">
-                <button class="nav-link active" data-page="home">首页</button>
-                <button class="nav-link" data-page="photos">图片</button>
-                <button class="nav-link" data-page="videos">视频</button>
-                <button class="nav-link" data-page="archive">归档</button>
-                <button class="nav-link" data-page="about">关于</button>
-            </nav>
-            <button class="menu-toggle" aria-label="菜单">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </header>
-
-    <!-- 移动端菜单 -->
-    <div class="mobile-menu">
-        <button class="mobile-nav-link active" data-page="home">首页</button>
-        <button class="mobile-nav-link" data-page="photos">图片</button>
-        <button class="mobile-nav-link" data-page="videos">视频</button>
-        <button class="mobile-nav-link" data-page="archive">归档</button>
-        <button class="mobile-nav-link" data-page="about">关于</button>
-    </div>
-
-    <!-- 首页 -->
-    <main id="home-page" class="page active">
-        <!-- Hero 区域 -->
-        <section class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <p class="hero-subtitle">欢迎来到</p>
-                    <h1 class="hero-title">一个青年人的自白</h1>
-                    <p class="hero-desc">在这里，我用文字记录成长，以青年人的视角观察这个世界。不迎合，不妥协，只为真诚表达。</p>
-                    <div class="hero-line"></div>
-                </div>
+    <!-- 杂志封面 -->
+    <section class="magazine-cover" id="cover">
+        <div class="cover-inner">
+            <div class="cover-meta">
+                <span class="cover-issue">Vol. 01</span>
+                <span class="cover-date">2024 · 春</span>
             </div>
-        </section>
-
-        <!-- 最新文章 -->
-        <section class="articles">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">最新文章</h2>
-                    <a href="#" class="section-more" data-page="archive">查看全部 →</a>
-                </div>
-                <div class="article-list" id="article-list">
-                    <!-- 文章列表由 JS 动态渲染 -->
-                </div>
+            <div class="cover-main">
+                <h1 class="cover-title-cn">一个青年人的自白</h1>
+                <p class="cover-title-en">Confessions of a Young Soul</p>
             </div>
-        </section>
-    </main>
-
-    <!-- 图片页 -->
-    <main id="photos-page" class="page">
-        <section class="page-header">
-            <div class="container">
-                <h1 class="page-title">影像记录</h1>
-                <p class="page-subtitle">用镜头捕捉那些值得记录的瞬间</p>
-            </div>
-        </section>
-        <section class="photos-content">
-            <div class="container">
-                <div class="photo-grid" id="photo-grid">
-                    <!-- 图片由 JS 动态渲染 -->
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 视频页 -->
-    <main id="videos-page" class="page">
-        <section class="page-header">
-            <div class="container">
-                <h1 class="page-title">影像作品</h1>
-                <p class="page-subtitle">用影像讲述故事</p>
-            </div>
-        </section>
-        <section class="videos-content">
-            <div class="container">
-                <div class="video-list" id="video-list">
-                    <!-- 视频由 JS 动态渲染 -->
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 归档页 -->
-    <main id="archive-page" class="page">
-        <section class="page-header">
-            <div class="container">
-                <h1 class="page-title">文章归档</h1>
-                <p class="page-subtitle">所有的文字，都在这里沉淀</p>
-            </div>
-        </section>
-        <section class="archive-content">
-            <div class="container">
-                <div class="archive-list" id="archive-list">
-                    <!-- 归档列表由 JS 动态渲染 -->
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 文章详情页 -->
-    <main id="article-page" class="page">
-        <article class="article-detail" id="article-detail">
-            <!-- 文章内容由 JS 动态渲染 -->
-        </article>
-    </main>
-
-    <!-- 图片详情弹窗 -->
-    <div class="lightbox" id="lightbox">
-        <button class="lightbox-close" onclick="closeLightbox()">×</button>
-        <div class="lightbox-content">
-            <img id="lightbox-img" src="" alt="">
-            <div class="lightbox-info">
-                <h3 id="lightbox-title"></h3>
-                <p id="lightbox-desc"></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 视频弹窗 -->
-    <div class="videobox" id="videobox">
-        <button class="videobox-close" onclick="closeVideobox()">×</button>
-        <div class="videobox-content">
-            <div id="video-player"></div>
-        </div>
-    </div>
-
-    <!-- 关于页 -->
-    <main id="about-page" class="page">
-        <section class="about-header">
-            <div class="container">
-                <div class="about-avatar">
-                    <div class="avatar-placeholder">青</div>
-                </div>
-                <h1 class="about-name" id="about-name">一个青年人</h1>
-                <p class="about-tagline" id="about-tagline">记录者 / 思考者 / 表达者</p>
-            </div>
-        </section>
-        <section class="about-content">
-            <div class="container">
-                <div class="about-text" id="about-text">
-                    <!-- 自我介绍由JS动态加载 -->
-                </div>
-                <div class="about-links">
-                    <h3>找到我</h3>
-                    <div class="social-links" id="social-links">
-                        <!-- 社交链接由 JS 动态渲染 -->
+            <div class="cover-divider"></div>
+            <div class="cover-toc">
+                <p class="toc-label">目录 Contents</p>
+                <div class="toc-items">
+                    <div class="toc-item" onclick="scrollToSection('writing')">
+                        <p class="toc-number">01</p>
+                        <p class="toc-title">文字</p>
+                        <p class="toc-subtitle">Writing</p>
+                    </div>
+                    <div class="toc-item" onclick="scrollToSection('visual')">
+                        <p class="toc-number">02</p>
+                        <p class="toc-title">影像</p>
+                        <p class="toc-subtitle">Visual</p>
+                    </div>
+                    <div class="toc-item" onclick="scrollToSection('music')">
+                        <p class="toc-number">03</p>
+                        <p class="toc-title">音乐</p>
+                        <p class="toc-subtitle">Music</p>
+                    </div>
+                    <div class="toc-item" onclick="scrollToSection('about')">
+                        <p class="toc-number">04</p>
+                        <p class="toc-title">关于</p>
+                        <p class="toc-subtitle">About</p>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+            <div class="cover-description">
+                <p>用文字记录成长，用影像捕捉瞬间，用音乐抚慰灵魂。<br>在这里，我与自己对话，与世界对话。</p>
+            </div>
+            <div class="cover-quote">
+                <blockquote>"不迎合，不妥协，只为真诚表达。"</blockquote>
+                <cite>— 一个青年人</cite>
+            </div>
+        </div>
+        <div class="cover-scroll" onclick="scrollToSection('writing')">
+            <span>向下阅读</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo">青年人的自白</div>
+        <ul class="nav-links">
+            <li><a href="#writing">文字</a></li>
+            <li><a href="#visual">影像</a></li>
+            <li><a href="#music">音乐</a></li>
+            <li><a href="#about">关于</a></li>
+        </ul>
+        <span class="nav-number">01</span>
+    </nav>
+
+    <!-- 文字板块 -->
+    <section class="page-section" id="writing">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <div class="section-title-group">
+                    <h2 class="section-title-cn">文字</h2>
+                    <p class="section-title-en">Writing</p>
+                </div>
+            </div>
+            <div class="writing-hero">
+                <div class="writing-hero-text">
+                    <p class="writing-intro">"写作是灵魂的呼吸，是思想在纸上的舞蹈。"</p>
+                    <p class="writing-desc">文字是我思考世界的方式。每一篇文章都是一次自我对话，我在这里记录成长、分享感悟、探索生活的意义。</p>
+                </div>
+                <div class="writing-hero-image">
+                    <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600" alt="Writing">
+                </div>
+            </div>
+            <div class="article-list-magazine" id="article-list"></div>
+        </div>
+    </section>
+
+    <!-- 影像板块 -->
+    <section class="page-section" id="visual">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <div class="section-title-group">
+                    <h2 class="section-title-cn">影像</h2>
+                    <p class="section-title-en">Visual</p>
+                </div>
+            </div>
+            <div class="visual-intro" style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 300; font-style: italic; color: var(--dark); margin-bottom: 3rem; text-align: center;">
+                "用镜头捕捉瞬间，用影像讲述故事。"
+            </div>
+            <div class="visual-tabs">
+                <span class="visual-tab active" data-category="photography">摄影作品</span>
+                <span class="visual-tab" data-category="video">视频作品</span>
+                <span class="visual-tab" data-category="film">短片作品</span>
+            </div>
+            <div class="visual-category active" id="visual-photography">
+                <div class="category-header">
+                    <h3 class="category-title">摄影作品</h3>
+                    <span class="category-count">Photography</span>
+                </div>
+                <div class="visual-grid" id="photo-grid-photography"></div>
+            </div>
+            <div class="visual-category" id="visual-video">
+                <div class="category-header">
+                    <h3 class="category-title">视频作品</h3>
+                    <span class="category-count">Video</span>
+                </div>
+                <div class="visual-grid" id="photo-grid-video"></div>
+            </div>
+            <div class="visual-category" id="visual-film">
+                <div class="category-header">
+                    <h3 class="category-title">短片作品</h3>
+                    <span class="category-count">Film</span>
+                </div>
+                <div class="visual-grid" id="photo-grid-film"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 音乐板块 -->
+    <section class="page-section" id="music">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <div class="section-title-group">
+                    <h2 class="section-title-cn">音乐</h2>
+                    <p class="section-title-en">Music</p>
+                </div>
+            </div>
+            <div class="music-intro" style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 300; font-style: italic; color: var(--dark); margin-bottom: 3rem; text-align: center;">
+                "在旋律中寻找共鸣，让音符承载情感。"
+            </div>
+            <div class="music-hero">
+                <div class="music-vinyl">
+                    <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=500" alt="Music">
+                </div>
+                <div class="music-content">
+                    <h3>"在旋律中寻找共鸣，让音符承载情感。"</h3>
+                    <p>音乐是我情感的出口。每首歌都承载着一段记忆，每一段旋律都是一次心灵的旅行。无论是独自聆听还是与人分享，音乐让生活变得更加丰富。</p>
+                </div>
+            </div>
+            <div class="music-sections">
+                <div class="music-section">
+                    <p class="music-section-title">最近在听</p>
+                    <p class="music-section-subtitle">Recent Plays</p>
+                    <div id="playlist-recent"></div>
+                </div>
+                <div class="music-section">
+                    <p class="music-section-title">推荐歌单</p>
+                    <p class="music-section-subtitle">Playlist</p>
+                    <div id="playlist-favorites"></div>
+                </div>
+            </div>
+            <div class="music-section" style="margin-top: 4rem;">
+                <p class="music-section-title">我的创作</p>
+                <p class="music-section-subtitle">Original Works</p>
+                <div id="playlist-creations"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于板块 -->
+    <section class="page-section" id="about">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <div class="section-title-group">
+                    <h2 class="section-title-cn">关于</h2>
+                    <p class="section-title-en">About</p>
+                </div>
+            </div>
+            <div class="about-content">
+                <div class="about-portrait">
+                    <img src="https://i.imgur.com/agtT4SJ.jpeg" alt="Portrait" class="about-portrait-img about-image">
+                    <p class="about-portrait-name">青</p>
+                    <p class="about-portrait-role">记录者 / 思考者 / 表达者</p>
+                </div>
+                <div class="about-text">
+                    <p class="about-intro-title" style="font-size: 1.4rem; font-weight: 400; margin-bottom: 1.5rem;">关于我</p>
+                    <p class="about-intro-text">一个普通又不普通的青年人。</p>
+                    <div class="about-bio">
+                        <p>在这个喧嚣的世界里，我选择用文字、影像，音乐来表达自己。</p>
+                        <p>文字是我思考的方式，影像是我观察的视角，音乐是我情感的出口。三者交织，构成我理解世界、表达自我的方式。</p>
+                        <p>这里是我的自白空间，也是我与自己对话的地方。每一篇文章、每一张照片、每一段旋律，都是我生命的一个切片。</p>
+                        <p>如果你也是同路人，欢迎来这里与我交流。在这里，我们一起成长，一起思考，一起表达。</p>
+                    </div>
+                    <div class="about-links">
+                        <p class="about-links-title">找到我</p>
+                        <div class="social-grid" id="social-links"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- 页脚 -->
     <footer class="footer">
-        <div class="container">
-            <p class="footer-text">© 2026 一个青年人的自白 · 用文字记录成长</p>
-        </div>
+        <p class="footer-logo">一个青年人的自白</p>
+        <p class="footer-text">© 2024 Youth Confession · 用创作表达自我</p>
     </footer>
 
-    <script src="app.js"></script>
+    <!-- 音频播放器 -->
+    <div class="audio-player" id="audio-player">
+        <div class="player-info">
+            <p class="player-title" id="player-title">正在播放</p>
+            <p class="player-artist" id="player-artist">-</p>
+        </div>
+        <div class="player-controls">
+            <button class="player-btn" onclick="togglePlay()">
+                <svg id="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="player-progress">
+            <span class="player-time" id="player-current">0:00</span>
+            <div class="progress-bar" onclick="seekAudio(event)">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <span class="player-time" id="player-duration">0:00</span>
+        </div>
+        <button class="player-close" onclick="closePlayer()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+    </div>
+    <audio id="audio-element"></audio>
+
+    <script>
+        const SUPABASE_URL = 'https://axrxgqotyjxwjaanjzvg.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4cnhncW90eWp4d2phYW5qenZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5ODEzMjcsImV4cCI6MjA4OTU1NzMyN30.1t6vJFvVa-iXHlc4YXNBBvWiN97Ydd8Zvmy75cCblPw';
+        let currentAudio = null;
+        let isPlaying = false;
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('visible', window.scrollY > window.innerHeight * 0.3);
+        });
+
+        document.querySelectorAll('.visual-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.visual-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.visual-category').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('visual-' + tab.dataset.category).classList.add('active');
+            });
+        });
+
+        async function loadSiteConfig() {
+            try {
+                const configData = await fetch(`${SUPABASE_URL}/rest/v1/site_config`, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                }).then(r => r.json());
+                const config = {};
+                if (Array.isArray(configData)) {
+                    configData.forEach(item => config[item.key] = item.value);
+                }
+                if (config.site_title) {
+                    document.querySelector('.cover-title-cn').textContent = config.site_title;
+                    document.querySelector('.nav-logo').textContent = config.site_title.replace('一个青年人的自白', '青年人的自白');
+                }
+                if (config.site_subtitle) document.querySelector('.cover-title-en').textContent = config.site_subtitle;
+                if (config.cover_issue) document.querySelector('.cover-issue').textContent = config.cover_issue;
+                if (config.cover_date) document.querySelector('.cover-date').textContent = config.cover_date;
+                if (config.toc_label) document.querySelector('.toc-label').textContent = config.toc_label;
+                if (config.cover_description) {
+                    const descEl = document.querySelector('.cover-description p');
+                    if (descEl) descEl.innerHTML = config.cover_description.replace(/\n/g, '<br>');
+                }
+                if (config.cover_quote) {
+                    const quoteEl = document.querySelector('.cover-quote blockquote');
+                    if (quoteEl) quoteEl.textContent = `"${config.cover_quote}"`;
+                }
+                if (config.cover_background) {
+                    const cover = document.querySelector('.magazine-cover');
+                    if (cover) cover.style.backgroundImage = `url(${config.cover_background})`;
+                }
+
+                const sectionsData = await fetch(`${SUPABASE_URL}/rest/v1/sections?order=display_order.asc`, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                }).then(r => r.json());
+
+                if (Array.isArray(sectionsData)) {
+                    sectionsData.forEach(s => {
+                        if (s.section_key === 'writing') {
+                            if (s.title) document.querySelector('#writing .section-title-cn').textContent = s.title;
+                            if (s.subtitle) document.querySelector('#writing .section-title-en').textContent = s.subtitle;
+                            if (s.image_url) {
+                                const heroImg = document.querySelector('#writing .writing-hero-image img');
+                                if (heroImg) heroImg.src = s.image_url;
+                            }
+                            if (config.writing_intro) {
+                                const introEl = document.querySelector('#writing .writing-intro');
+                                if (introEl) introEl.textContent = config.writing_intro;
+                            }
+                        } else if (s.section_key === 'visual') {
+                            if (s.title) document.querySelector('#visual .section-title-cn').textContent = s.title;
+                            if (s.subtitle) document.querySelector('#visual .section-title-en').textContent = s.subtitle;
+                            if (config.visual_intro) {
+                                const introEl = document.querySelector('#visual .visual-intro');
+                                if (introEl) introEl.textContent = config.visual_intro;
+                            }
+                        } else if (s.section_key === 'music') {
+                            if (s.title) document.querySelector('#music .section-title-cn').textContent = s.title;
+                            if (s.subtitle) document.querySelector('#music .section-title-en').textContent = s.subtitle;
+                            if (config.music_intro) {
+                                const introEl = document.querySelector('#music .music-intro');
+                                if (introEl) introEl.textContent = config.music_intro;
+                            }
+                        } else if (s.section_key === 'about') {
+                            if (s.title) document.querySelector('#about .section-title-cn').textContent = s.title;
+                            if (s.subtitle) document.querySelector('#about .section-title-en').textContent = s.subtitle;
+                            if (s.image_url) {
+                                const aboutImg = document.querySelector('#about .about-image');
+                                if (aboutImg) aboutImg.src = s.image_url;
+                            }
+                        }
+                    });
+                }
+
+                const ipData = await fetch(`${SUPABASE_URL}/rest/v1/ip_config?limit=1`, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                }).then(r => r.json());
+
+                if (Array.isArray(ipData) && ipData.length > 0) {
+                    const ip = ipData[0];
+                    const portraitName = document.querySelector('.about-portrait-name');
+                    const portraitRole = document.querySelector('.about-portrait-role');
+                    const portraitImg = document.querySelector('.about-portrait-img');
+                    if (ip.name && portraitName) portraitName.textContent = ip.name;
+                    if (ip.bio && portraitRole) portraitRole.textContent = ip.bio;
+                    if (ip.image_url && portraitImg) portraitImg.src = ip.image_url;
+                }
+
+                if (config.about_intro_title) {
+                    const titleEl = document.querySelector('#about .about-intro-title');
+                    if (titleEl) titleEl.textContent = config.about_intro_title;
+                }
+                if (config.about_intro_text) {
+                    const textEl = document.querySelector('#about .about-intro-text');
+                    if (textEl) textEl.innerHTML = config.about_intro_text.replace(/\n/g, '<br>');
+                }
+                if (config.about_image) {
+                    const imgEl = document.querySelector('#about .about-image');
+                    if (imgEl) imgEl.src = config.about_image;
+                }
+
+                if (config.footer_text) document.querySelector('.footer-logo').textContent = config.footer_text;
+                if (config.footer_copyright) {
+                    const footerText = document.querySelector('.footer-text');
+                    if (footerText) footerText.textContent = config.footer_copyright + ' Youth Confession · 用创作表达自我';
+                }
+                if (config.site_title) document.title = config.site_title;
+            } catch (err) {
+                console.error('加载网站配置失败:', err);
+            }
+        }
+
+        async function loadData() {
+            await Promise.all([
+                loadSiteConfig(),
+                loadArticles(),
+                loadPhotos(),
+                loadMusic(),
+                loadSocialLinks()
+            ]);
+        }
+
+        async function loadArticles() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?status=eq.published&order=created_at.desc&limit=10`, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                const articles = await response.json();
+                renderArticles(articles);
+            } catch (error) {
+                console.error('加载文章失败:', error);
+                renderArticles([
+                    { id: 1, title: '二十岁，我开始学会与自己和解', tag: '随想', created_at: '2024-03-15', excerpt: '曾经以为成长是不断追逐，后来才明白，真正的成熟是学会接纳不完美的自己……' },
+                    { id: 2, title: '在王家卫的电影里，我看到了自己的影子', tag: '影评', created_at: '2024-03-08', excerpt: '那些失焦的画面，那些缓慢的独白，那些关于时间和记忆的隐喻……' },
+                    { id: 3, title: '凌晨三点的城市', tag: '诗歌', created_at: '2024-02-28', excerpt: '路灯还亮着，像失眠的眼睛。我站在窗前，听这座城市呼吸的声音。' },
+                    { id: 4, title: '关于创作的一些思考', tag: '随想', created_at: '2024-02-20', excerpt: '为什么开始创作？创作对我意味着什么？这篇文章是我的创作自白……' }
+                ]);
+            }
+        }
+
+        function renderArticles(articles) {
+            const container = document.getElementById('article-list');
+            container.innerHTML = articles.map(a => `
+                <article class="article-item" onclick="viewArticle('${a.id}', ${JSON.stringify(a).replace(/"/g, '&quot;')})">
+                    <span class="article-date">${new Date(a.created_at).toLocaleDateString('zh-CN')}</span>
+                    <div class="article-content">
+                        <p class="article-tag">${a.tag || a.tags || '随想'}</p>
+                        <h3 class="article-item-title">${a.title}</h3>
+                        <p class="article-excerpt">${a.excerpt || ''}</p>
+                        ${a.cover_image ? `<img src="${a.cover_image}" alt="${a.title}" style="max-width:100%;max-height:300px;object-fit:cover;margin-top:1rem;border:1px solid var(--gray-lighter);" onerror="this.style.display='none'">` : ''}
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function viewArticle(id, article) {
+            const modal = document.createElement('div');
+            modal.id = 'article-modal';
+            modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:2000;overflow-y:auto;padding:2rem;';
+            modal.innerHTML = `
+                <button onclick="closeArticleModal()" style="position:fixed;top:1rem;right:1rem;background:none;border:none;color:white;font-size:2rem;cursor:pointer;z-index:2001;">×</button>
+                <div style="max-width:700px;margin:2rem auto;background:white;padding:3rem;">
+                    ${article.cover_image ? `<img src="${article.cover_image}" style="width:100%;max-height:400px;object-fit:cover;margin-bottom:2rem;">` : ''}
+                    <p style="font-family:'Space Mono',monospace;font-size:0.7rem;color:#999;margin-bottom:1rem;">${new Date(article.created_at).toLocaleDateString('zh-CN')} · ${article.tag || article.tags || '随想'}</p>
+                    <h1 style="font-size:2rem;font-weight:400;margin-bottom:2rem;line-height:1.4;">${article.title}</h1>
+                    <div style="font-size:1rem;line-height:2;white-space:pre-wrap;">${article.content || article.excerpt || ''}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeArticleModal() {
+            const modal = document.getElementById('article-modal');
+            if (modal) modal.remove();
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeArticleModal();
+        });
+
+        async function loadPhotos() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/photos?order=created_at.desc`, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                const photos = await response.json();
+                const photography = photos.filter(p => p.category === '摄影' || !p.category);
+                const video = photos.filter(p => p.category === '视频');
+                const film = photos.filter(p => p.category === '短片');
+                renderPhotoGrid('photo-grid-photography', photography);
+                renderPhotoGrid('photo-grid-video', video);
+                renderPhotoGrid('photo-grid-film', film);
+            } catch (error) {
+                console.error('加载图片失败:', error);
+                renderPhotoGrid('photo-grid-photography', [
+                    { image_url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800', title: '山与云', description: '2024 · 西藏' },
+                    { image_url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600', title: '晨雾', description: '2024 · 云南' },
+                    { image_url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600', title: '远山', description: '2024 · 新疆' }
+                ]);
+            }
+        }
+
+        function renderPhotoGrid(containerId, photos) {
+            const container = document.getElementById(containerId);
+            if (!photos || photos.length === 0) {
+                container.innerHTML = '<p style="color: var(--gray-light); padding: 2rem;">暂无内容</p>';
+                return;
+            }
+            container.innerHTML = photos.map(p => `
+                <div class="visual-item" onclick="viewPhoto('${p.image_url}')">
+                    <img src="${p.image_url}" alt="${p.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'">
+                    <div class="visual-overlay">
+                        <p class="visual-title">${p.title || ''}</p>
+                        <p class="visual-meta">${p.description || ''}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewPhoto(url) {
+            window.open(url, '_blank');
+        }
+
+        async function loadMusic() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/music_tracks?order=created_at.desc`, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                const tracks = await response.json();
+                const recent = tracks.filter(t => t.type === 'recent').slice(0, 5);
+                const favorites = tracks.filter(t => t.type === 'favorite').slice(0, 5);
+                const creations = tracks.filter(t => t.type === 'creation');
+                renderPlaylist('playlist-recent', recent);
+                renderPlaylist('playlist-favorites', favorites);
+                renderCreations('playlist-creations', creations);
+            } catch (error) {
+                console.error('加载音乐失败:', error);
+                renderPlaylist('playlist-recent', [
+                    { id: 1, title: 'City of Stars', artist: 'La La Land OST', duration: '2:27', audio_url: '' },
+                    { id: 2, title: 'Nuvole Bianche', artist: 'Ludovico Einaudi', duration: '5:51', audio_url: '' },
+                    { id: 3, title: 'The Night We Met', artist: 'Lord Huron', duration: '3:32', audio_url: '' }
+                ]);
+                renderCreations('playlist-creations', [
+                    { id: 1, title: '《凌晨》', description: '一首关于深夜思绪的AI生成音乐，融合电子与氛围音乐元素。', tag: 'AI', duration: '3:42', audio_url: '' },
+                    { id: 2, title: '《独行》', description: '在独自旅行中创作的音乐，记录那些在路上的思考与感受。', tag: '原创', duration: '4:15', audio_url: '' }
+                ]);
+            }
+        }
+
+        function renderPlaylist(containerId, tracks) {
+            const container = document.getElementById(containerId);
+            if (!tracks || tracks.length === 0) {
+                container.innerHTML = '<p style="color: var(--gray-light); padding: 1rem 0;">暂无内容</p>';
+                return;
+            }
+            container.innerHTML = tracks.map((t, i) => `
+                <div class="playlist-item" onclick="playTrack(${JSON.stringify(t).replace(/"/g, '&quot;')})">
+                    <span class="playlist-number">0${i + 1}</span>
+                    <div class="playlist-info">
+                        <h4>${t.title}</h4>
+                        <p>${t.artist || ''}</p>
+                    </div>
+                    <span class="playlist-duration">${t.duration || '--:--'}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderCreations(containerId, creations) {
+            const container = document.getElementById(containerId);
+            if (!creations || creations.length === 0) {
+                container.innerHTML = '<p style="color: var(--gray-light); padding: 1.5rem 0;">暂无创作</p>';
+                return;
+            }
+            container.innerHTML = creations.map(c => `
+                <div class="creation-item" onclick="playTrack(${JSON.stringify(c).replace(/"/g, '&quot;')})">
+                    <span class="creation-badge">${c.tag || '创作'}</span>
+                    <h4 class="creation-title">${c.title}</h4>
+                    <p class="creation-desc">${c.description || ''}</p>
+                    <div class="creation-meta">
+                        <span>${new Date(c.created_at || Date.now()).toLocaleDateString('zh-CN')}</span>
+                        <span>${c.duration || '--:--'}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function playTrack(track) {
+            const audio = document.getElementById('audio-element');
+            const player = document.getElementById('audio-player');
+            const titleEl = document.getElementById('player-title');
+            const artistEl = document.getElementById('player-artist');
+            currentAudio = track;
+            titleEl.textContent = track.title;
+            artistEl.textContent = track.artist || track.description || '';
+            if (track.audio_url) {
+                audio.src = track.audio_url;
+                audio.play();
+                isPlaying = true;
+                updatePlayIcon();
+            } else {
+                alert('音频链接暂未配置，请在后台添加音频文件');
+                return;
+            }
+            player.classList.add('active');
+        }
+
+        function togglePlay() {
+            const audio = document.getElementById('audio-element');
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+            isPlaying = !isPlaying;
+            updatePlayIcon();
+        }
+
+        function updatePlayIcon() {
+            const icon = document.getElementById('play-icon');
+            icon.innerHTML = isPlaying 
+                ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
+                : '<path d="M8 5v14l11-7z"/>';
+        }
+
+        function closePlayer() {
+            const audio = document.getElementById('audio-element');
+            audio.pause();
+            audio.src = '';
+            isPlaying = false;
+            document.getElementById('audio-player').classList.remove('active');
+        }
+
+        function seekAudio(event) {
+            const audio = document.getElementById('audio-element');
+            const bar = event.currentTarget;
+            const rect = bar.getBoundingClientRect();
+            const percent = (event.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+        }
+
+        document.getElementById('audio-element').addEventListener('timeupdate', () => {
+            const audio = document.getElementById('audio-element');
+            const percent = (audio.currentTime / audio.duration) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('player-current').textContent = formatTime(audio.currentTime);
+        });
+
+        document.getElementById('audio-element').addEventListener('loadedmetadata', () => {
+            document.getElementById('player-duration').textContent = formatTime(document.getElementById('audio-element').duration);
+        });
+
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        async function loadSocialLinks() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/social_links?order=sort_order.asc`, {
+                    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                const links = await response.json();
+                renderSocialLinks(links);
+            } catch (error) {
+                console.error('加载社交链接失败:', error);
+            }
+        }
+
+        function renderSocialLinks(links) {
+            const container = document.getElementById('social-links');
+            if (!links || links.length === 0) return;
+            container.innerHTML = links.map(l => `
+                <a href="${l.url}" class="social-item" target="_blank">${l.display_name || l.platform}</a>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
 </body>
 </html>

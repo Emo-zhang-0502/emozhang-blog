@@ -3,245 +3,2303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理登录 - 一个青年人的自白</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>后台管理 - 一个青年人的自白</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --color-bg: #FAFAF8;
-            --color-card: #FFFFFF;
-            --color-text: #2D2D2D;
-            --color-text-secondary: #6B6B6B;
-            --color-accent: #E07A3A;
-            --color-accent-light: #FDF4EE;
-            --color-border: #E8E6E3;
-            --color-error: #E53E3E;
+            --black: #0a0a0a;
+            --dark: #1a1a1a;
+            --gray-dark: #333333;
+            --gray: #666666;
+            --gray-light: #999999;
+            --gray-lighter: #cccccc;
+            --off-white: #f5f5f3;
+            --white: #ffffff;
+            --cream: #faf8f5;
+            --accent: #8b7355;
         }
-        
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Noto Sans SC', sans-serif;
-            background: var(--color-bg);
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            background: var(--off-white);
+            color: var(--black);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        /* 滚动条 */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--off-white); }
+        ::-webkit-scrollbar-thumb { background: var(--gray-light); }
+
+        /* ========================================
+           登录页面
+           ======================================== */
+        .login-page {
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            padding: 2rem;
         }
-        
+
         .login-container {
+            background: var(--white);
+            padding: 4rem;
             width: 100%;
             max-width: 400px;
-            padding: 20px;
+            border: 1px solid var(--gray-lighter);
         }
-        
-        .login-card {
-            background: var(--color-card);
-            border-radius: 16px;
-            padding: 48px 40px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-        }
-        
+
         .login-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-lighter);
         }
-        
+
         .login-title {
-            font-family: 'Noto Serif SC', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--color-text);
-            margin-bottom: 8px;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
         }
-        
+
         .login-subtitle {
-            font-size: 14px;
-            color: var(--color-text-secondary);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--gray);
         }
-        
+
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 1.5rem;
         }
-        
+
         .form-label {
             display: block;
-            font-size: 14px;
-            color: var(--color-text-secondary);
-            margin-bottom: 8px;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
         }
-        
+
         .form-input {
             width: 100%;
-            padding: 14px 16px;
-            font-size: 15px;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            background: var(--color-bg);
-            transition: all 0.3s;
+            padding: 0.75rem 1rem;
+            font-family: inherit;
+            font-size: 1rem;
+            border: 1px solid var(--gray-lighter);
+            background: var(--cream);
+            transition: border-color 0.3s;
         }
-        
+
         .form-input:focus {
             outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px var(--color-accent-light);
+            border-color: var(--black);
         }
-        
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 500;
-            color: #fff;
-            background: var(--color-accent);
-            border: none;
-            border-radius: 8px;
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid var(--black);
+            background: var(--black);
+            color: var(--white);
             cursor: pointer;
             transition: all 0.3s;
         }
-        
-        .login-btn:hover {
-            background: #c96a2f;
-            transform: translateY(-1px);
+
+        .btn:hover {
+            background: var(--white);
+            color: var(--black);
         }
-        
-        .login-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
+
+        .btn-outline {
+            background: transparent;
+            color: var(--black);
         }
-        
-        .error-message {
-            display: none;
-            padding: 12px 16px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: var(--color-error);
-            background: #FFF5F5;
-            border: 1px solid #FED7D7;
-            border-radius: 8px;
+
+        .btn-outline:hover {
+            background: var(--black);
+            color: var(--white);
         }
-        
-        .error-message.show {
-            display: block;
-        }
-        
-        .back-link {
-            display: block;
+
+        .btn-block {
+            width: 100%;
             text-align: center;
-            margin-top: 24px;
-            font-size: 14px;
-            color: var(--color-text-secondary);
-            text-decoration: none;
         }
-        
-        .back-link:hover {
-            color: var(--color-accent);
+
+        .login-error {
+            color: #c00;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* ========================================
+           管理后台布局
+           ======================================== */
+        .admin-layout {
+            display: none;
+        }
+
+        .admin-layout.active {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            border-right: 1px solid var(--gray-lighter);
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--gray-lighter);
+        }
+
+        .sidebar-logo {
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.8rem;
+            font-style: italic;
+            color: var(--gray);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            font-size: 0.85rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 2px solid transparent;
+        }
+
+        .nav-item:hover {
+            color: var(--black);
+            background: var(--cream);
+        }
+
+        .nav-item.active {
+            color: var(--black);
+            border-left-color: var(--black);
+            background: var(--cream);
+        }
+
+        .nav-icon {
+            width: 20px;
+            margin-right: 1rem;
+            opacity: 0.6;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--gray-lighter);
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid var(--gray-lighter);
+            background: transparent;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            border-color: var(--black);
+            color: var(--black);
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 3rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-lighter);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--gray);
+        }
+
+        /* 内容面板 */
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        /* 卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--gray-lighter);
+            padding: 1.5rem;
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--gray);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .card-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.25rem 0.5rem;
+            background: var(--off-white);
+            color: var(--gray);
+        }
+
+        .card-meta {
+            font-size: 0.8rem;
+            color: var(--gray-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-content {
+            font-size: 0.9rem;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-lighter);
+        }
+
+        .card-btn {
+            flex: 1;
+            padding: 0.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 1px solid var(--gray-lighter);
+            background: transparent;
+color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .card-btn:hover {
+            border-color: var(--black);
+            color: var(--black);
+        }
+
+        .card-btn.danger:hover {
+            border-color: #c00;
+            color: #c00;
+        }
+
+        /* 表单区块 */
+        .form-section {
+            background: var(--white);
+            border: 1px solid var(--gray-lighter);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-section-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-lighter);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        textarea.form-input {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-help {
+            font-size: 0.75rem;
+            color: var(--gray-light);
+            margin-top: 0.5rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-lighter);
+        }
+
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: none;
+            background: transparent;
+            color: var(--gray);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            color: var(--black);
+        }
+
+        .tab-btn.active {
+            color: var(--black);
+            border-bottom-color: var(--black);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* 媒体预览 */
+        .media-preview {
+            width: 100%;
+            height: 200px;
+            background: var(--off-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .media-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .media-placeholder {
+            color: var(--gray-light);
+            font-size: 0.85rem;
+        }
+
+        /* 音频列表 */
+        .audio-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .audio-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid var(--gray-lighter);
+            transition: border-color 0.3s;
+        }
+
+        .audio-item:hover {
+            border-color: var(--gray);
+        }
+
+        .audio-info {
+            flex: 1;
+        }
+
+        .audio-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .audio-type {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        .audio-source {
+            font-size: 0.75rem;
+            color: var(--gray-light);
+            margin-top: 0.25rem;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .audio-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gray-lighter);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .audio-btn:hover {
+            border-color: var(--black);
+        }
+
+        .audio-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* 消息提示 */
+        .message {
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            border-left: 3px solid;
+        }
+
+        .message.success {
+            background: #f0f9f0;
+            border-color: #4a4;
+            color: #2a2;
+        }
+
+        .message.error {
+            background: #fff5f5;
+            border-color: #c44;
+            color: #a22;
+        }
+
+        /* 分类标签 */
+        .category-tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            background: var(--off-white);
+            color: var(--gray);
+            margin-right: 0.5rem;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+            .main-content {
+                margin-left: 220px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+        }
+
+        /* 加载动画 */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--gray-lighter);
+            border-top-color: var(--black);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 模态框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--white);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-lighter);
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gray-lighter);
+            background: transparent;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            border-color: var(--black);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-lighter);
+        }
+
+        .modal-footer .btn {
+            flex: 1;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-card">
+    <!-- 登录页面 -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
             <div class="login-header">
-                <h1 class="login-title">后台管理</h1>
-                <p class="login-subtitle">一个青年人的自白</p>
+                <h1 class="login-title">一个青年人的自白</h1>
+                <p class="login-subtitle">后台管理系统</p>
             </div>
-            
-            <div class="error-message" id="error-message"></div>
-            
-            <form id="login-form">
+            <form id="loginForm">
                 <div class="form-group">
-                    <label class="form-label">用户名</label>
-                    <input type="text" class="form-input" id="username" placeholder="请输入用户名" required>
+                    <label class="form-label">管理员账号</label>
+                    <input type="text" id="loginUsername" class="form-input" placeholder="请输入账号" required>
                 </div>
-                
                 <div class="form-group">
                     <label class="form-label">密码</label>
-                    <input type="password" class="form-input" id="password" placeholder="请输入密码" required>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="请输入密码" required>
                 </div>
-                
-                <button type="submit" class="login-btn" id="login-btn">登录</button>
+                <button type="submit" class="btn btn-block">登录</button>
+                <div id="loginError" class="login-error"></div>
             </form>
-            
-            <a href="index.html" class="back-link">← 返回网站</a>
         </div>
     </div>
-    
+
+    <!-- 管理后台 -->
+    <div id="adminLayout" class="admin-layout">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">一个青年人的自白</div>
+                <div class="sidebar-tagline">Admin Panel</div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-panel="articles">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4h16v16H4z M8 8h8 M8 12h8 M8 16h4"/>
+                    </svg>
+                    文章管理
+                </div>
+                <div class="nav-item" data-panel="visual">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <path d="M21 15l-5-5L5 21"/>
+                    </svg>
+                    影像管理
+                </div>
+                <div class="nav-item" data-panel="music">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 18V5l12-2v13"/>
+                        <circle cx="6" cy="18" r="3"/>
+                        <circle cx="18" cy="16" r="3"/>
+                    </svg>
+                    音乐管理
+                </div>
+                <div class="nav-item" data-panel="about">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="7" r="4"/>
+                        <path d="M5 21v-2a7 7 0 0114 0v2"/>
+                    </svg>
+                    个人设置
+                </div>
+                <div class="nav-item" data-panel="account">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    账户设置
+                </div>
+                <div class="nav-item" data-panel="siteconfig">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                    </svg>
+                    网站配置
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="logout()">退出登录</button>
+            </div>
+        </aside>
+
+        <!-- 主内容 -->
+        <main class="main-content">
+            <!-- 网站配置 -->
+            <section id="panel-siteconfig" class="panel">
+                <div class="page-header">
+                    <h1 class="page-title">网站配置</h1>
+                    <p class="page-subtitle">修改前台页面显示的内容</p>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">网站基本信息</h3>
+                    <form id="siteBasicForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">网站大标题</label>
+                                <input type="text" id="cfg-site_title" class="form-input" placeholder="如: 一个青年人的自白">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">英文副标题</label>
+                                <input type="text" id="cfg-site_subtitle" class="form-input" placeholder="如: Confessions of a Young Soul">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">封面期号</label>
+                                <input type="text" id="cfg-cover_issue" class="form-input" placeholder="如: Vol. 01">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">封面日期</label>
+                                <input type="text" id="cfg-cover_date" class="form-input" placeholder="如: 2024 · 春">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">封面背景图片URL（可留空）</label>
+                            <input type="url" id="cfg-cover_background" class="form-input" placeholder="https://...（全屏背景图）">
+                            <p class="form-help">设置后将作为封面全屏背景图片显示</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">封面装饰图片URL</label>
+                            <input type="url" id="cfg-cover_decoration" class="form-input" placeholder="https://...（封面右侧装饰图）">
+                            <p class="form-help">设置后将显示在封面右侧装饰位置</p>
+                        </div>
+                        <button type="submit" class="btn">保存基本配置</button>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">封面介绍语</h3>
+                    <form id="siteCoverForm">
+                        <div class="form-group">
+                            <label class="form-label">目录标签</label>
+                            <input type="text" id="cfg-toc_label" class="form-input" placeholder="如: 目录 Contents">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">封面描述（用&lt;br&gt;换行）</label>
+                            <textarea id="cfg-cover_description" class="form-input" rows="3" placeholder="用文字记录成长..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">封面引言</label>
+                            <textarea id="cfg-cover_quote" class="form-input" rows="2" placeholder="如: "不迎合，不妥协"""></textarea>
+                        </div>
+                        <button type="submit" class="btn">保存封面配置</button>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">板块名称与图片</h3>
+                    <form id="sectionConfigForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">文字板块 - 中文</label>
+                                <input type="text" id="cfg-writing-title" class="form-input" placeholder="如: 文字">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">文字板块 - 英文</label>
+                                <input type="text" id="cfg-writing-subtitle" class="form-input" placeholder="如: Writing">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">文字板块 - 配图URL</label>
+                            <input type="url" id="cfg-writing-image" class="form-input" placeholder="https://...（展示图片）">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">影像板块 - 中文</label>
+                                <input type="text" id="cfg-visual-title" class="form-input" placeholder="如: 影像">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">影像板块 - 英文</label>
+                                <input type="text" id="cfg-visual-subtitle" class="form-input" placeholder="如: Visual">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">影像板块 - 配图URL</label>
+                            <input type="url" id="cfg-visual-image" class="form-input" placeholder="https://...（展示图片）">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">音乐板块 - 中文</label>
+                                <input type="text" id="cfg-music-title" class="form-input" placeholder="如: 音乐">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">音乐板块 - 英文</label>
+                                <input type="text" id="cfg-music-subtitle" class="form-input" placeholder="如: Music">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">音乐板块 - 配图URL</label>
+                            <input type="url" id="cfg-music-image" class="form-input" placeholder="https://...（展示图片）">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">关于板块 - 中文</label>
+                                <input type="text" id="cfg-about-title" class="form-input" placeholder="如: 关于">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">关于板块 - 英文</label>
+                                <input type="text" id="cfg-about-subtitle" class="form-input" placeholder="如: About">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">保存板块配置</button>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">IP形象</h3>
+                    <form id="ipConfigForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">形象名称</label>
+                                <input type="text" id="cfg-ip_name" class="form-input" placeholder="如: 青">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">形象简介</label>
+                                <input type="text" id="cfg-ip_bio" class="form-input" placeholder="如: 记录者 / 思考者">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">形象图片URL</label>
+                            <input type="url" id="cfg-ip_image" class="form-input" placeholder="https://...">
+                        </div>
+                        <button type="submit" class="btn">保存IP形象</button>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">文字内容配置</h3>
+                    <form id="contentConfigForm">
+                        <div class="form-group">
+                            <label class="form-label">关于页面 - 简介标题</label>
+                            <input type="text" id="cfg-about-intro-title" class="form-input" placeholder="如: 关于我">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">关于页面 - 个人简介</label>
+                            <textarea id="cfg-about-intro-text" class="form-input" rows="4" placeholder="介绍你自己...（支持换行）"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">关于页面 - 配图URL</label>
+                            <input type="url" id="cfg-about-image" class="form-input" placeholder="https://...（个人照片或配图）">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">文字板块 - 引导语</label>
+                            <textarea id="cfg-writing-intro" class="form-input" rows="2" placeholder="如: 文字是灵魂的出口"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">影像板块 - 引导语</label>
+                            <textarea id="cfg-visual-intro" class="form-input" rows="2" placeholder="如: 用镜头捕捉瞬间"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">音乐板块 - 引导语</label>
+                            <textarea id="cfg-music-intro" class="form-input" rows="2" placeholder="如: 音乐是情感的载体"></textarea>
+                        </div>
+                        <button type="submit" class="btn">保存文字内容</button>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">页脚信息</h3>
+                    <form id="footerConfigForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">页脚标题</label>
+                                <input type="text" id="cfg-footer_text" class="form-input" placeholder="如: 一个青年人的自白">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">版权信息</label>
+                                <input type="text" id="cfg-footer_copyright" class="form-input" placeholder="如: © 2024">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">保存页脚配置</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 文章管理 -->
+            <section id="panel-articles" class="panel active">
+                <div class="page-header">
+                    <h1 class="page-title">文章管理</h1>
+                    <p class="page-subtitle">管理你的文字作品</p>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">添加新文章</h3>
+                    <form id="articleForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">文章标题</label>
+                                <input type="text" id="article-title" class="form-input" placeholder="输入标题" required>
+                            </div>
+                            <div class="form-group">
+<label class="form-label">标签</label>
+                                <input type="text" id="article-tags" class="form-input" placeholder="多个标签用逗号分隔">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">封面图片（支持粘贴或上传）</label>
+                            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                <input type="url" id="article-cover-url" class="form-input" placeholder="或输入图片URL" style="flex: 1;">
+                                <label class="btn" style="cursor: pointer;">
+                                    选择文件
+                                    <input type="file" id="article-cover-file" accept="image/*" style="display: none;" onchange="handleArticleImageFile(this)">
+                                </label>
+                            </div>
+                            <div id="article-cover-preview" style="margin-top: 1rem; display: none;">
+                                <img id="article-cover-img" style="max-width: 200px; max-height: 150px; object-fit: cover; border: 1px solid var(--gray-lighter);">
+                                <button type="button" class="btn btn-outline" onclick="removeArticleCover()" style="margin-left: 1rem;">移除图片</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">文章内容</label>
+                            <textarea id="article-content" class="form-input" placeholder="输入文章内容...（支持粘贴图片，快捷键 Ctrl+V / Cmd+V）" required style="min-height: 200px;" onpaste="handlePaste(event)"></textarea>
+                            <p class="form-help">提示：在内容区域粘贴图片（Ctrl+V），图片将直接插入到文本中</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">内容预览（粘贴图片后将显示）</label>
+                            <div id="content-preview" style="background: var(--off-white); border: 1px solid var(--gray-lighter); padding: 1.5rem; min-height: 200px; max-height: 400px; overflow-y: auto;">
+                                <p style="color: var(--gray-light); font-size: 0.85rem;">预览区域 - 粘贴图片后可在此查看效果</p>
+                            </div>
+                            <p class="form-help">编辑器中的图片将以实际样式展示</p>
+                        </div>
+                        <button type="submit" class="btn">发布文章</button>
+                    </form>
+                </div>
+
+                <div id="articlesList">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>加载中...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 影像管理 -->
+            <section id="panel-visual" class="panel">
+                <div class="page-header">
+                    <h1 class="page-title">影像管理</h1>
+                    <p class="page-subtitle">管理摄影、视频与短片作品</p>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="visual-photo">摄影</button>
+                    <button class="tab-btn" data-tab="visual-video">视频</button>
+                    <button class="tab-btn" data-tab="visual-short">短片</button>
+                </div>
+
+                <!-- 摄影 -->
+                <div id="visual-photo" class="tab-panel active">
+                    <div class="form-section">
+                        <h3 class="form-section-title">添加摄影作品</h3>
+                        <form id="photoForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">作品标题</label>
+                                    <input type="text" id="photo-title" class="form-input" placeholder="输入标题" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">封面图片URL</label>
+                                    <input type="url" id="photo-cover" class="form-input" placeholder="https://..." required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">描述</label>
+                                <textarea id="photo-desc" class="form-input" placeholder="简短描述..."></textarea>
+                            </div>
+                            <button type="submit" class="btn">上传作品</button>
+                        </form>
+                    </div>
+                    <div id="photosList" class="card-grid"></div>
+                </div>
+
+                <!-- 视频 -->
+                <div id="visual-video" class="tab-panel">
+                    <div class="form-section">
+                        <h3 class="form-section-title">添加视频作品</h3>
+                        <form id="videoForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">视频标题</label>
+                                    <input type="text" id="video-title" class="form-input" placeholder="输入标题" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">B站链接</label>
+                                    <input type="url" id="video-link" class="form-input" placeholder="https://www.bilibili.com/video/..." required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">封面图片URL</label>
+                                    <input type="url" id="video-cover" class="form-input" placeholder="https://...">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">时长</label>
+                                    <input type="text" id="video-duration" class="form-input" placeholder="如: 05:30">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">简介</label>
+                                <textarea id="video-desc" class="form-input" placeholder="视频简介..."></textarea>
+                            </div>
+                            <button type="submit" class="btn">上传作品</button>
+                        </form>
+                    </div>
+                    <div id="videosList" class="card-grid"></div>
+                </div>
+
+                <!-- 短片 -->
+                <div id="visual-short" class="tab-panel">
+                    <div class="form-section">
+                        <h3 class="form-section-title">添加短片作品</h3>
+                        <form id="shortForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">短片标题</label>
+                                    <input type="text" id="short-title" class="form-input" placeholder="输入标题" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">B站链接</label>
+                                    <input type="url" id="short-link" class="form-input" placeholder="https://www.bilibili.com/video/..." required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">封面图片URL</label>
+                                    <input type="url" id="short-cover" class="form-input" placeholder="https://...">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">时长</label>
+                                    <input type="text" id="short-duration" class="form-input" placeholder="如: 02:15">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">简介</label>
+                                <textarea id="short-desc" class="form-input" placeholder="短片简介..."></textarea>
+                            </div>
+                            <button type="submit" class="btn">上传作品</button>
+                        </form>
+                    </div>
+                    <div id="shortsList" class="card-grid"></div>
+                </div>
+            </section>
+
+            <!-- 音乐管理 -->
+            <section id="panel-music" class="panel">
+                <div class="page-header">
+                    <h1 class="page-title">音乐管理</h1>
+                    <p class="page-subtitle">管理你的音乐创作与推荐</p>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="music-recent">最近在听</button>
+                    <button class="tab-btn" data-tab="music-favorite">收藏歌单</button>
+                    <button class="tab-btn" data-tab="music-creation">我的创作</button>
+                </div>
+
+                <!-- 最近在听 -->
+                <div id="music-recent" class="tab-panel active">
+                    <div class="form-section">
+                        <h3 class="form-section-title">添加曲目</h3>
+                        <form id="musicRecentForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">歌曲名称</label>
+                                    <input type="text" id="recent-title" class="form-input" placeholder="歌曲名 - 歌手" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">曲目类型</label>
+                                    <select id="recent-type" class="form-input">
+                                        <option value="recent">最近在听</option>
+                                        <option value="favorite">收藏歌单</option>
+                                        <option value="creation">我的创作</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">音频文件或外部链接</label>
+                                <div class="form-row">
+                                    <input type="file" id="recent-audio-file" class="form-input" accept="audio/*">
+                                    <input type="url" id="recent-audio-url" class="form-input" placeholder="或输入音频URL">
+                                </div>
+                                <p class="form-help">支持上传音频文件或填写外部链接（如网易云、QQ音乐等）</p>
+                            </div>
+                            <button type="submit" class="btn">添加曲目</button>
+                        </form>
+                    </div>
+                    <div id="musicRecentList" class="audio-list"></div>
+                </div>
+
+                <!-- 收藏歌单 -->
+                <div id="music-favorite" class="tab-panel">
+                    <div class="form-section">
+                        <h3 class="form-section-title">添加收藏曲目</h3>
+                        <form id="musicFavoriteForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">歌曲名称</label>
+                                    <input type="text" id="favorite-title" class="form-input" placeholder="歌曲名 - 歌手" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">外部链接</label>
+                                <input type="url" id="favorite-url" class="form-input" placeholder="网易云、QQ音乐等链接">
+                                <p class="form-help">填写后将跳转至外部平台播放</p>
+                            </div>
+                            <button type="submit" class="btn">添加收藏</button>
+                        </form>
+                    </div>
+                    <div id="musicFavoriteList" class="audio-list"></div>
+                </div>
+
+                <!-- 我的创作 -->
+                <div id="music-creation" class="tab-panel">
+                    <div class="form-section">
+                        <h3 class="form-section-title">添加原创作品</h3>
+                        <form id="musicCreationForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">作品名称</label>
+                                    <input type="text" id="creation-title" class="form-input" placeholder="作品名" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">风格/描述</label>
+                                    <input type="text" id="creation-desc" class="form-input" placeholder="如: 电子、氛围">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">音频文件</label>
+                                <input type="file" id="creation-audio-file" class="form-input" accept="audio/*">
+                                <p class="form-help">支持 MP3、WAV、OGG 等格式，将上传至Supabase存储</p>
+                            </div>
+                            <button type="submit" class="btn">上传作品</button>
+                        </form>
+                    </div>
+                    <div id="musicCreationList" class="audio-list"></div>
+                </div>
+            </section>
+
+            <!-- 账户设置 -->
+            <section id="panel-account" class="panel">
+                <div class="page-header">
+                    <h1 class="page-title">账户设置</h1>
+                    <p class="page-subtitle">修改管理员登录凭据</p>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">修改登录凭据</h3>
+                    <form id="accountCredentialsForm">
+                        <div class="form-group">
+                            <label class="form-label">当前用户名</label>
+                            <input type="text" id="account-current-username" class="form-input" readonly>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">新用户名</label>
+                                <input type="text" id="account-new-username" class="form-input" placeholder="留空则保持不变">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">新密码</label>
+                                <input type="password" id="account-new-password" class="form-input" placeholder="留空则保持不变">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">确认新密码</label>
+                            <input type="password" id="account-confirm-password" class="form-input" placeholder="再次输入新密码">
+                        </div>
+                        <button type="submit" class="btn">保存凭据</button>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">当前登录信息</h3>
+                    <div id="accountInfo">
+                        <p style="color: var(--gray);">加载中...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 个人设置 -->
+            <section id="panel-about" class="panel">
+                <div class="page-header">
+                    <h1 class="page-title">个人设置</h1>
+                    <p class="page-subtitle">管理关于页面和社交链接</p>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">关于内容</h3>
+                    <form id="aboutForm">
+                        <div class="form-group">
+                            <label class="form-label">个人简介</label>
+                            <textarea id="about-content" class="form-input" rows="6" placeholder="介绍你自己..."></textarea>
+                        </div>
+                        <button type="submit" class="btn">保存</button>
+                    </form>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">社交链接</h3>
+                    <form id="socialForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">微博</label>
+                                <input type="url" id="social-weibo" class="form-input" placeholder="微博链接">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">小红书</label>
+                                <input type="url" id="social-xiaohongshu" class="form-input" placeholder="小红书链接">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">B站</label>
+                                <input type="url" id="social-bilibili" class="form-input" placeholder="B站链接">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">网易云音乐</label>
+                                <input type="url" id="social-netease" class="form-input" placeholder="网易云链接">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">保存链接</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 删除确认模态框 -->
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">确认删除</h3>
+                <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <p id="deleteMessage">确定要删除这个项目吗？此操作无法撤销。</p>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">取消</button>
+                <button class="btn" id="confirmDeleteBtn">确认删除</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Supabase 配置 - 请替换为你自己的 key
+        // ========================================
+        // Supabase 配置
+        // ========================================
         const SUPABASE_URL = 'https://axrxgqotyjxwjaanjzvg.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4cnhncW90eWp4d2phYW5qenZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5ODEzMjcsImV4cCI6MjA4OTU1NzMyN30.1t6vJFvVa-iXHlc4YXNBBvWiN97Ydd8Zvmy75cCblPw';
-        
-        // 保存到本地存储
-        localStorage.setItem('supabase_url', SUPABASE_URL);
-        localStorage.setItem('supabase_anon_key', SUPABASE_ANON_KEY);
-        
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4cnhncW90eWp4d2phYW5qenZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MjU1MDB9.lR0j6GcLgN6L8V6K0L8V6K0L8V6K0L8V6K0L8V6K0';
+
+        // ========================================
+        // 状态管理
+        // ========================================
+        let currentAdmin = null;
+        let deleteCallback = null;
+
+        // ========================================
+        // 工具函数
+        // ========================================
+        async function apiRequest(endpoint, options = {}) {
+            const token = localStorage.getItem('admin_token');
+            const headers = {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${token || SUPABASE_ANON_KEY}`
+            };
+            if (options.method === 'POST' || options.method === 'PATCH' || options.method === 'PUT') {
+                headers['Prefer'] = 'return=representation';
+            }
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
+                    ...options,
+                    headers: { ...headers, ...options.headers }
+                });
+                
+                if (response.status === 401) {
+                    return [];
+                }
+                
+                return response.json();
+            } catch (err) {
+                console.error('API请求失败:', err);
+                return [];
+            }
+        }
+
+        function showMessage(type, text) {
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.textContent = text;
+            document.querySelector('.panel.active').insertBefore(msg, document.querySelector('.form-section'));
+            setTimeout(() => msg.remove(), 3000);
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+        }
+
+        // ========================================
+        // 登录/登出
+        // ========================================
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
             
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            const loginBtn = document.getElementById('login-btn');
-            const errorMsg = document.getElementById('error-message');
-            
-            if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-                errorMsg.textContent = '请先配置 Supabase 连接信息';
-                errorMsg.classList.add('show');
+            // 离线模式：使用本地验证
+            if (username === 'admin' && password === 'emozhang2024') {
+                currentAdmin = { id: 1, username: 'admin' };
+                localStorage.setItem('admin_token', 'demo');
+                showAdminPanel();
                 return;
             }
             
-            loginBtn.disabled = true;
-            loginBtn.textContent = '登录中...';
-            errorMsg.classList.remove('show');
-            
+            // 尝试 Supabase 在线验证
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/admins?username=eq.${encodeURIComponent(username)}`, {
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error('数据库连接失败，请检查 Supabase 配置');
+                const result = await apiRequest(`admins?username=eq.${username}&password=eq.${password}&select=*`);
+                if (result && result.length > 0) {
+                    currentAdmin = result[0];
+                    localStorage.setItem('admin_token', SUPABASE_ANON_KEY);
+                    localStorage.setItem('admin_id', currentAdmin.id);
+                    showAdminPanel();
+                } else {
+                    document.getElementById('loginError').textContent = '账号或密码错误';
                 }
-                
-                const data = await response.json();
-                
-                if (!data || data.length === 0) {
-                    throw new Error('用户名不存在，请先在数据库创建管理员');
-                }
-                
-                const admin = data[0];
-                
-                if (!admin || !admin.password_hash) {
-                    throw new Error('管理员数据异常，请检查数据库');
-                }
-                
-                // 简单密码验证
-                if (admin.password_hash !== password) {
-                    throw new Error('密码错误');
-                }
-                
-                // 登录成功，保存会话
-                sessionStorage.setItem('admin_logged_in', 'true');
-                sessionStorage.setItem('admin_id', admin.id);
-                sessionStorage.setItem('admin_nickname', admin.nickname);
-                sessionStorage.setItem('admin_username', admin.username);
-                
-                window.location.href = 'admin-main.html';
-                
-            } catch (error) {
-                errorMsg.textContent = error.message;
-                errorMsg.classList.add('show');
-                loginBtn.disabled = false;
-                loginBtn.textContent = '登录';
+            } catch (err) {
+                document.getElementById('loginError').textContent = '网络错误，请使用离线账号登录';
             }
         });
+
+        function logout() {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_id');
+            currentAdmin = null;
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('adminLayout').classList.remove('active');
+        }
+
+        function showAdminPanel() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('adminLayout').classList.add('active');
+            loadAllData();
+        }
+
+        // ========================================
+        // 导航
+        // ========================================
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+                item.classList.add('active');
+                document.getElementById('panel-' + item.dataset.panel).classList.add('active');
+            });
+        });
+
+        // ========================================
+        // Tabs
+        // ========================================
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabGroup = btn.parentElement;
+                const tabName = btn.dataset.tab;
+                tabGroup.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById(tabName).classList.add('active');
+            });
+        });
+
+        // ========================================
+        // 文章管理 - 图片处理
+        // ========================================
+        let articleCoverUrl = '';
+
+        function handleArticleImageFile(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                showMessage('error', '请选择图片文件');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                articleCoverUrl = e.target.result;
+                document.getElementById('article-cover-url').value = '';
+                document.getElementById('article-cover-img').src = articleCoverUrl;
+                document.getElementById('article-cover-preview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeArticleCover() {
+            articleCoverUrl = '';
+            document.getElementById('article-cover-url').value = '';
+            document.getElementById('article-cover-file').value = '';
+            document.getElementById('article-cover-preview').style.display = 'none';
+        }
+
+        function handlePaste(e) {
+            const items = e.clipboardData.items;
+            for (let item of items) {
+                if (item.type.startsWith('image/')) {
+                    e.preventDefault();
+                    const file = item.getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const textarea = document.getElementById('article-content');
+                        const imgTag = '\n<img src="' + event.target.result + '" style="max-width:100%;margin:1rem 0;">\n';
+                        const cursorPos = textarea.selectionStart;
+                        const textBefore = textarea.value.substring(0, cursorPos);
+                        const textAfter = textarea.value.substring(cursorPos);
+                        textarea.value = textBefore + imgTag + textAfter;
+                        // 更新预览
+                        updateContentPreview();
+                        showMessage('success', '图片已粘贴到内容中');
+                    };
+                    reader.readAsDataURL(file);
+                    return;
+                }
+            }
+        }
+        
+        // 实时更新内容预览
+        function updateContentPreview() {
+            const content = document.getElementById('article-content').value;
+            const preview = document.getElementById('content-preview');
+            if (!content.trim()) {
+                preview.innerHTML = '<p style="color: var(--gray-light); font-size: 0.85rem;">预览区域 - 粘贴图片后可在此查看效果</p>';
+                return;
+            }
+            // 将textarea内容转换为HTML预览
+            let html = content
+                .replace(/\n/g, '<br>')
+                .replace(/<img src="([^"]+)"([^>]*)>/g, '<img src="$1" style="max-width:100%;margin:1rem 0;display:block;">');
+            preview.innerHTML = html;
+        }
+        
+        // 监听文章内容输入，实时更新预览
+        document.getElementById('article-content').addEventListener('input', updateContentPreview);
+        // 同时监听覆盖图片URL的变化
+        document.getElementById('article-cover-url').addEventListener('input', function() {
+            const url = this.value;
+            if (url) {
+                articleCoverUrl = url;
+            }
+        });
+
+        document.getElementById('articleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('article-title').value;
+            const content = document.getElementById('article-content').value;
+            const tags = document.getElementById('article-tags').value;
+            const urlInput = document.getElementById('article-cover-url').value;
+            
+            // 优先使用URL输入的图片，否则使用文件上传的base64
+            const coverImage = urlInput || articleCoverUrl;
+            
+            const data = {
+                title: title,
+                content: content,
+                tags: tags || '随想',
+                cover_image: coverImage,
+                excerpt: content.substring(0, 100) + (content.length > 100 ? '...' : ''),
+                status: 'published',
+                created_at: new Date().toISOString()
+            };
+            
+            try {
+                await apiRequest('posts', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                showMessage('success', '文章发布成功');
+                e.target.reset();
+                removeArticleCover();
+                loadArticles();
+            } catch (err) {
+                showMessage('error', '发布失败: ' + err.message);
+            }
+        });
+
+        async function loadArticles() {
+            const container = document.getElementById('articlesList');
+            try {
+                const data = await apiRequest('posts?select=*&order=created_at.desc');
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p class="empty-text">暂无文章，发布你的第一篇吧</p></div>';
+                    return;
+                }
+                container.innerHTML = data.map(post => `
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">${post.title}</h4>
+                            <span class="card-badge">文字</span>
+                        </div>
+                        <div class="card-meta">${formatDate(post.created_at)}</div>
+                        <div class="card-content">${post.content.substring(0, 100)}...</div>
+                        <div class="card-actions">
+                            <button class="card-btn" onclick="deletePost(${post.id})">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p class="empty-text">加载失败，请检查网络</p></div>';
+            }
+        }
+
+        async function deletePost(id) {
+            showDeleteModal('确定要删除这篇文章吗？', async () => {
+                try {
+                    await apiRequest(`posts?id=eq.${id}`, { method: 'DELETE' });
+                    showMessage('success', '删除成功');
+                    loadArticles();
+                } catch (err) {
+                    showMessage('error', '删除失败');
+                }
+            });
+        }
+
+        // ========================================
+        // 影像管理 - 摄影
+        // ========================================
+        document.getElementById('photoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                title: document.getElementById('photo-title').value,
+                image_url: document.getElementById('photo-cover').value,
+                description: document.getElementById('photo-desc').value,
+                category: 'photo',
+                created_at: new Date().toISOString()
+            };
+            
+            try {
+                await apiRequest('photos', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                showMessage('success', '摄影作品上传成功');
+                e.target.reset();
+                loadPhotos();
+            } catch (err) {
+                showMessage('error', '上传失败');
+            }
+        });
+
+        async function loadPhotos() {
+            const container = document.getElementById('photosList');
+            try {
+                const data = await apiRequest('photos?category=eq.photo&order=created_at.desc');
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📷</div><p class="empty-text">暂无摄影作品</p></div>';
+                    return;
+                }
+                container.innerHTML = data.map(item => `
+                    <div class="card">
+                        <div class="media-preview">
+                            ${item.image_url ? `<img src="${item.image_url}" alt="${item.title}">` : '<span class="media-placeholder">无封面</span>'}
+                        </div>
+                        <div class="card-header">
+                            <h4 class="card-title">${item.title}</h4>
+                            <span class="card-badge">摄影</span>
+                        </div>
+                        <div class="card-meta">${formatDate(item.created_at)}</div>
+                        <div class="card-content">${item.description || ''}</div>
+                        <div class="card-actions">
+                            <button class="card-btn danger" onclick="deletePhoto(${item.id})">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">📷</div><p class="empty-text">加载失败</p></div>';
+            }
+        }
+
+        async function deletePhoto(id) {
+            showDeleteModal('确定要删除这个作品吗？', async () => {
+                try {
+                    await apiRequest(`photos?id=eq.${id}`, { method: 'DELETE' });
+                    showMessage('success', '删除成功');
+                    loadPhotos();
+                } catch (err) {
+                    showMessage('error', '删除失败');
+                }
+            });
+        }
+
+// ========================================
+        // 影像管理 - 视频
+        // ========================================
+        document.getElementById('videoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                title: document.getElementById('video-title').value,
+                video_url: document.getElementById('video-link').value,
+                cover_url: document.getElementById('video-cover').value,
+                description: document.getElementById('video-desc').value,
+                duration: document.getElementById('video-duration').value,
+                category: 'video',
+                created_at: new Date().toISOString()
+            };
+            
+            try {
+                await apiRequest('videos', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                showMessage('success', '视频作品上传成功');
+                e.target.reset();
+                loadVideos();
+            } catch (err) {
+                showMessage('error', '上传失败');
+            }
+        });
+
+        async function loadVideos() {
+            const container = document.getElementById('videosList');
+            try {
+                const data = await apiRequest('videos?category=eq.video&order=created_at.desc');
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-icon">🎬</div><p class="empty-text">暂无视频作品</p></div>';
+                    return;
+                }
+                container.innerHTML = data.map(item => `
+                    <div class="card">
+                        <div class="media-preview">
+                            ${item.cover_url ? `<img src="${item.cover_url}" alt="${item.title}">` : '<span class="media-placeholder">无封面</span>'}
+                        </div>
+                        <div class="card-header">
+                            <h4 class="card-title">${item.title}</h4>
+                            <span class="card-badge">视频 ${item.duration || ''}</span>
+                        </div>
+                        <div class="card-meta">${formatDate(item.created_at)}</div>
+                        <div class="card-content">${item.description || ''}</div>
+                        <div class="card-actions">
+                            <button class="card-btn" onclick="window.open('${item.video_url}', '_blank')">查看链接</button>
+                            <button class="card-btn danger" onclick="deleteVideo(${item.id})">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">🎬</div><p class="empty-text">加载失败</p></div>';
+            }
+        }
+
+        async function deleteVideo(id) {
+            showDeleteModal('确定要删除这个视频吗？', async () => {
+                try {
+                    await apiRequest(`videos?id=eq.${id}`, { method: 'DELETE' });
+                    showMessage('success', '删除成功');
+                    loadVideos();
+                } catch (err) {
+                    showMessage('error', '删除失败');
+                }
+            });
+        }
+
+        // ========================================
+        // 影像管理 - 短片
+        // ========================================
+        document.getElementById('shortForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                title: document.getElementById('short-title').value,
+                video_url: document.getElementById('short-link').value,
+                cover_url: document.getElementById('short-cover').value,
+                description: document.getElementById('short-desc').value,
+                duration: document.getElementById('short-duration').value,
+                category: 'short',
+                created_at: new Date().toISOString()
+            };
+            
+            try {
+                await apiRequest('videos', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                showMessage('success', '短片作品上传成功');
+                e.target.reset();
+                loadShorts();
+            } catch (err) {
+                showMessage('error', '上传失败');
+            }
+        });
+
+        async function loadShorts() {
+            const container = document.getElementById('shortsList');
+            try {
+                const data = await apiRequest('videos?category=eq.short&order=created_at.desc');
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-icon">🎞</div><p class="empty-text">暂无短片作品</p></div>';
+                    return;
+                }
+                container.innerHTML = data.map(item => `
+                    <div class="card">
+                        <div class="media-preview">
+                            ${item.cover_url ? `<img src="${item.cover_url}" alt="${item.title}">` : '<span class="media-placeholder">无封面</span>'}
+                        </div>
+                        <div class="card-header">
+                            <h4 class="card-title">${item.title}</h4>
+                            <span class="card-badge">短片 ${item.duration || ''}</span>
+                        </div>
+                        <div class="card-meta">${formatDate(item.created_at)}</div>
+                        <div class="card-content">${item.description || ''}</div>
+                        <div class="card-actions">
+                            <button class="card-btn" onclick="window.open('${item.video_url}', '_blank')">查看链接</button>
+                            <button class="card-btn danger" onclick="deleteShort(${item.id})">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">🎞</div><p class="empty-text">加载失败</p></div>';
+            }
+        }
+
+        async function deleteShort(id) {
+            showDeleteModal('确定要删除这个短片吗？', async () => {
+                try {
+                    await apiRequest(`videos?id=eq.${id}`, { method: 'DELETE' });
+                    showMessage('success', '删除成功');
+                    loadShorts();
+                } catch (err) {
+                    showMessage('error', '删除失败');
+                }
+            });
+        }
+
+        // ========================================
+        // 音乐管理 - 最近在听
+        // ========================================
+        document.getElementById('musicRecentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('recent-title').value;
+            const url = document.getElementById('recent-audio-url').value;
+            
+            const data = {
+                title: title,
+                type: 'recent',
+                audio_url: url || null,
+                created_at: new Date().toISOString()
+            };
+            
+            try {
+                await apiRequest('music_tracks', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                showMessage('success', '曲目添加成功');
+                e.target.reset();
+                loadMusic('recent');
+            } catch (err) {
+                showMessage('error', '添加失败');
+            }
+        });
+
+        // ========================================
+        // 音乐管理 - 收藏歌单
+        // ========================================
+        document.getElementById('musicFavoriteForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                title: document.getElementById('favorite-title').value,
+                type: 'favorite',
+                audio_url: document.getElementById('favorite-url').value,
+                created_at: new Date().toISOString()
+            };
+            
+            try {
+                await apiRequest('music_tracks', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                showMessage('success', '收藏添加成功');
+                e.target.reset();
+                loadMusic('favorite');
+            } catch (err) {
+                showMessage('error', '添加失败');
+            }
+        });
+
+        // ========================================
+        // 音乐管理 - 我的创作
+        // ========================================
+        document.getElementById('musicCreationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('creation-audio-file');
+            
+            if (!fileInput.files[0]) {
+                showMessage('error', '请选择音频文件');
+                return;
+            }
+            
+            // 简化处理：存储文件名作为标识
+            const data = {
+                title: document.getElementById('creation-title').value,
+                type: 'creation',
+                description: document.getElementById('creation-desc').value,
+                audio_url: fileInput.files[0].name,
+                created_at: new Date().toISOString()
+            };
+            
+            try {
+                await apiRequest('music_tracks', {
+method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                showMessage('success', '创作上传成功');
+                e.target.reset();
+                loadMusic('creation');
+            } catch (err) {
+                showMessage('error', '上传失败');
+            }
+        });
+
+        async function loadMusic(type) {
+            const containers = {
+                recent: 'musicRecentList',
+                favorite: 'musicFavoriteList',
+                creation: 'musicCreationList'
+            };
+            const container = document.getElementById(containers[type]);
+            
+            try {
+                const data = await apiRequest(`music_tracks?type=eq.${type}&order=created_at.desc`);
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-icon">🎵</div><p class="empty-text">暂无曲目</p></div>';
+                    return;
+                }
+                container.innerHTML = data.map(track => `
+                    <div class="audio-item">
+                        <div class="audio-info">
+                            <div class="audio-title">${track.title}</div>
+                            <div class="audio-type">${type === 'recent' ? '最近在听' : type === 'favorite' ? '收藏歌单' : '我的创作'}</div>
+                            ${track.description ? `<div class="audio-source">${track.description}</div>` : ''}
+                            ${track.audio_url && !track.audio_url.startsWith('http') ? `<div class="audio-source">文件: ${track.audio_url}</div>` : ''}
+                        </div>
+                        <div class="audio-controls">
+                            ${track.audio_url ? `<button class="audio-btn" onclick="${track.audio_url.startsWith('http') ? `window.open('${track.audio_url}', '_blank')` : `playAudio('${track.audio_url}')`}" title="播放">
+                                <svg viewBox="0 0 24 24"fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            </button>` : ''}
+                            <button class="audio-btn" onclick="deleteMusic(${track.id}, '${type}')" title="删除">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">🎵</div><p class="empty-text">加载失败</p></div>';
+            }
+        }
+
+        async function deleteMusic(id, type) {
+            showDeleteModal('确定要删除这首曲目吗？', async () => {
+                try {
+                    await apiRequest(`music_tracks?id=eq.${id}`, { method: 'DELETE' });
+                    showMessage('success', '删除成功');
+                    loadMusic(type);
+                } catch (err) {
+                    showMessage('error', '删除失败');
+                }
+            });
+        }
+
+        function playAudio(filename) {
+            showMessage('success', `播放: ${filename} (请在Supabase Storage中配置音频存储)`);
+        }
+
+        // ========================================
+        // 个人设置
+        // ========================================
+        document.getElementById('aboutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const content = document.getElementById('about-content').value;
+            
+            try {
+                // 先尝试更新
+                await apiRequest('about_content', {
+                    method: 'POST',
+                    body: JSON.stringify({ content: content })
+                });
+                showMessage('success', '保存成功');
+            } catch (err) {
+                showMessage('error', '保存失败');
+            }
+        });
+
+        document.getElementById('socialForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                weibo: document.getElementById('social-weibo').value,
+                xiaohongshu: document.getElementById('social-xiaohongshu').value,
+                bilibili: document.getElementById('social-bilibili').value,
+                netease: document.getElementById('social-netease').value
+            };
+            
+            try {
+                await apiRequest('social_links', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                showMessage('success', '保存成功');
+            } catch (err) {
+                showMessage('error', '保存失败');
+            }
+        });
+
+        // ========================================
+        // 模态框
+        // ========================================
+        function showDeleteModal(message, callback) {
+            document.getElementById('deleteMessage').textContent = message;
+            document.getElementById('deleteModal').classList.add('active');
+            deleteCallback = callback;
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+            deleteCallback = null;
+        }
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            if (deleteCallback) {
+                deleteCallback();
+            }
+            closeDeleteModal();
+        });
+
+        // ========================================
+        // 网站配置
+        // ========================================
+        async function loadSiteConfig() {
+            try {
+                const data = await apiRequest('site_config');
+                if (Array.isArray(data)) {
+                    data.forEach(item => {
+                        const el = document.getElementById('cfg-' + item.key);
+                        if (el) el.value = item.value || '';
+                    });
+                }
+                const sections = await apiRequest('sections?order=display_order.asc');
+                if (Array.isArray(sections)) {
+                    sections.forEach(s => {
+                        const titleEl = document.getElementById('cfg-' + s.section_key + '-title');
+                        const subtitleEl = document.getElementById('cfg-' + s.section_key + '-subtitle');
+                        const imageEl = document.getElementById('cfg-' + s.section_key + '-image');
+                        if (titleEl) titleEl.value = s.title || '';
+                        if (subtitleEl) subtitleEl.value = s.subtitle || '';
+                        if (imageEl && s.image_url) imageEl.value = s.image_url || '';
+                    });
+                }
+                const ip = await apiRequest('ip_config?limit=1');
+                if (Array.isArray(ip) && ip.length > 0) {
+                    if (ip[0].name) document.getElementById('cfg-ip_name').value = ip[0].name;
+                    if (ip[0].bio) document.getElementById('cfg-ip_bio').value = ip[0].bio;
+                    if (ip[0].image_url) document.getElementById('cfg-ip_image').value = ip[0].image_url;
+                }
+            } catch (err) {
+                console.error('加载配置失败', err);
+            }
+        }
+
+        async function saveSiteConfig(key, value) {
+            const existing = await apiRequest(`site_config?key=eq.${key}`);
+            if (Array.isArray(existing) && existing.length > 0) {
+                await apiRequest(`site_config?key=eq.${key}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ value, updated_at: new Date().toISOString() })
+                });
+            } else {
+                await apiRequest('site_config', {
+                    method: 'POST',
+                    body: JSON.stringify({ key, value })
+                });
+            }
+        }
+
+        // 基本配置
+        document.getElementById('siteBasicForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await saveSiteConfig('site_title', document.getElementById('cfg-site_title').value);
+            await saveSiteConfig('site_subtitle', document.getElementById('cfg-site_subtitle').value);
+            await saveSiteConfig('cover_issue', document.getElementById('cfg-cover_issue').value);
+            await saveSiteConfig('cover_date', document.getElementById('cfg-cover_date').value);
+            await saveSiteConfig('cover_background', document.getElementById('cfg-cover_background').value);
+            await saveSiteConfig('cover_decoration', document.getElementById('cfg-cover_decoration').value);
+            showMessage('success', '基本配置已保存');
+        });
+
+        // 封面配置
+        document.getElementById('siteCoverForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await saveSiteConfig('toc_label', document.getElementById('cfg-toc_label').value);
+            await saveSiteConfig('cover_description', document.getElementById('cfg-cover_description').value);
+            await saveSiteConfig('cover_quote', document.getElementById('cfg-cover_quote').value);
+            showMessage('success', '封面配置已保存');
+        });
+
+        // 板块配置
+        document.getElementById('sectionConfigForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const sections = ['writing', 'visual', 'music', 'about'];
+            for (const key of sections) {
+                const title = document.getElementById('cfg-' + key + '-title').value;
+                const subtitle = document.getElementById('cfg-' + key + '-subtitle').value;
+                const image = document.getElementById('cfg-' + key + '-image').value;
+                const existing = await apiRequest(`sections?section_key=eq.${key}`);
+                if (Array.isArray(existing) && existing.length > 0) {
+                    await apiRequest(`sections?section_key=eq.${key}`, {
+                        method: 'PATCH',
+                        body: JSON.stringify({ title, subtitle, image_url: image, updated_at: new Date().toISOString() })
+                    });
+                } else {
+                    await apiRequest('sections', {
+                        method: 'POST',
+                        body: JSON.stringify({ section_key: key, title, subtitle, image_url: image, display_order: sections.indexOf(key) + 1 })
+                    });
+                }
+            }
+            showMessage('success', '板块配置已保存');
+        });
+
+        // 文字内容配置
+        document.getElementById('contentConfigForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            // 保存各个文字配置
+            await saveSiteConfig('about_intro_title', document.getElementById('cfg-about-intro-title').value);
+            await saveSiteConfig('about_intro_text', document.getElementById('cfg-about-intro-text').value);
+            await saveSiteConfig('about_image', document.getElementById('cfg-about-image').value);
+            await saveSiteConfig('writing_intro', document.getElementById('cfg-writing-intro').value);
+            await saveSiteConfig('visual_intro', document.getElementById('cfg-visual-intro').value);
+            await saveSiteConfig('music_intro', document.getElementById('cfg-music-intro').value);
+            showMessage('success', '文字内容已保存');
+        });
+
+        // IP配置
+        document.getElementById('ipConfigForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                name: document.getElementById('cfg-ip_name').value,
+                bio: document.getElementById('cfg-ip_bio').value,
+                image_url: document.getElementById('cfg-ip_image').value,
+                updated_at: new Date().toISOString()
+            };
+            const existing = await apiRequest('ip_config?limit=1');
+            if (Array.isArray(existing) && existing.length > 0) {
+                await apiRequest(`ip_config?id=eq.${existing[0].id}`, { method: 'PATCH', body: data });
+            } else {
+                await apiRequest('ip_config', { method: 'POST', body: data });
+            }
+            showMessage('success', 'IP形象已保存');
+        });
+
+        // 页脚配置
+        document.getElementById('footerConfigForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await saveSiteConfig('footer_text', document.getElementById('cfg-footer_text').value);
+            await saveSiteConfig('footer_copyright', document.getElementById('cfg-footer_copyright').value);
+            showMessage('success', '页脚配置已保存');
+        });
+
+        // ========================================
+        // 账户设置
+        // ========================================
+        async function loadAccountInfo() {
+            const usernameField = document.getElementById('account-current-username');
+            const infoDiv = document.getElementById('accountInfo');
+            
+            if (currentAdmin) {
+                usernameField.value = currentAdmin.username || 'admin';
+                infoDiv.innerHTML = `
+                    <div style="padding: 1rem; background: var(--off-white); border: 1px solid var(--gray-lighter);">
+                        <p style="margin-bottom: 0.5rem;"><strong>当前用户:</strong> ${currentAdmin.username || 'admin'}</p>
+                        <p style="margin-bottom: 0.5rem;"><strong>登录方式:</strong> ${localStorage.getItem('admin_token') === 'demo' ? '本地离线账户' : 'Supabase在线账户'}</p>
+                        <p style="color: var(--gray-light); font-size: 0.85rem;">提示: 修改凭据将同步到Supabase数据库</p>
+                    </div>
+                `;
+            } else {
+                usernameField.value = 'admin';
+                infoDiv.innerHTML = '<p style="color: var(--gray);">无法获取账户信息</p>';
+            }
+        }
+
+        document.getElementById('accountCredentialsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newUsername = document.getElementById('account-new-username').value.trim();
+            const newPassword = document.getElementById('account-new-password').value;
+            const confirmPassword = document.getElementById('account-confirm-password').value;
+            
+            // 如果填了新密码，需要确认
+            if (newPassword) {
+                if (newPassword !== confirmPassword) {
+                    showMessage('error', '两次输入的密码不一致');
+                    return;
+                }
+                if (newPassword.length < 6) {
+                    showMessage('error', '密码长度至少6位');
+                    return;
+                }
+            }
+            
+            // 如果既没有填新用户名也没有填新密码
+            if (!newUsername && !newPassword) {
+                showMessage('error', '请填写要修改的用户名或密码');
+                return;
+            }
+            
+            try {
+                // 先获取当前的admin记录
+                let adminId = localStorage.getItem('admin_id');
+                
+                if (adminId) {
+                    // 更新Supabase中的记录
+                    const updateData = {};
+                    if (newUsername) updateData.username = newUsername;
+                    if (newPassword) updateData.password = newPassword;
+                    updateData.updated_at = new Date().toISOString();
+                    
+                    await apiRequest(`admins?id=eq.${adminId}`, {
+                        method: 'PATCH',
+                        body: JSON.stringify(updateData)
+                    });
+                    
+                    // 更新本地状态
+                    if (newUsername) currentAdmin.username = newUsername;
+                    if (newPassword) currentAdmin.password = newPassword;
+                    
+                    showMessage('success', '凭据更新成功');
+                } else {
+                    // 离线模式：检查是否有admins表中的记录
+                    const admins = await apiRequest('admins?select=*&limit=1');
+                    if (admins && admins.length > 0) {
+                        const updateData = {};
+                        if (newUsername) updateData.username = newUsername;
+                        if (newPassword) updateData.password = newPassword;
+                        updateData.updated_at = new Date().toISOString();
+                        
+                        await apiRequest(`admins?id=eq.${admins[0].id}`, {
+                            method: 'PATCH',
+                            body: JSON.stringify(updateData)
+                        });
+                        showMessage('success', '凭据更新成功');
+                    } else {
+                        // 创建新记录
+                        const insertData = {
+                            username: newUsername || 'admin',
+                            password: newPassword || 'emozhang2024',
+                            created_at: new Date().toISOString(),
+                            updated_at: new Date().toISOString()
+                        };
+                        
+                        const result = await apiRequest('admins', {
+                            method: 'POST',
+                            body: JSON.stringify(insertData)
+                        });
+                        
+                        if (result && result.length > 0) {
+                            localStorage.setItem('admin_id', result[0].id);
+                            currentAdmin = result[0];
+                        }
+                        showMessage('success', '凭据已保存到Supabase');
+                    }
+                }
+                
+                // 清空表单
+                document.getElementById('account-new-username').value = '';
+                document.getElementById('account-new-password').value = '';
+                document.getElementById('account-confirm-password').value = '';
+                
+                // 刷新显示
+                loadAccountInfo();
+                
+            } catch (err) {
+                console.error('更新凭据失败:', err);
+                showMessage('error', '更新失败，请重试');
+            }
+        });
+
+        // ========================================
+        // 初始化
+        // ========================================
+        async function loadAllData() {
+            loadArticles();
+            loadPhotos();
+            loadVideos();
+            loadShorts();
+            loadMusic('recent');
+            loadMusic('favorite');
+            loadMusic('creation');
+            loadSiteConfig();
+            loadAccountInfo();
+        }
+
+        // 检查登录状态
+        const token = localStorage.getItem('admin_token');
+        if (token) {
+            showAdminPanel();
+        }
     </script>
 </body>
 </html>
