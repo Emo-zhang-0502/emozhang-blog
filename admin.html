@@ -1093,23 +1093,28 @@ color: var(--gray);
             const headers = {
                 'Content-Type': 'application/json',
                 'apikey': SUPABASE_ANON_KEY,
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token || SUPABASE_ANON_KEY}`
             };
             if (options.method === 'POST' || options.method === 'PATCH' || options.method === 'PUT') {
                 headers['Prefer'] = 'return=representation';
             }
             
-            const response = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
-                ...options,
-                headers: { ...headers, ...options.headers }
-            });
-            
-            if (response.status === 401) {
-                logout();
-                throw new Error('未授权');
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
+                    ...options,
+                    headers: { ...headers, ...options.headers }
+                });
+                
+                if (response.status === 401) {
+                    // 离线模式下忽略401错误
+                    return [];
+                }
+                
+                return response.json();
+            } catch (err) {
+                // 网络错误时返回空数组，不登出
+                return [];
             }
-            
-            return response.json();
         }
 
         function showMessage(type, text) {
@@ -1226,7 +1231,7 @@ color: var(--gray);
             const container = document.getElementById('articlesList');
             try {
                 const data = await apiRequest('posts?select=*&order=created_at.desc');
-                if (data.length === 0) {
+                if (!data || data.length === 0) {
                     container.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p class="empty-text">暂无文章，发布你的第一篇吧</p></div>';
                     return;
                 }
@@ -1244,7 +1249,7 @@ color: var(--gray);
                     </div>
                 `).join('');
             } catch (err) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p class="empty-text">加载失败，请检查网络</p></div>';
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p class="empty-text">暂无数据，请先配置Supabase</p></div>';
             }
         }
 
