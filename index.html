@@ -482,6 +482,43 @@
             pointer-events: none;
         }
 
+        /* ========================================
+           文字板块 - 子分类
+           ======================================== */
+        .writing-tabs {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--gray-lighter);
+            padding-bottom: 1rem;
+        }
+
+        .writing-tab {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray-light);
+            cursor: pointer;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .writing-tab:hover { color: var(--black); }
+        .writing-tab.active {
+            color: var(--black);
+            border-color: var(--black);
+        }
+
+        .writing-category {
+            display: none;
+            margin-bottom: 4rem;
+        }
+
+        .writing-category.active { display: block; }
+        .writing-category:last-child { margin-bottom: 0; }
+
         .article-list-magazine {
             display: grid;
             gap: 0;
@@ -538,6 +575,58 @@
            ======================================== */
         #visual {
             background: var(--cream);
+        }
+
+        .visual-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+            align-items: center;
+        }
+
+        .visual-hero-text {
+            max-width: 500px;
+        }
+
+        .visual-intro {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.8;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .visual-desc {
+            font-size: 0.95rem;
+            color: var(--gray);
+            line-height: 1.9;
+        }
+
+        .visual-hero-image {
+            position: relative;
+        }
+
+        .visual-hero-image img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.6s ease;
+        }
+
+        .visual-hero-image:hover img {
+            filter: grayscale(0%);
+        }
+
+        .visual-hero-image::after {
+            content: '';
+            position: absolute;
+            inset: 1.5rem;
+            border: 1px solid var(--gray-lighter);
+            pointer-events: none;
         }
 
         .visual-tabs {
@@ -1210,8 +1299,38 @@
                 </div>
             </div>
 
-            <div class="article-list-magazine" id="article-list">
-                <!-- 文章列表 -->
+            <!-- 分类标签 -->
+            <div class="writing-tabs">
+                <span class="writing-tab active" data-category="insights">洞察</span>
+                <span class="writing-tab" data-category="thoughts">随想</span>
+                <span class="writing-tab" data-category="books">书单</span>
+            </div>
+
+            <!-- 洞察 -->
+            <div class="writing-category active" id="writing-insights">
+                <div class="category-header">
+                    <h3 class="category-title">洞察</h3>
+                    <span class="category-count">Insights</span>
+                </div>
+                <div class="article-list-magazine" id="article-list-insights"></div>
+            </div>
+
+            <!-- 随想 -->
+            <div class="writing-category" id="writing-thoughts">
+                <div class="category-header">
+                    <h3 class="category-title">随想</h3>
+                    <span class="category-count">Thoughts</span>
+                </div>
+                <div class="article-list-magazine" id="article-list-thoughts"></div>
+            </div>
+
+            <!-- 书单 -->
+            <div class="writing-category" id="writing-books">
+                <div class="category-header">
+                    <h3 class="category-title">书单</h3>
+                    <span class="category-count">Books</span>
+                </div>
+                <div class="article-list-magazine" id="article-list-books"></div>
             </div>
         </div>
     </section>
@@ -1227,8 +1346,18 @@
                 </div>
             </div>
 
-            <div class="visual-intro" style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 300; font-style: italic; color: var(--dark); margin-bottom: 3rem; text-align: center;">
-                "用镜头捕捉瞬间，用影像讲述故事。"
+            <!-- 视觉Hero -->
+            <div class="visual-hero">
+                <div class="visual-hero-text">
+                    <p class="visual-intro">"用镜头捕捉瞬间，用影像讲述故事。"</p>
+                    <p class="visual-desc">
+                        影像是我观察世界的方式。每一张照片都是一个故事，
+                        我在这里记录生活的片段，定格那些稍纵即逝的美好。
+                    </p>
+                </div>
+                <div class="visual-hero-image">
+                    <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=600" alt="Visual">
+                </div>
             </div>
 
             <!-- 分类标签 -->
@@ -1287,8 +1416,7 @@
                     <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=500" alt="Music">
                 </div>
                 <div class="music-content">
-                    <h3>"在旋律中寻找共鸣，让音符承载情感。"</h3>
-<p>
+                    <p>
                         音乐是我情感的出口。每首歌都承载着一段记忆，
                         每一段旋律都是一次心灵的旅行。无论是独自聆听还是与人分享，
                         音乐让生活变得更加丰富。
@@ -1441,6 +1569,18 @@
         });
 
         // ========================================
+        // 文字分类切换
+        // ========================================
+        document.querySelectorAll('.writing-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.writing-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.writing-category').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('writing-' + tab.dataset.category).classList.add('active');
+            });
+        });
+
+        // ========================================
         // 加载网站配置
         // ========================================
         async function loadSiteConfig() {
@@ -1587,25 +1727,42 @@
         // 加载文章
         async function loadArticles() {
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?status=eq.published&order=created_at.desc&limit=10`, {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?status=eq.published&order=created_at.desc`, {
                     headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
                 });
                 const articles = await response.json();
-                renderArticles(articles);
+                renderArticlesByCategory(articles);
             } catch (error) {
                 console.error('加载文章失败:', error);
                 // 显示示例数据
-                renderArticles([
+                renderArticlesByCategory([
                     { id: 1, title: '二十岁，我开始学会与自己和解', tag: '随想', created_at: '2024-03-15', excerpt: '曾经以为成长是不断追逐，后来才明白，真正的成熟是学会接纳不完美的自己……' },
-                    { id: 2, title: '在王家卫的电影里，我看到了自己的影子', tag: '影评', created_at: '2024-03-08', excerpt: '那些失焦的画面，那些缓慢的独白，那些关于时间和记忆的隐喻……' },
-                    { id: 3, title: '凌晨三点的城市', tag: '诗歌', created_at: '2024-02-28', excerpt: '路灯还亮着，像失眠的眼睛。我站在窗前，听这座城市呼吸的声音。' },
-                    { id: 4, title: '关于创作的一些思考', tag: '随想', created_at: '2024-02-20', excerpt: '为什么开始创作？创作对我意味着什么？这篇文章是我的创作自白……' }
+                    { id: 2, title: '深度思考：当代青年的困境与出路', tag: '洞察', created_at: '2024-03-10', excerpt: '在这个充满不确定性的时代，我们该如何找到自己的定位……' },
+                    { id: 3, title: '《百年孤独》读后感', tag: '书单', created_at: '2024-03-08', excerpt: '魔幻现实主义的巅峰之作，一个家族的百年兴衰史……' },
+                    { id: 4, title: '凌晨三点的城市', tag: '随想', created_at: '2024-02-28', excerpt: '路灯还亮着，像失眠的眼睛。我站在窗前，听这座城市呼吸的声音。' },
+                    { id: 5, title: '《小王子》品读', tag: '书单', created_at: '2024-02-20', excerpt: '所有的大人都曾经是小孩，虽然，只有少数的人记得……' }
                 ]);
             }
         }
 
-        function renderArticles(articles) {
-            const container = document.getElementById('article-list');
+        function renderArticlesByCategory(articles) {
+            // 按标签分类
+            const insights = articles.filter(a => a.tag === '洞察');
+            const thoughts = articles.filter(a => a.tag === '随想');
+            const books = articles.filter(a => a.tag === '书单');
+            
+            // 渲染到对应容器
+            renderArticleList('article-list-insights', insights);
+            renderArticleList('article-list-thoughts', thoughts);
+            renderArticleList('article-list-books', books);
+        }
+
+        function renderArticleList(containerId, articles) {
+            const container = document.getElementById(containerId);
+            if (!articles || articles.length === 0) {
+                container.innerHTML = '<p style="color: var(--gray-light); padding: 2rem 0;">暂无内容</p>';
+                return;
+            }
             container.innerHTML = articles.map(a => `
                 <article class="article-item" onclick="viewArticle('${a.id}', ${JSON.stringify(a).replace(/"/g, '&quot;')})">
                     <span class="article-date">${new Date(a.created_at).toLocaleDateString('zh-CN')}</span>
@@ -1648,8 +1805,9 @@
                 </div>
             `;
             
-            // 隐藏文章列表，显示文章详情
-            document.getElementById('article-list').style.display = 'none';
+            // 隐藏子板块区域，显示文章详情
+            document.querySelector('.writing-tabs').style.display = 'none';
+            document.querySelectorAll('.writing-category').forEach(c => c.style.display = 'none');
             document.querySelector('.writing-hero').style.display = 'none';
             document.body.appendChild(articleDetail);
             
@@ -1660,7 +1818,11 @@
         function closeArticleView() {
             const detail = document.getElementById('article-detail');
             if (detail) detail.remove();
-            document.getElementById('article-list').style.display = 'block';
+            // 恢复子板块显示
+            document.querySelector('.writing-tabs').style.display = 'flex';
+            document.querySelectorAll('.writing-category').forEach(c => {
+                c.style.display = c.classList.contains('active') ? 'block' : 'none';
+            });
             document.querySelector('.writing-hero').style.display = 'grid';
         }
         });
